@@ -237,8 +237,22 @@ added &mdash; goes to
 <div class="body">
 
 <p>
-By the <strong>Open-Source Medicine Club</strong> and the
-<strong>AI in Medicine Club</strong>.
+A collaborative initiative by the Schulich <strong>Open-Source Medicine</strong> and
+<strong>AI in Medicine</strong> clubs.
+</p>
+
+<p>
+<strong>Co-developers.</strong> Noor Simsam and Nora Treleaven.
+</p>
+
+<p>
+<strong>Leads.</strong> Ashish Saragadam, Negar Goodarzynejad, Jessica Wang,
+Tamjeed Nawaz, Yasmine Madan.
+</p>
+
+<p>
+<strong>Upper-year resource credits.</strong> Nicole&rsquo;s Notes, Maggie&rsquo;s Notes,
+Christina&rsquo;s Anki, Hippo Council Qbank.
 </p>
 
 </div>
