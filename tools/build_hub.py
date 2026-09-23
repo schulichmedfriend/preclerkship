@@ -75,13 +75,10 @@ TEMPLATE = u"""<!DOCTYPE html>
 <div class="pom2-page">
 
 <div class="page-hero">
-<p class="eyebrow">By the Open-Source Medicine &amp; AI in Medicine Clubs</p>
 <h1>Pre-clerkship.</h1>
 <p>
-{total} practice questions across the pre-clerkship years, filed by week and by where
-they came from, with a <strong>notes</strong> tab per course listing every lecture in it
-so what is written up and what is not are both visible. Progress saves per course, on
-your own device.
+A centralized, dynamic, up-to-date resource for all Schulich med students in
+pre-clerkship.
 </p>
 </div>
 
@@ -265,7 +262,7 @@ def main():
         favicon=portal.favicon("PC", "1f4e5f"), fonts=portal.FONTS, nocache=portal.NOCACHE,
         base_css="base.css?v=" + portal.digest("base.css"),
         portal_css="portal.css?v=" + portal.digest("portal.css"),
-        cf=portal.CF, total="{:,}".format(q), cards=cards(), footer=portal.footer())
+        cf=portal.CF, cards=cards(), footer=portal.footer())
     io.open("index.html", "w", encoding="utf-8", newline="\n").write(html)
     print("index.html: %d courses, %d built, %d questions, %d/%d lecture notes"
           % (len(portal.COURSES),
