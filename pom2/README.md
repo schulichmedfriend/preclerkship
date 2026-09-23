@@ -20,7 +20,7 @@ Live at **<https://noorsimsam.com/pre-clerkship/pom2/>**.
 
 ## Open source
 
-The portal is open source at <https://github.com/nsimsam/pom2>.
+The portal is open source at <https://github.com/schulichmedfriend/preclerkship>.
 
 The beauty of open source is that anyone can access the work, improve it or
 customize it to their needs. It is crowdsourced expertise that creates
@@ -32,7 +32,7 @@ Anything here can change, from the blocks it covers and the questions in them to
 the wording, the layout and the tooling around it. Paste this into Claude Code:
 
 ```
-Clone https://github.com/nsimsam/pom2 and read the README so you understand how
+Clone https://github.com/schulichmedfriend/preclerkship and read the README so you understand how
 the portal is built. I want to make it mine: [what you want changed, for example:
 cut it down to the blocks I am on, import my own lecture notes and questions,
 restyle the pages, or build an Anki deck from only the questions I got wrong].
@@ -51,12 +51,12 @@ Suggest a feature, fix an answer you think is wrong, or send in questions of you
 own. You need a GitHub account; Claude Code can do the rest. Paste this into it:
 
 ```
-Clone https://github.com/nsimsam/pom2 and read the README so you understand how
+Clone https://github.com/schulichmedfriend/preclerkship and read the README so you understand how
 the portal is built. I want to contribute: [what you are adding, for example: the
 questions from the week 8 MSK module, a correction to an answer, or a feature].
 Match the format the existing files use, rebuild the pages with the scripts in
 tools/, then create a branch, commit, and open a pull request against
-nsimsam/pom2 explaining what changed and why.
+schulichmedfriend/preclerkship explaining what changed and why.
 ```
 
 Corrections and questions are the two most useful things to send.
@@ -64,8 +64,8 @@ Corrections and questions are the two most useful things to send.
 ## Run it yourself
 
 ```bash
-git clone https://github.com/nsimsam/pom2
-cd pom2
+git clone https://github.com/schulichmedfriend/preclerkship
+cd preclerkship
 python -m http.server 8000
 ```
 
