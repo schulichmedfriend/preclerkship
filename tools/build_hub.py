@@ -255,6 +255,11 @@ Tamjeed Nawaz, Yasmine Madan.
 Christina&rsquo;s Anki, Hippo Council Qbank.
 </p>
 
+<p>
+Want to be added to the credits? Make some edits via a GitHub PR &mdash; instructions
+are under <strong>Open source: customize or improve</strong> above.
+</p>
+
 </div>
 </details>
 

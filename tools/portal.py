@@ -203,13 +203,9 @@ def uplink(depth=None):
 CONTACT = "schulichmedfriends@gmail.com"
 
 
-CO_DEVS = "Noor Simsam and Nora Treleaven"
-
-
 def footer():
     return ('<footer>\nFor questions, email '
-            '<a href="mailto:%s">%s</a><br>\n'
-            'Co-developers. %s.\n</footer>' % (CONTACT, CONTACT, CO_DEVS))
+            '<a href="mailto:%s">%s</a>\n</footer>' % (CONTACT, CONTACT))
 
 
 def favicon(label="PC", fill="1f4e5f"):
