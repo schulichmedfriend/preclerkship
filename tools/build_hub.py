@@ -256,8 +256,8 @@ Christina&rsquo;s Anki, Hippo Council Qbank.
 </p>
 
 <p>
-Want to be added to the credits? Make some edits via a GitHub PR. Instructions
-are under <strong>Open source: customize or improve</strong> above.
+Want to be added to the credits? Contribute or make some edits via a GitHub PR:
+instructions are under <strong>Open source: customize or improve</strong> above.
 </p>
 
 </div>
