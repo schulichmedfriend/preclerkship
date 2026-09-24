@@ -2260,6 +2260,7 @@
       },
       {
        "t": "table",
+       "lead": "<p><strong>Non-invasive — every one of these returns a RISK, never an answer:</strong></p>",
        "cols": [
         "Test",
         "What it is actually looking for",
@@ -2316,20 +2317,42 @@
          "—",
          "—",
          "<strong>18-20 w</strong>"
+        ]
+       ]
+      },
+      {
+       "t": "table",
+       "lead": "<p><strong>Invasive — these return an ANSWER, because they put fetal DNA in your hands:</strong></p>",
+       "cols": [
+        "",
+        "<strong><span class=\"wl\">CVS</span></strong>",
+        "<strong><span class=\"wl\">Amniocentesis</span></strong>"
+       ],
+       "rows": [
+        [
+         "<strong>Gestational age</strong>",
+         "<strong>11-13 weeks</strong>",
+         "<strong>15-20 weeks</strong>"
         ],
         [
-         "<strong><span class=\"wl\">CVS</span> · <span class=\"wl\">amniocentesis</span></strong> — <strong>fetal DNA in hand</strong>",
-         "<strong>whatever assay you order on it</strong> — <span class=\"wl\">karyotype</span>, <span class=\"wl\">microarray</span>, or <strong>targeted single-gene testing when the family's mutation is already known</strong>",
-         "—",
-         "<strong>diagnostic</strong>",
-         "—",
-         "<strong>11-13 w · 15-20 w</strong>"
+         "<strong>Miscarriage risk</strong>",
+         "<strong>1/400, ~1%</strong>",
+         "<strong>1/800, ~0.5%</strong>"
+        ],
+        [
+         "<strong>Other risks</strong>",
+         "<strong>Maternal cell contamination · confined placental mosaicism</strong>",
+         "—"
         ]
        ]
       },
       {
        "t": "note",
-       "html": "<p><strong>Every screen answers one short question — is this a common aneuploidy? — and nothing else.</strong> <strong>eFTS, MSS and NIPT were never built to look for a single-gene condition</strong>, and a condition with <strong>no fetal structural phenotype</strong> is invisible to the anatomy scan as well. <strong>A mutation already known in the family is answered only by fetal DNA — CVS or amniocentesis — with the mutation-specific test ordered on it</strong>, and by the resolution ladder a karyotype or microarray run on that same sample would still miss a <strong>1 bp</strong> variant.</p>"
+       "html": "<p><strong>Both are only as good as the assay ordered on them</strong> — <span class=\"wl\">karyotype</span>, <span class=\"wl\">microarray</span>, or <strong>targeted single-gene testing when the family's mutation is already known</strong>. By the resolution ladder a karyotype or microarray run on that same sample would still miss a <strong>1 bp</strong> variant.</p>"
+      },
+      {
+       "t": "note",
+       "html": "<p><strong>Every screen answers one short question — is this a common aneuploidy? — and nothing else.</strong> <strong>eFTS, MSS and NIPT were never built to look for a single-gene condition</strong>, and a condition with <strong>no fetal structural phenotype</strong> is invisible to the anatomy scan as well. <strong>A mutation already known in the family is answered only by fetal DNA — CVS or amniocentesis — with the mutation-specific test ordered on it.</strong></p>"
       },
       {
        "t": "table",
@@ -2406,31 +2429,6 @@
          "parental structural rearrangement",
          "an unbalanced fetal karyotype → <strong>karyotype the parents</strong>",
          "NIPT"
-        ]
-       ]
-      },
-      {
-       "t": "table",
-       "cols": [
-        "",
-        "<strong><span class=\"wl\">CVS</span></strong>",
-        "<strong><span class=\"wl\">Amniocentesis</span></strong>"
-       ],
-       "rows": [
-        [
-         "<strong>Gestational age</strong>",
-         "<strong>11-13 weeks</strong>",
-         "<strong>15-20 weeks</strong>"
-        ],
-        [
-         "<strong>Miscarriage risk</strong>",
-         "<strong>1/400, ~1%</strong>",
-         "<strong>1/800, ~0.5%</strong>"
-        ],
-        [
-         "<strong>Other risks</strong>",
-         "<strong>Maternal cell contamination · confined placental mosaicism</strong>",
-         "—"
         ]
        ]
       },
