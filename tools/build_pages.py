@@ -183,46 +183,46 @@ saved in one go. Print it, annotate it, keep it.</p>
 </div>
 </div>
 
-<div class="q-shell" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" hidden>
+<div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor" hidden>
 
 {howto}
 
-<aside class="rail" id="q-rail" data-filter-open="false">
+<div class="qbar" id="qbar">
 
-<button class="mfilter" id="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-groups">
-<svg class="mfilter-glyph" viewBox="0 0 14 14" aria-hidden="true"><line x1="2" x2="12" y1="3.5" y2="3.5"></line><line x1="3.5" x2="10.5" y1="7" y2="7"></line><line x1="5.5" x2="8.5" y1="10.5" y2="10.5"></line></svg>
-<span class="mfilter-label">Filter</span>
-<span class="mfilter-badge" id="filter-badge" hidden>0</span>
-<svg class="mfilter-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 L6 8.5 L10 4.5"></path></svg>
-</button>
+<div class="qbar-filters">
+<label class="qsel"><span>Question set</span><select id="f-family"></select></label>
+<label class="qsel"><span>Week</span><select id="f-week"></select></label>
+<label class="qsel" id="f-tag-wrap" hidden><span>Topic</span><select id="f-tag"></select></label>
+<label class="qsel"><span>Status</span><select id="f-status"></select></label>
+<button class="review-cta" id="review-wrong" type="button" disabled>Review wrong only <span class="n" id="review-n">0</span></button>
+</div>
+
+<div class="qbar-modes">
+<div class="qseg" id="view-seg" role="group" aria-label="How the questions are laid out">
+<span class="qseg-h">View</span>
+<button type="button" data-view="stream" aria-pressed="true">Continuous</button>
+<button type="button" data-view="paged" aria-pressed="false">One at a time</button>
+</div>
+<div class="qseg" id="mode-seg" role="group" aria-label="When answers are shown">
+<span class="qseg-h">Mode</span>
+<button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
+<button type="button" data-mode="test" aria-pressed="false">Test block</button>
+</div>
+</div>
 
 <div class="applied" id="applied" hidden></div>
 
-<div class="rail-groups" id="filter-groups">
+</div>
 
-<button class="review-cta" id="review-wrong" type="button" disabled>Review wrong only <span class="n" id="review-n">0</span></button>
+<div class="testbar" id="testbar" hidden></div>
 
-<section>
-<p class="panel-h">Question set</p>
-<div class="fams" id="fam-btns"></div>
-</section>
+<main class="stream" id="stream">
+<div class="q-loading">Loading {questions} questions&hellip;</div>
+</main>
 
-<section>
-<p class="panel-h">Week</p>
-<div class="chips" id="week-chips"></div>
-</section>
+<div class="pagebar" id="pagebar" hidden></div>
 
-<section id="tag-section" hidden>
-<p class="panel-h">Topic</p>
-<div class="chips" id="tag-chips"></div>
-</section>
-
-<section>
-<p class="panel-h">Status</p>
-<div class="chips" id="status-chips"></div>
-</section>
-
-<section>
+<section class="progress-foot" id="progress-foot">
 <p class="panel-h">Progress</p>
 <p class="storenote" id="storenote" hidden></p>
 <div class="resets">
@@ -233,14 +233,6 @@ saved in one go. Print it, annotate it, keep it.</p>
 <button class="danger" id="reset-all" type="button">Reset all progress</button>
 </div>
 </section>
-
-</div>
-
-</aside>
-
-<main class="stream" id="stream">
-<div class="q-loading">Loading {questions} questions&hellip;</div>
-</main>
 
 <div class="posbar" id="posbar" hidden>
 <span class="pb-where" id="pb-where"></span>

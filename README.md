@@ -3,7 +3,10 @@
 A static study portal for the pre-clerkship years at Schulich. One directory per
 course, one page per block, two tabs per page: **notes**, a coverage map of every
 lecture in the block whether or not it has been written up, and **practice
-questions**, a quiz runner that keeps score.
+questions**, a quiz runner that keeps score. The questions tab reads the whole
+block as one scrolling stream by default, and answers on the spot; a **View**
+switch takes it one question at a time, and a **Mode** switch turns it into a
+sat block of however many questions you ask for, marked only once you submit.
 
 No build step, no framework, no server. HTML, three JS files, two stylesheets and
 a folder of JSON per course. Serve the folder and it works.
@@ -25,7 +28,7 @@ Questions, corrections and contributions: <schulichmedfriends@gmail.com>.
 The two empty ones still have a card on the hub, greyed and unlinked. That is
 deliberate, and it is the same habit the rest of the portal keeps: a lecture with
 no note still renders on the notes tab, a question set with nothing in it still
-renders in the filter rail. Showing the shape of the whole thing, gaps included,
+renders in the filter bar. Showing the shape of the whole thing, gaps included,
 is more useful than showing only the parts that happen to be done.
 
 ## How a week gets built

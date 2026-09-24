@@ -55,7 +55,24 @@
   var progress = Object.create(null);
   var filters = { status: "all", family: null, week: "all", tag: "all" };
 
-  /* label and total lookups, filled in by buildRail: the applied-filter line
+  /* View and Mode are two axes, deliberately independent. VIEW is how the
+     questions are laid out; MODE is when the answer is allowed to appear. The
+     pair that matters is paged + test - a block with a boundary and a submit -
+     but neither implies the other: browsing one at a time and scrolling a
+     tutor stream are both things people actually do. */
+  var VIEW = "stream";          /* "stream" | "paged" */
+  var MODE = "tutor";           /* "tutor"  | "test"  */
+  var pageIdx = 0;
+
+  /* A sat block is a lifecycle, not a toggle: drawn, sat, submitted, reviewed.
+     Its answers stage HERE and are only written to the store on submit, so
+     abandoning a block half-done leaves no trace - which is right, because you
+     did not answer those questions. Drawing a block never erases what you
+     already had. */
+  var TEST = { size: 20, ids: null, picks: Object.create(null),
+               submitted: false, poolN: 0, asked: 0 };
+
+  /* label and total lookups, filled in by buildBar: the applied-filter line
      needs a filter's human name, and a family's block total is what tells an
      empty coverage gap ("none") apart from one the filters emptied ("0"). */
   var FAM_TOTAL = Object.create(null);
@@ -182,6 +199,31 @@
     paintStats();
     if (ANCHOR === qid) { ANCHOR = null; RESUMING = false; paintPos(); }
   }
+
+  /* ---------- mode helpers ---------- */
+
+  /* The single gate on showing an answer. In tutor mode an answered question
+     reveals at once - that is the whole value of the written rationales. In a
+     sat block the pick is held and nothing is shown until submit; revealing
+     early would make it a tutor stream with extra steps. */
+  function revealOk() { return MODE !== "test" || TEST.submitted; }
+
+  /* 155 of the questions in the banks cannot be auto-marked: free text,
+     matching, and the ones whose source gives no defensible key. They are
+     fine in a tutor stream, where you mark yourself. A sat block that
+     silently fails to score a fifth of itself is not a score, so blocks are
+     drawn from the gradable ones only. */
+  function gradable(q) {
+    return !q.free && !q.unscorable &&
+           Array.isArray(q.correct) && q.correct.length > 0;
+  }
+
+  function testChosen(qid) {
+    var v = TEST.picks[qid];
+    return Array.isArray(v) ? v : [];
+  }
+
+  function staging() { return MODE === "test" && !TEST.submitted; }
 
   /* ---------- build one question ---------- */
 
@@ -337,6 +379,22 @@
   }
 
   function pick(q, art, letter) {
+    /* While a block is being sat, a pick is held in memory rather than
+       written through: nothing reaches localStorage until submit. */
+    if (staging()) {
+      var cur = testChosen(q.qid);
+      if (q.multi) {
+        var at = cur.indexOf(letter);
+        if (at === -1) cur = cur.concat([letter]);
+        else cur = cur.slice(0, at).concat(cur.slice(at + 1));
+      } else {
+        cur = (cur.length === 1 && cur[0] === letter) ? [] : [letter];
+      }
+      TEST.picks[q.qid] = cur;
+      paintQuestion(q.qid);
+      paintTest();
+      return;
+    }
     if (q.multi) {
       if (art.classList.contains("revealed")) return;
       var btn = art.querySelector('.opt[data-letter="' + letter + '"]');
@@ -353,6 +411,7 @@
   }
 
   function submitMulti(q, art) {
+    if (staging()) return;
     var picked = [].slice.call(art.querySelectorAll('.opt[data-pick="on"]'))
       .map(function (b) { return b.dataset.letter; })
       .sort();
@@ -368,32 +427,45 @@
     if (!art) return;
     var q = QMAP[qid], st = stateOf(qid), done = st !== "unseen";
 
-    art.dataset.state = st;
-    if (!q.unscorable) art.classList.toggle("revealed", done);
+    /* A staged block answers from TEST.picks, not from the store, and reveals
+       nothing: no verdict, no state stripe, options still live so the answer
+       can be changed right up to the submit. */
+    var chosen, reveal;
+    if (staging()) {
+      chosen = testChosen(qid);
+      done = chosen.length > 0;
+      reveal = false;
+    } else {
+      chosen = chosenOf(qid) || [];
+      reveal = done && revealOk();
+    }
+
+    art.dataset.state = reveal ? st : "unseen";
+    if (!q.unscorable) art.classList.toggle("revealed", reveal);
     art.querySelector(".star-btn").setAttribute("aria-pressed", isStarred(qid) ? "true" : "false");
 
-    var chosen = chosenOf(qid) || [];
     [].forEach.call(art.querySelectorAll(".opt"), function (b) {
       if (q.unscorable) return;
       var L = b.dataset.letter;
-      b.disabled = done;
-      b.dataset.pick = (!done && chosen.indexOf(L) !== -1) ? "on" : "";
+      b.disabled = reveal;
+      b.dataset.pick = (!reveal && chosen.indexOf(L) !== -1) ? "on" : "";
       var v = b.querySelector(".verdict");
       v.textContent = "";
       b.dataset.mark = "";
-      if (!done) return;
+      if (!reveal) return;
       var isKey = q.correct.indexOf(L) !== -1, wasPicked = chosen.indexOf(L) !== -1;
       if (wasPicked && isKey) { b.dataset.mark = "hit"; v.textContent = "your pick · correct"; }
       else if (wasPicked) { b.dataset.mark = "miss"; v.textContent = "your pick"; }
       else if (isKey) { b.dataset.mark = "key"; v.textContent = "correct"; }
     });
 
+    /* nothing to "check" while staging - the pick IS the answer until submit */
     var check = art.querySelector('[data-role="check"]');
-    if (check) check.hidden = done;
+    if (check) check.hidden = reveal || staging();
 
     var atts = attemptsOf(qid);
     art.querySelector(".attempts").textContent = atts.length > 1 ? atts.length + " attempts" : "";
-    art.querySelector(".reset-q").hidden = !done && !isStarred(qid);
+    art.querySelector(".reset-q").hidden = staging() || (!reveal && !isStarred(qid));
   }
 
   /* ---------- filters ---------- */
@@ -437,10 +509,38 @@
                     .map(function (q) { return q.qid; });
   }
 
+  /* The qids in play, in bank order. In a sat block that is the block; in a
+     tutor stream it is whatever the filters match. Bank order either way -
+     the draw decides WHICH questions, never what order you meet them in, so
+     a block still reads week by week. */
+  function inPlayIds() {
+    if (MODE === "test" && TEST.ids) {
+      var set = Object.create(null);
+      TEST.ids.forEach(function (id) { set[id] = 1; });
+      return QUESTIONS.filter(function (q) { return set[q.qid]; })
+                      .map(function (q) { return q.qid; });
+    }
+    return QUESTIONS.filter(function (q) { return matches(q.qid); })
+                    .map(function (q) { return q.qid; });
+  }
+
+  /* Paging is the filter trick with a narrower predicate: the stream already
+     builds every question once and hides what is out of play, so one at a
+     time is "hide all but one" and every other part of the engine - progress,
+     stars, the keyboard steps, the resume point - carries over untouched. */
   function applyFilters() {
+    var ids = inPlayIds(), live = Object.create(null);
+    if (VIEW === "paged" && ids.length) {
+      if (pageIdx >= ids.length) pageIdx = ids.length - 1;
+      if (pageIdx < 0) pageIdx = 0;
+      live[ids[pageIdx]] = 1;
+    } else {
+      ids.forEach(function (id) { live[id] = 1; });
+    }
+
     var shown = 0;
     QUESTIONS.forEach(function (q) {
-      var art = byId("q-" + q.qid), ok = matches(q.qid);
+      var art = byId("q-" + q.qid), ok = !!live[q.qid];
       art.hidden = !ok;
       if (ok) shown++;
     });
@@ -469,15 +569,268 @@
       if (f.dataset.count === "0") { f.hidden = !!narrowed; return; }
       f.hidden = !f.querySelector(".q:not([hidden])");
     });
-    byId("empty").hidden = shown > 0;
+    /* the empty state belongs to the filters, not to the page you are on */
+    byId("empty").hidden = ids.length > 0;
     indexVisible();
     paintPos();
-    paintChips();
+    paintBar();
+    paintTest();
+    paintPagebar(ids);
   }
 
-  function setStatus(s) { filters.status = s; applyFilters(); }
-  function setWeek(w) { filters.week = w; applyFilters(); }
-  function setTag(t) { filters.tag = t; applyFilters(); }
+  /* Changing a filter while a block is being sat draws a new block. The
+     alternative - quietly editing the block under you - would make the score
+     mean nothing. */
+  function afterFilterChange() {
+    pageIdx = 0;
+    if (MODE === "test") { redrawBlock(); return; }
+    applyFilters();
+  }
+
+  function setStatus(s) { filters.status = s; afterFilterChange(); }
+  function setWeek(w) { filters.week = w; afterFilterChange(); }
+  function setTag(t) { filters.tag = t; afterFilterChange(); }
+
+  /* ---------- view + mode ---------- */
+
+  function syncSegs() {
+    [].forEach.call(document.querySelectorAll("#view-seg button"), function (b) {
+      b.setAttribute("aria-pressed", b.dataset.view === VIEW ? "true" : "false");
+    });
+    [].forEach.call(document.querySelectorAll("#mode-seg button"), function (b) {
+      b.setAttribute("aria-pressed", b.dataset.mode === MODE ? "true" : "false");
+    });
+  }
+
+  function setView(v) {
+    if ((v !== "stream" && v !== "paged") || VIEW === v) return;
+    VIEW = v;
+    if (v === "paged") {
+      /* land on the question you were already looking at rather than the top
+         of the bank - the anchor is what the resume point is built on */
+      var ids = inPlayIds(), at = ANCHOR ? ids.indexOf(ANCHOR) : -1;
+      pageIdx = at === -1 ? 0 : at;
+    }
+    syncSegs();
+    applyFilters();
+    if (v === "paged") toTop();
+  }
+
+  function setMode(m) {
+    if ((m !== "tutor" && m !== "test") || MODE === m) return;
+    MODE = m;
+    if (m === "test") {
+      drawTest();
+    } else {
+      TEST.ids = null;
+      TEST.picks = Object.create(null);
+      TEST.submitted = false;
+      pageIdx = 0;
+    }
+    syncSegs();
+    applyFilters();
+    /* reveal is a global condition, so every card has to be repainted */
+    QUESTIONS.forEach(function (q) { paintQuestion(q.qid); });
+    toTop();
+  }
+
+  /* ---------- the sat block ---------- */
+
+  function drawTest() {
+    var pool = QUESTIONS.filter(function (q) {
+      return matches(q.qid) && gradable(q);
+    }).map(function (q) { return q.qid; });
+
+    /* Fisher-Yates. Drawn in bank order, a block would be the same block every
+       time, and the first twenty questions of week 1 are not a rehearsal. */
+    for (var i = pool.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)), t = pool[i];
+      pool[i] = pool[j]; pool[j] = t;
+    }
+    TEST.poolN = pool.length;
+    TEST.asked = TEST.size;
+    TEST.ids = pool.slice(0, Math.min(TEST.size, pool.length));
+    TEST.picks = Object.create(null);
+    TEST.submitted = false;
+    pageIdx = 0;
+  }
+
+  function submitTest() {
+    if (!TEST.ids || TEST.submitted) return;
+    /* flipped before the writes so persist() paints a revealed card, not a
+       staged one */
+    TEST.submitted = true;
+    TEST.ids.forEach(function (qid) {
+      var q = QMAP[qid], picked = testChosen(qid);
+      if (!picked.length) return;         /* left blank stays left blank */
+      var correct = picked.slice().sort().join("+") === q.correct.slice().sort().join("+");
+      persist(qid, {
+        status: correct ? "correct" : "wrong",
+        /* tagged, so "what is my accuracy when nothing tells me I am right"
+           stays an answerable question later */
+        attempt: { ts: Date.now(), chosen: picked.join("+"), correct: correct, mode: "test" }
+      });
+    });
+    pageIdx = 0;
+    applyFilters();
+    TEST.ids.forEach(paintQuestion);
+    toTop();
+  }
+
+  /* Repaint only the cards that changed hands. This runs on every keystroke
+     in the block-size field, and a blanket repaint of a 581-question bank
+     there is a visible stutter for no gain. */
+  function redrawBlock() {
+    var before = TEST.ids || [];
+    drawTest();
+    applyFilters();
+    var touched = Object.create(null);
+    before.concat(TEST.ids || []).forEach(function (id) { touched[id] = 1; });
+    Object.keys(touched).forEach(paintQuestion);
+  }
+
+  function clearResult() {
+    var r = byId("tb-result");
+    if (r && r.parentNode) r.parentNode.removeChild(r);
+  }
+
+  /* The one number a sat block exists to produce, and the grouping that a
+     tutor stream structurally cannot show you: which SOURCE you are losing
+     marks to, visible only because forty were marked at once. */
+  function paintResult() {
+    clearResult();
+    if (MODE !== "test" || !TEST.submitted || !TEST.ids) return;
+    var n = TEST.ids.length, right = 0, blank = 0, missed = [];
+    TEST.ids.forEach(function (qid) {
+      if (!testChosen(qid).length) { blank++; return; }
+      if (stateOf(qid) === "correct") right++; else missed.push(QMAP[qid]);
+    });
+
+    var box = el("div", "tb-result");
+    box.id = "tb-result";
+    box.appendChild(el("h3", null, "Block submitted"));
+    box.appendChild(el("div", "big", right + " / " + n));
+    box.appendChild(el("p", null,
+      (n ? Math.round(right / n * 100) : 0) + "% on this block" +
+      (blank ? " \u00b7 " + blank + " left blank" : "") + "."));
+
+    if (missed.length) {
+      var bySrc = Object.create(null);
+      missed.forEach(function (q) {
+        bySrc[q.sourceLabel] = (bySrc[q.sourceLabel] || 0) + 1;
+      });
+      var ul = document.createElement("ul");
+      Object.keys(bySrc).forEach(function (k) {
+        ul.appendChild(el("li", null, bySrc[k] + " missed from " + k));
+      });
+      box.appendChild(ul);
+    }
+    var stream = byId("stream");
+    stream.parentNode.insertBefore(box, stream);
+  }
+
+  function paintTest() {
+    var shell = byId("panel-questions");
+    if (shell) {
+      shell.dataset.view = VIEW;
+      shell.dataset.mode = MODE;
+      shell.dataset.submitted = TEST.submitted ? "true" : "false";
+    }
+    var bar = byId("testbar");
+    if (!bar) return;
+    bar.textContent = "";
+    if (MODE !== "test") { bar.hidden = true; clearResult(); return; }
+    bar.hidden = false;
+
+    var ids = TEST.ids || [];
+    var answered = ids.filter(function (id) { return testChosen(id).length; }).length;
+
+    var head = el("span");
+    head.appendChild(el("b", null, "Block of " + ids.length));
+    head.appendChild(document.createTextNode(TEST.submitted
+      ? " \u00b7 submitted \u00b7 reviewing"
+      : " \u00b7 " + answered + " of " + ids.length +
+        " answered \u00b7 no feedback until you submit"));
+    bar.appendChild(head);
+
+    var sf = el("div", "tb-size");
+    var lab = document.createElement("label");
+    lab.setAttribute("for", "tb-count");
+    lab.textContent = "How many?";
+    var inp = document.createElement("input");
+    inp.type = "number";
+    inp.id = "tb-count";
+    inp.min = "1";
+    inp.step = "1";
+    inp.value = String(TEST.size);
+    /* repainting the bar rebuilds this field, so the caret has to be put back
+       or it jumps out on every keystroke */
+    inp.addEventListener("input", function () {
+      var v = parseInt(inp.value, 10);
+      if (isNaN(v) || v < 1) return;
+      TEST.size = v;
+      redrawBlock();
+      var back = byId("tb-count");
+      if (back) {
+        back.focus();
+        try { back.setSelectionRange(back.value.length, back.value.length); }
+        catch (e) { /* number inputs refuse this in some browsers */ }
+      }
+    });
+    sf.appendChild(lab);
+    sf.appendChild(inp);
+    bar.appendChild(sf);
+
+    var btn = el("button", "tb-btn", TEST.submitted ? "New block" : "Submit block");
+    btn.type = "button";
+    btn.addEventListener("click", function () {
+      if (TEST.submitted) { redrawBlock(); toTop(); } else submitTest();
+    });
+    bar.appendChild(btn);
+
+    /* A block shrunk to fit the pool says so, here, beside the count. Clamping
+       in silence is indistinguishable from a control that does nothing. */
+    if (TEST.asked > ids.length) {
+      bar.appendChild(el("span", "tb-note",
+        "You asked for " + TEST.asked + ". These filters match " + TEST.poolN +
+        " auto-markable question" + (TEST.poolN === 1 ? "" : "s") +
+        ", so the block is " + ids.length + ". Widen the filters for a longer one."));
+    }
+    paintResult();
+  }
+
+  function paintPagebar(ids) {
+    var bar = byId("pagebar");
+    if (!bar) return;
+    bar.textContent = "";
+    if (VIEW !== "paged" || !ids.length) { bar.hidden = true; return; }
+    bar.hidden = false;
+    /* the position bar and the pager say the same thing; one of them goes */
+    var pb = byId("posbar");
+    if (pb) pb.hidden = true;
+
+    var prev = el("button", "pg-btn", "\u2190 Previous");
+    prev.type = "button";
+    prev.disabled = pageIdx === 0;
+    prev.addEventListener("click", function () { pageIdx--; applyFilters(); toTop(); });
+    bar.appendChild(prev);
+
+    bar.appendChild(el("span", "pg-pos", (pageIdx + 1) + " of " + ids.length));
+
+    var atEnd = pageIdx === ids.length - 1;
+    if (MODE === "test" && !TEST.submitted && atEnd) {
+      var sub = el("button", "pg-btn primary", "Submit block");
+      sub.type = "button";
+      sub.addEventListener("click", submitTest);
+      bar.appendChild(sub);
+    } else {
+      var next = el("button", "pg-btn", "Next \u2192");
+      next.type = "button";
+      next.disabled = atEnd;
+      next.addEventListener("click", function () { pageIdx++; applyFilters(); toTop(); });
+      bar.appendChild(next);
+    }
+  }
 
   /* ---------- where you are in the stream ---------- */
 
@@ -790,10 +1143,11 @@
     };
   }
 
-  /* Three independent filters and, without this, nothing anywhere saying which
-     of them emptied the stream - the answer had to be hunted across all three
-     groups. Sits above the groups so it survives the rail folding up on a
-     phone: a filtered view must never look unfiltered. */
+  /* Four independent filters and, without this, nothing anywhere saying which
+     of them emptied the stream - the answer had to be hunted across all four
+     groups. It matters more now than it did in the rail: a closed dropdown
+     hides its count, so this row is the only thing standing between you and a
+     filtered view that looks unfiltered. */
   function paintApplied(shown) {
     var box = byId("applied");
     if (!box) return;          // a page cached from before this shipped
@@ -822,12 +1176,6 @@
         label: STATUS_LABEL[filters.status] || filters.status,
         clear: function () { filters.status = "all"; }
       });
-    }
-
-    var badge = byId("filter-badge");
-    if (badge) {
-      badge.textContent = String(live.length);
-      badge.hidden = live.length === 0;
     }
 
     box.hidden = live.length === 0;
@@ -867,40 +1215,41 @@
   /* An option worth zero is disabled rather than left live, which is what the
      family rows have always done and the chips never did. The one exception is
      the option currently selected: disabling that would trap you in it. */
-  function paintChips() {
+  function paintBar() {
     var c = facetCounts();
 
-    [].forEach.call(document.querySelectorAll("#status-chips .chip"), function (b) {
-      var k = b.dataset.k, n = c.status[k];
-      b.setAttribute("aria-pressed", filters.status === k ? "true" : "false");
-      b.querySelector(".n").textContent = n;
-      b.disabled = k !== "all" && n === 0 && filters.status !== k;
-    });
+    function paintSel(id, countFor, cur) {
+      var sel = byId(id);
+      if (!sel) return;
+      [].forEach.call(sel.options, function (o) {
+        var n = countFor(o.value);
+        o.textContent = o.dataset.base + " \u00b7 " + n;
+        o.disabled = o.value !== "all" && n === 0 && o.value !== cur;
+      });
+      sel.value = cur;
+    }
 
-    [].forEach.call(document.querySelectorAll("#week-chips .chip"), function (b) {
-      var k = b.dataset.k, n = (k === "all") ? c.weekAll : (c.week[k] || 0);
-      b.setAttribute("aria-pressed", filters.week === k ? "true" : "false");
-      b.querySelector(".n").textContent = n;
-      b.disabled = k !== "all" && n === 0 && filters.week !== k;
-    });
+    paintSel("f-status", function (k) { return c.status[k] || 0; }, filters.status);
+    paintSel("f-week", function (k) {
+      return k === "all" ? c.weekAll : (c.week[k] || 0);
+    }, filters.week);
+    paintSel("f-tag", function (k) {
+      return k === "all" ? c.tagAll : (c.tag[k] || 0);
+    }, filters.tag);
 
-    [].forEach.call(document.querySelectorAll("#tag-chips .chip"), function (b) {
-      var k = b.dataset.k, n = (k === "all") ? c.tagAll : (c.tag[k] || 0);
-      b.setAttribute("aria-pressed", filters.tag === k ? "true" : "false");
-      b.querySelector(".n").textContent = n;
-      b.disabled = k !== "all" && n === 0 && filters.tag !== k;
-    });
-
-    [].forEach.call(document.querySelectorAll("#fam-btns .fam-btn"), function (b) {
-      var k = b.dataset.k || null;
-      var n = (k === null) ? c.famAll : (c.fam[k] || 0);
-      b.setAttribute("aria-pressed", filters.family === k ? "true" : "false");
-      /* a family the block has none of says "none" for good - that is the
-         coverage gap the row exists to show. One the filters emptied says 0. */
-      b.querySelector(".fc").textContent =
-        (k !== null && FAM_TOTAL[k] === 0) ? "none" : String(n);
-      b.disabled = k !== null && n === 0 && filters.family !== k;
-    });
+    /* the family select is the one that cannot just print its count: a family
+       the block has none of says "none" for good, because that is a coverage
+       gap, and one the filters emptied says 0 */
+    var fsel = byId("f-family"), fcur = filters.family || "all";
+    if (fsel) {
+      [].forEach.call(fsel.options, function (o) {
+        var k = o.value, n = (k === "all") ? c.famAll : (c.fam[k] || 0);
+        var gap = k !== "all" && FAM_TOTAL[k] === 0;
+        o.textContent = o.dataset.base + " \u00b7 " + (gap ? "none" : n);
+        o.disabled = k !== "all" && n === 0 && k !== fcur;
+      });
+      fsel.value = fcur;
+    }
 
     paintApplied(c.shown);
     if (RESET_SHOWN_IDLE) RESET_SHOWN_IDLE();
@@ -922,7 +1271,7 @@
     byId("sc-star").textContent = starred;
     byId("review-wrong").disabled = wrong === 0;
     byId("review-n").textContent = wrong;
-    paintChips();
+    paintBar();
   }
 
   /* ---------- boot ---------- */
@@ -933,98 +1282,80 @@
     byId("sc-of").textContent = "/" + QUESTIONS.length;
   }
 
-  function buildRail() {
+  /* One <select> per facet, options built once. Their labels carry the live
+     counts, rewritten by paintBar, so a count still rides on the option the
+     way it used to ride on the chip - the one real thing a dropdown hides. */
+  function buildSelect(id, defs, onPick) {
+    var sel = byId(id);
+    if (!sel) return null;
+    defs.forEach(function (d) {
+      var o = document.createElement("option");
+      o.value = d.k;
+      o.dataset.base = d.label;
+      o.textContent = d.label;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", function () { onPick(sel.value); });
+    return sel;
+  }
+
+  function buildBar() {
     var famCount = {};
     QUESTIONS.forEach(function (q) { famCount[q.family] = (famCount[q.family] || 0) + 1; });
 
-    var fb = byId("fam-btns");
-    var rows = [{ key: null, name: "All question sets", n: QUESTIONS.length, all: true }];
+    var famDefs = [{ k: "all", label: "All question sets" }];
     FAMILIES.forEach(function (f) {
       FAM_TOTAL[f.key] = famCount[f.key] || 0;
       FAM_NAME[f.key] = f.name;
-      rows.push({ key: f.key, name: f.name, n: famCount[f.key] || 0 });
+      famDefs.push({ k: f.key, label: f.name });
     });
     STATUS_DEFS.forEach(function (d) { STATUS_LABEL[d.k] = d.label; });
-    rows.forEach(function (r) {
-      var b = el("button", "fam-btn" + (r.all ? " is-all" : ""));
-      b.type = "button";
-      if (r.key) b.dataset.k = r.key;
-      b.setAttribute("aria-pressed", r.key === null ? "true" : "false");
-      b.appendChild(el("span", "fn", r.name));
-      b.appendChild(el("span", "fc", r.n ? String(r.n) : "none"));
-      b.addEventListener("click", function () {
-        filters.family = (r.key === null || filters.family === r.key) ? null : r.key;
-        applyFilters();
-      });
-      fb.appendChild(b);
+
+    buildSelect("f-family", famDefs, function (v) {
+      filters.family = (v === "all") ? null : v;
+      afterFilterChange();
     });
 
-    /* a page cached from before the week filter shipped still has to work */
-    var wc = byId("week-chips");
-    if (wc) {
-      weekDefs().forEach(function (d) {
-        WEEK_LABEL[d.k] = d.label;
-        var b = el("button", "chip");
-        b.type = "button";
-        b.dataset.k = d.k;
-        b.setAttribute("aria-pressed", d.k === "all" ? "true" : "false");
-        b.appendChild(document.createTextNode(d.label));
-        b.appendChild(el("span", "n", String(d.n)));
-        b.addEventListener("click", function () { setWeek(d.k); });
-        wc.appendChild(b);
-      });
+    var wd = weekDefs();
+    wd.forEach(function (d) { WEEK_LABEL[d.k] = d.label; });
+    buildSelect("f-week", wd.map(function (d) {
+      return { k: d.k, label: d.k === "all" ? "All weeks" : d.label };
+    }), setWeek);
+
+    /* The topic group only earns its slot where something is tagged, so the
+       dropdown ships hidden and the block's own data is what reveals it. */
+    var td = tagDefs();
+    if (td.length) {
+      td.forEach(function (d) { TAG_LABEL[d.k] = d.label; });
+      buildSelect("f-tag", td.map(function (d) {
+        return { k: d.k, label: d.k === "all" ? "All topics" : d.label };
+      }), setTag);
+      if (byId("f-tag-wrap")) byId("f-tag-wrap").hidden = false;
     }
 
-    /* The group only earns its space where something is tagged, so it ships
-       hidden and the block's own data is what reveals it. */
-    var tc = byId("tag-chips"), tagRows = tagDefs();
-    if (tc && tagRows.length) {
-      tagRows.forEach(function (d) {
-        TAG_LABEL[d.k] = d.label;
-        var b = el("button", "chip");
-        b.type = "button";
-        b.dataset.k = d.k;
-        b.setAttribute("aria-pressed", d.k === "all" ? "true" : "false");
-        b.appendChild(document.createTextNode(d.label));
-        b.appendChild(el("span", "n", String(d.n)));
-        b.addEventListener("click", function () { setTag(d.k); });
-        tc.appendChild(b);
-      });
-      if (byId("tag-section")) byId("tag-section").hidden = false;
-    }
-
-    var sc = byId("status-chips");
-    STATUS_DEFS.forEach(function (d) {
-      var b = el("button", "chip" + (d.cls ? " " + d.cls : ""));
-      b.type = "button";
-      b.dataset.k = d.k;
-      b.setAttribute("aria-pressed", d.k === "all" ? "true" : "false");
-      b.appendChild(document.createTextNode(d.label));
-      b.appendChild(el("span", "n", "0"));
-      b.addEventListener("click", function () { setStatus(d.k); });
-      sc.appendChild(b);
-    });
+    buildSelect("f-status", STATUS_DEFS.map(function (d) {
+      return { k: d.k, label: d.k === "all" ? "Any status" : d.label };
+    }), setStatus);
 
     /* "wrong only" means every wrong answer in the block, so it clears what
-       else is narrowing the stream rather than handing back an empty list */
+       else is narrowing the stream rather than handing back an empty list.
+       It is a review action, so it drops you out of a sat block. */
     byId("review-wrong").addEventListener("click", function () {
       filters.family = null;
       filters.week = "all";
       filters.tag = "all";
-      setStatus("wrong");
+      filters.status = "wrong";
+      if (MODE === "test") { setMode("tutor"); return; }
+      afterFilterChange();
     });
 
-    /* Below 960px the rail loses its sticky position and sits on top of the
-       stream - sixteen controls before the first question. One button folds
-       it away; the CSS only honours the state at that width. */
-    var ft = byId("filter-toggle"), rail = byId("q-rail");
-    if (ft && rail) {
-      ft.addEventListener("click", function () {
-        var open = rail.dataset.filterOpen === "true";
-        rail.dataset.filterOpen = open ? "false" : "true";
-        ft.setAttribute("aria-expanded", open ? "false" : "true");
-      });
-    }
+    [].forEach.call(document.querySelectorAll("#view-seg button"), function (b) {
+      b.addEventListener("click", function () { setView(b.dataset.view); });
+    });
+    [].forEach.call(document.querySelectorAll("#mode-seg button"), function (b) {
+      b.addEventListener("click", function () { setMode(b.dataset.mode); });
+    });
+    syncSegs();
 
     // reset only what is on screen right now
     var rs = byId("reset-shown"), rsArmed = false, rsTimer = null;
@@ -1276,7 +1607,7 @@
     QUESTIONS.forEach(function (q) { QMAP[q.qid] = q; });
     load();
     buildMasthead();
-    buildRail();
+    buildBar();
     buildStream();
     paintStats();
     applyFilters();

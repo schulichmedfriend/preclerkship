@@ -133,12 +133,12 @@ and leaves it out of the score.
 `tags` is the one filter that cuts across the others. The anatomy, histology and
 embryology lectures are a strand of their own, but their questions arrive as
 Elentra modules, as module cases and as workbook chapters, and they sit in more
-than one week, so neither the question-set rows nor the week chips can gather
-them. Tagging those questions `["anatomy"]` puts a **Topic** group in the rail
-that does. A block with nothing tagged shows no group at all, so the four blocks
+than one week, so neither the question-set nor the week dropdown can gather
+them. Tagging those questions `["anatomy"]` puts a **Topic** dropdown in the
+toolbar that does. A block with nothing tagged shows no group at all, so the four blocks
 that have no anatomy questions yet are unchanged. The tag is a list, so a
 question can carry more than one, and the counts under Topic are the only ones in
-the rail that do not add up to the total, because a question is counted under
+the toolbar that do not add up to the total, because a question is counted under
 each tag it carries.
 
 ### Notes

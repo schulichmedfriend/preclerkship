@@ -69,7 +69,7 @@ inferred, in two ways:
   labels are the source's own filing, so they do the work. 90 questions are
   placed by a subject that names one week outright, and 51 by a subject that
   narrows it to two or three, with the wording choosing between just those. The
-  same labels fill the **Topic** group in the filter rail.
+  same labels fill the **Topic** dropdown in the question toolbar.
 - Hematology and Infection & Immunity carry no labels at all, so those 186 are
   scored against the vocabulary of their block's own lectures. That table is
   written out in `tools/parse_workbook.py` rather than hidden, so a filing you
