@@ -132,8 +132,21 @@ COURSES = [
         "blurb": u"The bridge into clerkship at the end of second year.",
         "accent": u"#3f4a5a",
         "store": "nsq.t2c.v1.",
-        "blocks": [],
-        "families": [],
+        "blocks": [
+            ("peds",   1, u"Pediatrics",                          u"1\u20132"),
+            ("surg",   2, u"Surgery",                             u"3\u20134"),
+            ("psych",  3, u"Psychiatry, Palliative & Geriatrics", u"5\u20136"),
+            ("em",     4, u"Emergency Medicine",                  u"7"),
+            ("fmob",   5, u"Family Medicine & Obstetrics",        u"8\u20139"),
+            ("dermim", 6, u"Dermatology & Internal Medicine",     u"10\u201313"),
+        ],
+        "families": [
+            {"key": "hipponotes", "name": u"HippoNotes",
+             "blurb": u"The T2C question bank at the back of the Meds 2025 HippoNotes "
+                      u"(Academic Resources Team, May 2023), filed under the rotation "
+                      u"each question was written for. Peer-written, so the key is "
+                      u"worth checking rather than trusting."},
+        ],
     },
 ]
 

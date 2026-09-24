@@ -23,9 +23,9 @@ Questions, corrections and contributions: <schulichmedfriends@gmail.com>.
 | [Foundations of Medicine](fom/) | 1 | 4 blocks, weeks 1–15, 1,979 questions |
 | [Principles of Medicine 1](pom1/) | 1 | not built yet |
 | [Principles of Medicine 2](pom2/) | 2 | 5 blocks, weeks 1–20, 1,487 questions |
-| [Transition to Clerkship](t2c/) | 2 | not built yet |
+| [Transition to Clerkship](t2c/) | 2 | 6 blocks, weeks 1–13, 214 questions |
 
-The two empty ones still have a card on the hub, greyed and unlinked. That is
+The one still empty keeps a card on the hub, greyed and unlinked. That is
 deliberate, and it is the same habit the rest of the portal keeps: a lecture with
 no note still renders on the notes tab, a question set with nothing in it still
 renders in the filter bar. Showing the shape of the whole thing, gaps included,
@@ -66,7 +66,7 @@ quiz.js            the question runner and the progress store )
 
 fom/               one course: its pages, its data, its README
 pom2/              the same
-pom1/  t2c/        placeholders, a landing page and nothing behind it
+pom1/              a placeholder, a landing page and nothing behind it
 
 tools/portal.py       the course roster: blocks, families, accents, store keys
 tools/build_pages.py  every course's block pages, from one template

@@ -58,6 +58,39 @@ SEED = {
                     u"absent, overreacting, or turned on its owner.",
                     u"Practice questions for weeks 13 to 15 of Foundations of Medicine.",
                     u"--q-accent:#3d4f8f;--q-accent-soft:#e5e8f5;--q-accent-ink:#333f75;"),
+    ("t2c", "peds"): (u"Weeks 1 and 2: prescribing for a child, the acute asthma "
+                      u"exacerbation, and the developmental surveillance that runs "
+                      u"under every well-child visit.",
+                      u"Practice questions for the pediatrics weeks of Transition to Clerkship.",
+                      u"--q-accent:#0f6b6b;--q-accent-soft:#dcefef;--q-accent-ink:#0c5555;"),
+    ("t2c", "surg"): (u"Weeks 3 and 4: the GI bleed from anatomy to disposition, then "
+                      u"the paperwork that surgery actually runs on - perioperative "
+                      u"care, the OR note, admission orders and a courteous consult.",
+                      u"Practice questions for the surgery weeks of Transition to Clerkship.",
+                      u"--q-accent:#7a4a9c;--q-accent-soft:#eee3f6;--q-accent-ink:#623c7e;"),
+    ("t2c", "psych"): (u"Weeks 5 and 6: psychiatry on the wards, then delirium, the "
+                       u"palliative emergencies, and managing pain and dyspnea at the "
+                       u"end of life.",
+                       u"Practice questions for the psychiatry and palliative weeks of "
+                       u"Transition to Clerkship.",
+                       u"--q-accent:#2f6b4f;--q-accent-soft:#e2efe9;--q-accent-ink:#275844;"),
+    ("t2c", "em"): (u"Week 7, and the largest block here by some way: resuscitation and "
+                    u"shock, cardiac arrest, trauma and ATLS, toxicology - and a "
+                    u"37-question ER practice test sat as one paper.",
+                    u"Practice questions for the emergency medicine week of Transition "
+                    u"to Clerkship.",
+                    u"--q-accent:#a83232;--q-accent-soft:#f8dedd;--q-accent-ink:#8a2828;"),
+    ("t2c", "fmob"): (u"Weeks 8 and 9: family medicine and obstetrics. The thinnest "
+                      u"block in the bank - eight questions between two rotations - "
+                      u"and the gap is left visible rather than padded.",
+                      u"Practice questions for the family medicine and obstetrics weeks "
+                      u"of Transition to Clerkship.",
+                      u"--q-accent:#8a5320;--q-accent-soft:#f6e8d8;--q-accent-ink:#70431a;"),
+    ("t2c", "dermim"): (u"Weeks 10 to 13: the dermatology rotation, then internal "
+                        u"medicine - the last two rotations before clerkship proper.",
+                        u"Practice questions for the dermatology and internal medicine "
+                        u"weeks of Transition to Clerkship.",
+                        u"--q-accent:#35608f;--q-accent-soft:#e2ebf5;--q-accent-ink:#2b4d73;"),
 }
 
 FAVICON = {"fom": ("FM", "1f4e5f"), "pom2": ("P2", "84223b"),

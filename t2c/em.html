@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Medicine &middot; T2C</title>
+<meta name="description" content="Practice questions for the emergency medicine week of Transition to Clerkship.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%233f4a5a'/><text x='16' y='23' font-family='Georgia,serif' font-size='13' font-weight='600' fill='%23ffffff' text-anchor='middle'>T2C</text></svg>">
+
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../base.css?v=7f3d47b4">
+<link rel="stylesheet" href="../portal.css?v=29e4f51a">
+<style>
+:root{--q-accent:#a83232;--q-accent-soft:#f8dedd;--q-accent-ink:#8a2828;}
+</style>
+
+</head>
+<body>
+
+<div class="pom2-page">
+
+<nav class="blocknav">
+<a class="home" href="https://schulichmedfriend.github.io/preclerkship/">All courses</a>
+<a href="peds.html">1 &middot; Pediatrics</a>
+<a href="surg.html">2 &middot; Surgery</a>
+<a href="psych.html">3 &middot; Psychiatry, Palliative & Geriatrics</a>
+<a href="em.html" class="here">4 &middot; Emergency Medicine</a>
+<a href="fmob.html">5 &middot; Family Medicine & Obstetrics</a>
+<a href="dermim.html">6 &middot; Dermatology & Internal Medicine</a>
+</nav>
+
+<header class="q-masthead">
+<div>
+<p class="eyebrow" id="m-eyebrow"></p>
+<h1>Emergency Medicine</h1>
+<p class="lead">Week 7, and the largest block here by some way: resuscitation and shock, cardiac arrest, trauma and ATLS, toxicology - and a 37-question ER practice test sat as one paper.</p>
+</div>
+<div class="scoreboard" id="sb-notes">
+<div class="score"><b><span id="cv-notes">0</span><span class="of" id="cv-of"></span></b><span>Notes written</span></div>
+<div class="score"><b><span id="cv-weeks">0</span><span class="of" id="cv-weeks-of"></span></b><span>Weeks covered</span></div>
+</div>
+<div class="scoreboard" id="sb-questions" hidden>
+<div class="score"><b><span id="sc-done">0</span><span class="of" id="sc-of"></span></b><span>Attempted</span></div>
+<div class="score"><b id="sc-first">&ndash;</b><span>Correct</span></div>
+<div class="score is-bad"><b id="sc-wrong">0</b><span>Wrong</span></div>
+<div class="score is-star"><b id="sc-star">0</b><span>Starred</span></div>
+</div>
+</header>
+
+<div class="tabs" role="tablist" aria-label="Notes, Anki or questions">
+<button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes">Notes <span class="tc" id="tc-notes">0/5</span></button>
+<button type="button" id="tab-anki" role="tab" aria-selected="false" aria-controls="panel-anki">Anki</button>
+<button type="button" id="tab-questions" role="tab" aria-selected="false" aria-controls="panel-questions">Practice questions <span class="tc">118</span></button>
+</div>
+
+<div class="q-shell is-solo" id="panel-anki" role="tabpanel" aria-labelledby="tab-anki" hidden>
+<div class="tab-empty">
+<h2>The decks are not up yet.</h2>
+<p>This is where the T2C Anki cards for weeks 7 will live, filed by week and
+lecture the way the notes are. Nothing has been uploaded into it yet.</p>
+</div>
+</div>
+
+<div class="q-shell" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes">
+<aside class="rail">
+
+<section>
+<p class="panel-h">Week</p>
+<div class="chips" id="note-week-chips"></div>
+</section>
+
+<section>
+<p class="panel-h">Lectures</p>
+<nav class="lecindex" id="note-index" aria-label="Jump to a lecture"></nav>
+</section>
+
+<section>
+<p class="panel-h">Save as PDF</p>
+<button class="print-cta" id="print-all" type="button" disabled>Save every note as one PDF</button>
+<p class="railnote">Each note has its own <strong>PDF</strong> button, and each week can be
+saved in one go. Print it, annotate it, keep it.</p>
+</section>
+
+</aside>
+
+<main class="stream" id="note-stream">
+<div class="q-loading">Loading notes&hellip;</div>
+</main>
+
+<div class="posbar notebar" id="notebar" hidden>
+<button class="pb-step pb-top" id="nb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
+</div>
+</div>
+
+<div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor" hidden>
+
+<details class="howto">
+<summary>You can save your progress</summary>
+<div class="body">
+<p><strong>On this device, and nowhere else.</strong> What you have answered is written to
+your browser&rsquo;s local storage. It is never sent to this site, never stored in its
+repository, and nobody else can see it, not even me.</p>
+<p>That also means it does not follow you. A different browser, a different laptop, or
+clearing your site data all start from zero.</p>
+<p><strong>To carry it with you:</strong> open <strong>Progress</strong> in
+the toolbar above the questions, press <strong>Download all my progress</strong>, and keep the
+JSON file it writes. One file holds every block of this
+course, and it can be pressed from any of them. On the other machine, open any block and
+open the same menu and press <strong>Restore from a file</strong> to put all of it back at once. A restore only ever
+adds and updates, so an out of date file cannot wipe out newer answers. Doing that now and
+then is also the only backup there is.</p>
+</div>
+</details>
+
+<div class="qbar" id="qbar">
+
+<div class="qbar-filters">
+<label class="qsel"><span>Question set</span><select id="f-family"></select></label>
+<label class="qsel"><span>Week</span><select id="f-week"></select></label>
+<label class="qsel" id="f-tag-wrap" hidden><span>Topic</span><select id="f-tag"></select></label>
+<label class="qsel"><span>Status</span><select id="f-status"></select></label>
+<button class="review-cta" id="review-wrong" type="button" disabled>Review wrong only <span class="n" id="review-n">0</span></button>
+</div>
+
+<div class="qbar-modes">
+<div class="qseg" id="view-seg" role="group" aria-label="How the questions are laid out">
+<span class="qseg-h">View</span>
+<button type="button" data-view="stream" aria-pressed="true">Continuous</button>
+<button type="button" data-view="paged" aria-pressed="false">One at a time</button>
+</div>
+<div class="qseg" id="mode-seg" role="group" aria-label="When answers are shown">
+<span class="qseg-h">Mode</span>
+<button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
+<button type="button" data-mode="test" aria-pressed="false">Test block</button>
+</div>
+<details class="progress-menu" id="progress-menu">
+<summary>Progress</summary>
+<div class="pm-body">
+<p class="storenote" id="storenote" hidden></p>
+<div class="resets">
+<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
+<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
+<button class="danger" id="reset-all" type="button">Reset all progress</button>
+</div>
+</div>
+</details>
+</div>
+
+<div class="applied" id="applied" hidden></div>
+
+</div>
+
+<div class="testbar" id="testbar" hidden></div>
+
+<main class="stream" id="stream">
+<div class="q-loading">Loading 118 questions&hellip;</div>
+</main>
+
+<div class="pagebar" id="pagebar" hidden></div>
+
+<div class="posbar" id="posbar" hidden>
+<span class="pb-where" id="pb-where"></span>
+<span class="pb-count" id="pb-count"></span>
+<span class="pb-steps">
+<button class="pb-step pb-top" id="pb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
+<button class="pb-step" id="pb-prev" type="button" title="Previous question (k)" aria-label="Previous question">&uarr;</button>
+<button class="pb-step" id="pb-next" type="button" title="Next question (j)" aria-label="Next question">&darr;</button>
+</span>
+<button class="pb-mark" id="pb-mark" type="button" hidden></button>
+</div>
+</div>
+
+<script>
+window.QUIZ_BLOCK = {"slug": "em", "n": 4, "name": "Emergency Medicine", "weeks": "7", "course": "T2C", "store": "nsq.t2c.v1.", "families": [{"key": "hipponotes", "name": "HippoNotes", "blurb": "The T2C question bank at the back of the Meds 2025 HippoNotes (Academic Resources Team, May 2023), filed under the rotation each question was written for. Peer-written, so the key is worth checking rather than trusting."}], "qv": "3cfbe052", "nv": "dfac7782"};
+</script>
+<script src="../quiz.js?v=56c02bcf"></script>
+<script src="../notes.js?v=c16ba83f"></script>
+<script src="../portal.js?v=a68cb585"></script>
+
+<footer>
+For questions, email <a href="mailto:schulichmedfriends@gmail.com">schulichmedfriends@gmail.com</a>
+</footer>
+
+</div>
+
+</body>
+</html>
