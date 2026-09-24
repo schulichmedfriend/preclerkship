@@ -89,18 +89,6 @@ pre-clerkship.
 <div class="prose">
 
 <details class="fold">
-<summary>Where the notes come from</summary>
-<div class="body">
-
-<p>
-<strong>Lecture slides</strong> + <strong>transcription</strong> +
-<strong>Maggie&rsquo;s notes</strong> = <strong>Nicole&rsquo;s-style notes</strong>.
-</p>
-
-</div>
-</details>
-
-<details class="fold">
 <summary>Where the practice questions come from</summary>
 <div class="body">
 
