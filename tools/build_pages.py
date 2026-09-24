@@ -247,7 +247,7 @@ saved in one go. Print it, annotate it, keep it.</p>
 <div class="qseg" id="mode-seg" role="group" aria-label="When answers are shown">
 <span class="qseg-h">Mode</span>
 <button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
-<button type="button" data-mode="test" aria-pressed="false">Test block</button>
+<button type="button" data-mode="test" aria-pressed="false">Test</button>
 </div>
 </div>
 

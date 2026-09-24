@@ -1728,7 +1728,10 @@
       head.appendChild(el("p", "fam-meta",
         mine.length ? mine.length + " questions" : "nothing transcribed yet"));
       head.appendChild(el("h2", null, f.name));
-      head.appendChild(el("p", null, f.blurb));
+      /* f.blurb still describes each set in portal.py and is worth keeping
+         there, but on the page it is a paragraph of preamble sitting between
+         you and the first question, re-read every time you scroll past. The
+         count and the name say enough. */
       sec.appendChild(head);
 
       if (!mine.length) {
