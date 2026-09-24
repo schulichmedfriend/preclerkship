@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css?v=7f3d47b4">
-<link rel="stylesheet" href="../portal.css?v=29e4f51a">
+<link rel="stylesheet" href="../portal.css?v=c682c759">
 <style>
 :root{--q-accent:#0d6154;--q-accent-soft:#e2efec;--q-accent-ink:#0a4c42;}
 </style>
@@ -106,10 +106,11 @@ your browser&rsquo;s local storage. It is never sent to this site, never stored 
 repository, and nobody else can see it, not even me.</p>
 <p>That also means it does not follow you. A different browser, a different laptop, or
 clearing your site data all start from zero.</p>
-<p><strong>To carry it with you:</strong> press <strong>Download all my progress</strong> in
-the panel on the left and keep the JSON file it writes. One file holds every block of this
+<p><strong>To carry it with you:</strong> open <strong>Progress</strong> in
+the toolbar above the questions, press <strong>Download all my progress</strong>, and keep the
+JSON file it writes. One file holds every block of this
 course, and it can be pressed from any of them. On the other machine, open any block and
-press <strong>Restore from a file</strong> to put all of it back at once. A restore only ever
+open the same menu and press <strong>Restore from a file</strong> to put all of it back at once. A restore only ever
 adds and updates, so an out of date file cannot wipe out newer answers. Doing that now and
 then is also the only backup there is.</p>
 </div>
@@ -136,6 +137,19 @@ then is also the only backup there is.</p>
 <button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
 <button type="button" data-mode="test" aria-pressed="false">Test block</button>
 </div>
+<details class="progress-menu" id="progress-menu">
+<summary>Progress</summary>
+<div class="pm-body">
+<p class="storenote" id="storenote" hidden></p>
+<div class="resets">
+<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
+<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
+<button class="danger" id="reset-all" type="button">Reset all progress</button>
+</div>
+</div>
+</details>
 </div>
 
 <div class="applied" id="applied" hidden></div>
@@ -149,18 +163,6 @@ then is also the only backup there is.</p>
 </main>
 
 <div class="pagebar" id="pagebar" hidden></div>
-
-<section class="progress-foot" id="progress-foot">
-<p class="panel-h">Progress</p>
-<p class="storenote" id="storenote" hidden></p>
-<div class="resets">
-<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
-<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
-<input type="file" id="import-file" accept="application/json,.json" hidden>
-<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
-<button class="danger" id="reset-all" type="button">Reset all progress</button>
-</div>
-</section>
 
 <div class="posbar" id="posbar" hidden>
 <span class="pb-where" id="pb-where"></span>
@@ -177,7 +179,7 @@ then is also the only backup there is.</p>
 <script>
 window.QUIZ_BLOCK = {"slug": "endo", "n": 1, "name": "Endocrinology", "weeks": "1–3", "course": "PoM 2", "store": "nsq.v1.", "families": [{"key": "module", "name": "Course modules", "blurb": "The Elentra module knowledge checks and the concept checks on the lecture slides. Cases live under Meds 2029 instead, wherever they came from."}, {"key": "weekly", "name": "Weekly quizzes", "blurb": "The weekly quizzes, both the Microsoft Forms ones and the ones sat in Elentra. Kept whole as their own set, so a week's quiz can be drilled the way it was written."}, {"key": "workbook", "name": "Pre-Clerkship Workbook", "blurb": "The Pre-Clerkship Workbook (2023 edition), the student bank passed down through the Schulich classes of 2015-2025. It has a written key, but the key is peer-written and contains real errors. Every one found is flagged on the question."}, {"key": "meds2029", "name": "Meds 2029", "blurb": "Questions built from patient cases in the modules, DSSGs and in-class lectures, since exams tend to recycle similar cases."}, {"key": "reviews", "name": "Schulich Reviews", "blurb": "The Schulich Reviews sessions, both their practice questions and their summary content. TBD."}, {"key": "hipponotes", "name": "HippoNotes", "blurb": "The question banks at the back of the Meds 2025 HippoNotes (Academic Resources Team, May 2023) - one document per block, written by the class two years ahead. Peer-written like the Workbook, so the key is worth checking rather than trusting; the source groups by week only, with no per-lecture attribution."}], "qv": "a898966e", "nv": "8c64dd73"};
 </script>
-<script src="../quiz.js?v=56c02bcf"></script>
+<script src="../quiz.js?v=076403ca"></script>
 <script src="../notes.js?v=c16ba83f"></script>
 <script src="../portal.js?v=a68cb585"></script>
 
