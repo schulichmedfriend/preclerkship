@@ -19,7 +19,7 @@ Questions, corrections and contributions: <schulichmedfriends@gmail.com>.
 | --- | --- | --- |
 | [Foundations of Medicine](fom/) | 1 | 4 blocks, weeks 1–15, 1,979 questions |
 | [Principles of Medicine 1](pom1/) | 1 | not built yet |
-| [Principles of Medicine 2](pom2/) | 2 | 5 blocks, weeks 1–20, 1,063 questions |
+| [Principles of Medicine 2](pom2/) | 2 | 5 blocks, weeks 1–20, 1,055 questions |
 | [Transition to Clerkship](t2c/) | 2 | not built yet |
 
 The two empty ones still have a card on the hub, greyed and unlinked. That is
