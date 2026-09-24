@@ -540,7 +540,13 @@
 
     var shown = 0;
     QUESTIONS.forEach(function (q) {
-      var art = byId("q-" + q.qid), ok = !!live[q.qid];
+      var art = byId("q-" + q.qid);
+      /* buildStream only renders questions whose family is declared on the
+         block, so a bank carrying a family portal.py does not list yet has
+         no node here. Before this guard that was a null dereference that
+         took the whole questions tab down - one stray family, blank page. */
+      if (!art) return;
+      var ok = !!live[q.qid];
       art.hidden = !ok;
       if (ok) shown++;
     });

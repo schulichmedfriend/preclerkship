@@ -1671,6 +1671,88 @@
     border-bottom:0;
 }
 
+/* The review CTA is shaped for a 250px rail - width:100% and the count pushed
+   to the far edge. Dropped into a flex row it stretched into a slab with the
+   number stranded on the right. In the bar it sizes to its own content and
+   sits beside the dropdowns. */
+.qbar .review-cta{
+    width:auto;
+    flex:0 0 auto;
+    justify-content:flex-start;
+    gap:9px;
+    align-self:flex-end;
+}
+
+/* ---- progress, in the toolbar ---- */
+/* These first went to the foot of the tab, below the stream. That reasoned
+   about end-of-session actions and forgot the actual number: the endocrine
+   block is 611 questions, so "scroll to the bottom" is not a location, it is
+   a way of hiding something. A disclosure in the bar keeps the bar clean -
+   the point of the change - and keeps the buttons one click away. */
+.progress-menu{
+    position:relative;
+    margin-left:auto;
+}
+
+.progress-menu > summary{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 13px;
+    font-size:.82rem;
+    font-weight:500;
+    color:var(--muted);
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:7px;
+    cursor:pointer;
+    list-style:none;
+    white-space:nowrap;
+}
+
+.progress-menu > summary::-webkit-details-marker{display:none;}
+.progress-menu > summary::marker{content:"";}
+
+.progress-menu > summary::after{
+    content:"";
+    width:6px;
+    height:6px;
+    border-right:1.5px solid currentColor;
+    border-bottom:1.5px solid currentColor;
+    transform:translateY(-2px) rotate(45deg);
+    transition:transform .18s;
+}
+
+.progress-menu[open] > summary::after{transform:translateY(1px) rotate(225deg);}
+.progress-menu > summary:hover{color:var(--text);border-color:var(--muted);}
+
+.progress-menu[open] > summary{
+    color:var(--q-accent-ink);
+    background:var(--q-accent-soft);
+    border-color:var(--q-accent);
+    font-weight:600;
+}
+
+.pm-body{
+    position:absolute;
+    right:0;
+    top:calc(100% + 7px);
+    z-index:40;
+    width:min(300px,78vw);
+    padding:14px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:9px;
+    box-shadow:0 10px 30px rgba(39,6,15,.13);
+}
+
+/* on a phone the panel has nowhere to hang, so it becomes part of the flow */
+@media (max-width:620px){
+    .progress-menu{margin-left:0;width:100%;}
+    .progress-menu > summary{width:100%;justify-content:space-between;}
+    .pm-body{position:static;width:auto;margin-top:8px;box-shadow:none;}
+}
+
 /* ---- the sat block ---- */
 .testbar{
     display:flex;
@@ -1813,20 +1895,6 @@
     font-weight:600;
 }
 
-/* ---- progress, rehoused ---- */
-/* Download, restore and the resets are end-of-session actions. They sat
-   in the rail because the rail was where there was room, not because
-   that is where they belong. Below the stream costs nothing but a
-   scroll, and it keeps the bar about filtering. */
-.progress-foot{
-    max-width:430px;
-    margin-top:56px;
-    padding-top:26px;
-    border-top:1px solid var(--border);
-}
-
-.progress-foot .resets{margin-top:10px;}
-
 @media (max-width:960px){
     .q-shell{grid-template-columns:1fr;gap:32px;}
     /* not sticky any more, so it scrolls with the page and must not be capped */
@@ -1865,7 +1933,7 @@
 /* a note is a one-pager by design, so printing gives one per sheet and drops
    every control - the gaps go too, they are screen bookkeeping */
 @media print{
-    .uplink,.blocknav,.tabs,.rail,.qbar,.testbar,.pagebar,.progress-foot,.scoreboard,.storenote,footer,.pdf-btn,.pw-open,.fig-open,.posbar{display:none !important;}
+    .uplink,.blocknav,.tabs,.rail,.qbar,.testbar,.pagebar,.scoreboard,.storenote,footer,.pdf-btn,.pw-open,.fig-open,.posbar{display:none !important;}
 
     /* one note, one week, or the lot: whatever was marked survives the print
        and everything else steps out of the way */
