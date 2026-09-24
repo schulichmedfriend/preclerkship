@@ -882,6 +882,15 @@
     margin-bottom:56px;
 }
 
+/* The hub's four course cards, fixed two-up so the two years read as two rows
+   (FoM + PoM 1, then PoM 2 + T2C) rather than reflowing three-and-one at wide
+   widths. Block pages keep the auto-fill grid above, where the count varies. */
+.block-grid.hub-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+
+@media (max-width:680px){
+    .block-grid.hub-grid{grid-template-columns:1fr;}
+}
+
 .block-card{
     display:block;
     padding:24px;

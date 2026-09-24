@@ -82,7 +82,7 @@ pre-clerkship.
 </p>
 </div>
 
-<div class="block-grid">
+<div class="block-grid hub-grid">
 {cards}
 </div>
 
