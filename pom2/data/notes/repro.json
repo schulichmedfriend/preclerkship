@@ -2262,6 +2262,7 @@
        "t": "table",
        "cols": [
         "Test",
+        "What it is actually looking for",
         "Cost",
         "Detection",
         "False positive rate",
@@ -2269,7 +2270,8 @@
        ],
        "rows": [
         [
-         "<strong>Nuchal translucency alone</strong>",
+         "<strong><span class=\"wl\">Nuchal translucency</span> alone</strong>",
+         "a <strong>risk marker</strong>, not a condition — <strong>aneuploidy (21, 18, 13, 45X)</strong>, <strong><span class=\"wl\">CHD</span></strong>, skeletal dysplasia, <strong><span class=\"wl\">Noonan syndrome</span></strong>",
          "~$100",
          "69-75%",
          "<strong>5-8.1%</strong>",
@@ -2277,6 +2279,7 @@
         ],
         [
          "<strong>First trimester screen</strong>",
+         "risk of <strong>trisomy 21 and 18</strong>",
          "~$100",
          "75-85%",
          "3-9%",
@@ -2284,24 +2287,125 @@
         ],
         [
          "<strong><span class=\"wl\">eFTS</span></strong> — <strong>NT plus 1st trimester markers</strong>",
+         "risk of <strong>trisomy 21 and 18</strong>",
          "~$100",
          "<strong>85-90%</strong>",
          "3-6%",
          "11-13 w"
         ],
         [
-         "<strong>Maternal serum screen</strong> — <strong>serum only, triple or quad; needs no NT</strong>",
+         "<strong><span class=\"wl\">Maternal serum screen</span></strong> — <strong>serum only, triple or quad; needs no NT</strong>",
+         "risk of <strong>trisomy 21 and 18</strong> — <strong>not 13</strong>",
          "~$100",
          "—",
          "—",
          "<strong>16-20 w</strong>"
         ],
         [
-         "<strong><span class=\"wl\">NIPT</span></strong>",
+         "<strong><span class=\"wl\">NIPT</span></strong> — <strong>cell-free placental DNA</strong>",
+         "<strong>trisomy 21, 18, 13 and sex-chromosome aneuploidy</strong> — <strong>a screen, not a diagnosis</strong>",
          "<strong>~$600</strong>",
          "<strong>99%</strong>",
          "<strong>< 1%</strong>",
          "<strong>9 w and later</strong>"
+        ],
+        [
+         "<strong><span class=\"wl\">Anatomy scan</span></strong>",
+         "<strong>structure</strong> — major anomalies, plus soft markers for 21 and 18",
+         "—",
+         "—",
+         "—",
+         "<strong>18-20 w</strong>"
+        ],
+        [
+         "<strong><span class=\"wl\">CVS</span> · <span class=\"wl\">amniocentesis</span></strong> — <strong>fetal DNA in hand</strong>",
+         "<strong>whatever assay you order on it</strong> — <span class=\"wl\">karyotype</span>, <span class=\"wl\">microarray</span>, or <strong>targeted single-gene testing when the family's mutation is already known</strong>",
+         "—",
+         "<strong>diagnostic</strong>",
+         "—",
+         "<strong>11-13 w · 15-20 w</strong>"
+        ]
+       ]
+      },
+      {
+       "t": "note",
+       "html": "<p><strong>Every screen answers one short question — is this a common aneuploidy? — and nothing else.</strong> <strong>eFTS, MSS and NIPT were never built to look for a single-gene condition</strong>, and a condition with <strong>no fetal structural phenotype</strong> is invisible to the anatomy scan as well. <strong>A mutation already known in the family is answered only by fetal DNA — CVS or amniocentesis — with the mutation-specific test ordered on it</strong>, and by the resolution ladder a karyotype or microarray run on that same sample would still miss a <strong>1 bp</strong> variant.</p>"
+      },
+      {
+       "t": "table",
+       "lead": "<p><strong>Condition by condition — the route in, and the test that will not find it:</strong></p>",
+       "cols": [
+        "Condition",
+        "Genetics",
+        "Found prenatally by",
+        "Will <strong>not</strong> find it"
+       ],
+       "rows": [
+        [
+         "<strong><span class=\"wl\">Trisomy 21</span></strong>",
+         "non-disjunction; ~4% translocation-derived",
+         "<strong>NIPT 99%</strong> or eFTS/MSS → <strong>confirm on CVS or amnio <span class=\"wl\">karyotype</span></strong>",
+         "—"
+        ],
+        [
+         "<strong><span class=\"wl\">trisomy 18</span></strong>",
+         "non-disjunction",
+         "eFTS/MSS, NIPT → karyotype",
+         "—"
+        ],
+        [
+         "<strong><span class=\"wl\">trisomy 13</span></strong>",
+         "non-disjunction",
+         "<strong>NIPT</strong>; midline defects on the anatomy scan → karyotype",
+         "<strong>maternal serum screening — it does not cover 13</strong>"
+        ],
+        [
+         "<strong><span class=\"wl\">Turner syndrome</span></strong>",
+         "<strong>45,X</strong> (also 45,X/46,XX · 45,X/46,XY · isochromosome Xq)",
+         "<strong>NT > 3.5 mm</strong>, NIPT sex-chromosome panel → <strong>karyotype</strong>",
+         "eFTS · MSS"
+        ],
+        [
+         "<strong><span class=\"wl\">Noonan syndrome</span></strong>",
+         "<strong>autosomal dominant</strong>, several genes; <strong>karyotype is NORMAL</strong>, affects <strong>both sexes</strong>",
+         "<strong>NT > 3.5 mm</strong> raises it → CVS/amnio with a <strong>single-gene panel</strong>",
+         "<strong>karyotype, microarray and NIPT — all come back normal</strong>"
+        ],
+        [
+         "<strong><span class=\"wl\">NF1</span></strong>",
+         "<strong>autosomal dominant single gene</strong>, <strong>50% recurrence</strong>",
+         "<strong>amniocentesis</strong> (or CVS) with <strong>targeted testing for the family's known mutation</strong>",
+         "<strong>eFTS · NIPT · the anatomy scan — NF1 has no fetal ultrasound findings</strong>"
+        ],
+        [
+         "<strong><span class=\"wl\">fragile X syndrome</span></strong>",
+         "<strong>X-linked CGG expansion in FMR1</strong> — <strong>> 200 = syndrome</strong>, <strong>50-200 = premutation</strong>",
+         "<strong>carrier-test the mother first</strong>, then CVS/amnio <strong>repeat sizing</strong>",
+         "karyotype · microarray · NIPT · ultrasound"
+        ],
+        [
+         "<strong><span class=\"wl\">cystic fibrosis</span></strong>",
+         "<strong>autosomal recessive</strong> CFTR; carrier <strong>1 in 24</strong> European",
+         "<strong>carrier screening — mother first, then the partner</strong>; both carriers → CVS/amnio <strong>targeted CFTR</strong>",
+         "NIPT; the anatomy scan (echogenic bowel is a soft hint only)"
+        ],
+        [
+         "<strong><span class=\"wl\">Tay-Sachs disease</span> · Canavan · familial dysautonomia</strong>",
+         "<strong>autosomal recessive</strong>, ancestry-based",
+         "ancestry-triggered <strong>carrier screening</strong> → CVS/amnio if both are carriers",
+         "every aneuploidy screen"
+        ],
+        [
+         "<strong><span class=\"wl\">thalassemias</span></strong>",
+         "<strong>autosomal recessive</strong>",
+         "<strong>MCV < 80 fL</strong> or abnormal electrophoresis → carrier screen, <strong>mother first</strong>",
+         "every aneuploidy screen"
+        ],
+        [
+         "<strong>Balanced <span class=\"wl\">Robertsonian translocation</span> carrier</strong>",
+         "parental structural rearrangement",
+         "an unbalanced fetal karyotype → <strong>karyotype the parents</strong>",
+         "NIPT"
         ]
        ]
       },
@@ -2368,11 +2472,11 @@
       },
       {
        "t": "note",
-       "html": "<p><strong>Fragile X — three triggers to refer:</strong> a personal or family history · ⭐ <strong>ovarian insufficiency with elevated FSH before 40, of unknown cause</strong> · ⭐ <strong>male relatives with isolated cerebellar ataxia and tremor</strong>. <strong><span class=\"wl\">FMR1 disorders</span>: > 200 CGG repeats = <span class=\"wl\">fragile X syndrome</span>; 50-200 = premutation → FXTAS (often misdiagnosed as Parkinsonism) or primary ovarian insufficiency.</strong></p>"
+       "html": "<p><strong>Fragile X — three triggers to refer:</strong> a personal or family history · ⭐ <strong>ovarian insufficiency with elevated FSH before 40, of unknown cause</strong> · ⭐ <strong>male relatives with isolated cerebellar ataxia and tremor</strong>. <strong>The 50-200 premutation causes FXTAS (often misdiagnosed as Parkinsonism) or primary ovarian insufficiency</strong> — see <span class=\"wl\">FMR1 disorders</span>.</p>"
       },
       {
        "t": "note",
-       "html": "<p><strong>Nuchal translucency > 3.5 mm</strong> raises the risk of <strong>aneuploidy (21, 13, 18, 45X)</strong>, <strong>congenital heart defect</strong>, <strong>skeletal dysplasia</strong> and <strong><span class=\"wl\">Noonan syndrome</span></strong>. ⚠ <strong>Turner is 45,X with streak ovaries and a webbed neck; Noonan overlaps physically but has a NORMAL karyotype, affects BOTH sexes, is autosomal dominant, and risks cardiomyopathy.</strong></p>"
+       "html": "<p><strong>Nuchal translucency > 3.5 mm</strong> raises the risk of <strong>aneuploidy (21, 13, 18, 45X)</strong>, <strong>congenital heart defect</strong>, <strong>skeletal dysplasia</strong> and <strong><span class=\"wl\">Noonan syndrome</span></strong>. ⚠ <strong>Turner is 45,X with streak ovaries and a webbed neck; Noonan overlaps physically but has a NORMAL karyotype, affects BOTH sexes, is autosomal dominant, and risks cardiomyopathy</strong> — which is why the karyotype that settles Turner is the test that misses Noonan.</p>"
       },
       {
        "t": "note",
