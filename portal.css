@@ -1411,14 +1411,20 @@
     background:var(--card-bg);
 }
 
+/* This is the only warning anywhere that progress lives on one device and
+   can be wiped by clearing site data. It reads as an instruction, so it is
+   worded as one and carries the portal's existing red rather than a new
+   colour invented for the job. */
 .howto summary{
     padding:9px 12px;
     font-size:.82rem;
     font-weight:600;
-    color:var(--text);
+    color:var(--q-bad);
     cursor:pointer;
     list-style:none;
 }
+
+.howto summary:hover{text-decoration:underline;text-underline-offset:2px;}
 
 .howto summary::-webkit-details-marker{display:none;}
 
@@ -1426,13 +1432,25 @@
     content:"+";
     display:inline-block;
     width:14px;
-    color:var(--muted);
+    color:var(--q-bad);
     font-weight:400;
 }
 
 .howto[open] summary::before{content:"\2212";}
 
 .howto .body{padding:0 12px 12px;}
+
+/* The buttons sit with the paragraph that explains them, which is where
+   they were always described. They are full-width by design - fine in a
+   250px rail, absurd across the page - so they get a column of their own. */
+.howto .resets{
+    max-width:340px;
+    margin-top:14px;
+    padding-top:13px;
+    border-top:1px solid var(--border);
+}
+
+.howto .storenote{margin-top:12px;}
 .howto p{margin-bottom:9px;}
 .howto p:last-child{margin-bottom:0;}
 .howto strong{color:var(--text);font-weight:600;}
@@ -1681,76 +1699,6 @@
     justify-content:flex-start;
     gap:9px;
     align-self:flex-end;
-}
-
-/* ---- progress, in the toolbar ---- */
-/* These first went to the foot of the tab, below the stream. That reasoned
-   about end-of-session actions and forgot the actual number: the endocrine
-   block is 611 questions, so "scroll to the bottom" is not a location, it is
-   a way of hiding something. A disclosure in the bar keeps the bar clean -
-   the point of the change - and keeps the buttons one click away. */
-.progress-menu{
-    position:relative;
-    margin-left:auto;
-}
-
-.progress-menu > summary{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    padding:8px 13px;
-    font-size:.82rem;
-    font-weight:500;
-    color:var(--muted);
-    background:var(--card-bg);
-    border:1px solid var(--border);
-    border-radius:7px;
-    cursor:pointer;
-    list-style:none;
-    white-space:nowrap;
-}
-
-.progress-menu > summary::-webkit-details-marker{display:none;}
-.progress-menu > summary::marker{content:"";}
-
-.progress-menu > summary::after{
-    content:"";
-    width:6px;
-    height:6px;
-    border-right:1.5px solid currentColor;
-    border-bottom:1.5px solid currentColor;
-    transform:translateY(-2px) rotate(45deg);
-    transition:transform .18s;
-}
-
-.progress-menu[open] > summary::after{transform:translateY(1px) rotate(225deg);}
-.progress-menu > summary:hover{color:var(--text);border-color:var(--muted);}
-
-.progress-menu[open] > summary{
-    color:var(--q-accent-ink);
-    background:var(--q-accent-soft);
-    border-color:var(--q-accent);
-    font-weight:600;
-}
-
-.pm-body{
-    position:absolute;
-    right:0;
-    top:calc(100% + 7px);
-    z-index:40;
-    width:min(300px,78vw);
-    padding:14px;
-    background:var(--card-bg);
-    border:1px solid var(--border);
-    border-radius:9px;
-    box-shadow:0 10px 30px rgba(39,6,15,.13);
-}
-
-/* on a phone the panel has nowhere to hang, so it becomes part of the flow */
-@media (max-width:620px){
-    .progress-menu{margin-left:0;width:100%;}
-    .progress-menu > summary{width:100%;justify-content:space-between;}
-    .pm-body{position:static;width:auto;margin-top:8px;box-shadow:none;}
 }
 
 /* ---- the sat block ---- */

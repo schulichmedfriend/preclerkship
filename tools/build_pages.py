@@ -19,20 +19,27 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import portal
 
 HOWTO = """<details class="howto">
-<summary>You can save your progress</summary>
+<summary>Remember to save your progress</summary>
 <div class="body">
 <p><strong>On this device, and nowhere else.</strong> What you have answered is written to
 your browser&rsquo;s local storage. It is never sent to this site, never stored in its
 repository, and nobody else can see it, not even me.</p>
 <p>That also means it does not follow you. A different browser, a different laptop, or
 clearing your site data all start from zero.</p>
-<p><strong>To carry it with you:</strong> open <strong>Progress</strong> in
-the toolbar above the questions, press <strong>Download all my progress</strong>, and keep the
-JSON file it writes. One file holds every block of this
-course, and it can be pressed from any of them. On the other machine, open any block and
-open the same menu and press <strong>Restore from a file</strong> to put all of it back at once. A restore only ever
-adds and updates, so an out of date file cannot wipe out newer answers. Doing that now and
-then is also the only backup there is.</p>
+<p><strong>To carry it with you:</strong> press <strong>Download all my progress</strong>
+below and keep the JSON file it writes. One file holds every block of this course, and it can
+be pressed from any of them. On the other machine, open any block and press
+<strong>Restore from a file</strong> to put all of it back at once. A restore only ever adds
+and updates, so an out of date file cannot wipe out newer answers. Doing that now and then is
+also the only backup there is.</p>
+<p class="storenote" id="storenote" hidden></p>
+<div class="resets">
+<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
+<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
+<button class="danger" id="reset-all" type="button">Reset all progress</button>
+</div>
 </div>
 </details>"""
 
@@ -242,19 +249,6 @@ saved in one go. Print it, annotate it, keep it.</p>
 <button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
 <button type="button" data-mode="test" aria-pressed="false">Test block</button>
 </div>
-<details class="progress-menu" id="progress-menu">
-<summary>Progress</summary>
-<div class="pm-body">
-<p class="storenote" id="storenote" hidden></p>
-<div class="resets">
-<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
-<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
-<input type="file" id="import-file" accept="application/json,.json" hidden>
-<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
-<button class="danger" id="reset-all" type="button">Reset all progress</button>
-</div>
-</div>
-</details>
 </div>
 
 <div class="applied" id="applied" hidden></div>
