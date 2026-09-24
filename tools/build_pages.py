@@ -21,17 +21,14 @@ import portal
 HOWTO = """<details class="howto">
 <summary>Remember to save your progress</summary>
 <div class="body">
-<p><strong>On this device, and nowhere else.</strong> What you have answered is written to
-your browser&rsquo;s local storage. It is never sent to this site, never stored in its
-repository, and nobody else can see it, not even me.</p>
-<p>That also means it does not follow you. A different browser, a different laptop, or
-clearing your site data all start from zero.</p>
-<p><strong>To carry it with you:</strong> press <strong>Download all my progress</strong>
-below and keep the JSON file it writes. One file holds every block of this course, and it can
-be pressed from any of them. On the other machine, open any block and press
-<strong>Restore from a file</strong> to put all of it back at once. A restore only ever adds
-and updates, so an out of date file cannot wipe out newer answers. Doing that now and then is
-also the only backup there is.</p>
+<p><strong>On this device, and nowhere else.</strong> Your answers live in this
+browser&rsquo;s local storage &mdash; never sent to this site, never in its repository, visible
+to nobody but you. They also don&rsquo;t follow you: a different browser, a different laptop,
+or cleared site data all start from zero.</p>
+<p><strong>To carry them:</strong> press <strong>Download all my progress</strong> below. One
+file covers every block of this course. On the other machine, open any block and press
+<strong>Restore from a file</strong>. A restore only adds and updates, so an out of date file
+cannot wipe newer answers &mdash; and it is the only backup there is.</p>
 <p class="storenote" id="storenote" hidden></p>
 <div class="resets">
 <button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
@@ -239,15 +236,19 @@ saved in one go. Print it, annotate it, keep it.</p>
 </div>
 
 <div class="qbar-modes">
-<div class="qseg" id="view-seg" role="group" aria-label="How the questions are laid out">
-<span class="qseg-h">View</span>
+<div class="qseg-field">
+<span id="view-lab">View</span>
+<div class="qseg" id="view-seg" role="group" aria-labelledby="view-lab">
 <button type="button" data-view="stream" aria-pressed="true">Continuous</button>
 <button type="button" data-view="paged" aria-pressed="false">One at a time</button>
 </div>
-<div class="qseg" id="mode-seg" role="group" aria-label="When answers are shown">
-<span class="qseg-h">Mode</span>
+</div>
+<div class="qseg-field">
+<span id="mode-lab">Mode</span>
+<div class="qseg" id="mode-seg" role="group" aria-labelledby="mode-lab">
 <button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
 <button type="button" data-mode="test" aria-pressed="false">Test</button>
+</div>
 </div>
 </div>
 

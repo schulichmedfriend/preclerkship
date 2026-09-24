@@ -1633,10 +1633,27 @@
 .qbar-modes{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    align-items:center;
+    gap:14px;
+    align-items:flex-end;
     padding-top:13px;
     border-top:1px solid var(--border);
+}
+
+/* View and Mode caption their controls the same way the filters do, so the
+   whole bar reads as one row of labelled fields rather than two dropdowns
+   and a pair of unexplained button pairs. */
+.qseg-field{
+    display:grid;
+    gap:5px;
+    min-width:0;
+}
+
+.qseg-field > span{
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
 }
 
 .qseg{
@@ -1647,15 +1664,6 @@
     background:var(--bg);
     border:1px solid var(--border);
     border-radius:7px;
-}
-
-.qseg-h{
-    padding:0 9px 0 7px;
-    font-size:.66rem;
-    font-weight:600;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--muted);
 }
 
 .qseg button{
@@ -1946,8 +1954,10 @@ select.ps:disabled{cursor:default;opacity:1;}
        deep, so it folded behind a button. The toolbar needs none of that -
        it is four dropdowns that wrap - so that second filter UI is gone. */
     .qbar-filters .qsel{flex-basis:100%;}
-    .qbar-modes{gap:8px;}
-    .qseg{flex:1 1 auto;justify-content:center;}
+    .qbar-modes{gap:12px;}
+    .qseg-field{flex:1 1 100%;}
+    .qseg{justify-content:center;}
+    .qseg button{flex:1;}
 }
 
 @media (max-width:560px){
