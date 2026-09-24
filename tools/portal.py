@@ -116,6 +116,12 @@ COURSES = [
             {"key": "reviews", "name": u"Schulich Reviews",
              "blurb": u"The Schulich Reviews sessions, both their practice questions and "
                       u"their summary content. TBD."},
+            {"key": "hipponotes", "name": u"HippoNotes",
+             "blurb": u"The question banks at the back of the Meds 2025 HippoNotes "
+                      u"(Academic Resources Team, May 2023) - one document per block, "
+                      u"written by the class two years ahead. Peer-written like the "
+                      u"Workbook, so the key is worth checking rather than trusting; "
+                      u"the source groups by week only, with no per-lecture attribution."},
         ],
     },
     {
