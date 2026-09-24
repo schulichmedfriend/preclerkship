@@ -1701,6 +1701,83 @@
     align-self:flex-end;
 }
 
+/* ---- matching, as dropdown pairing ---- */
+/* These used to render as a stem, the word "(matching)", and three self-mark
+   buttons - the pairings themselves only appeared once you gave up and hit
+   Show answer. The grid below IS the question: one row per item, one select
+   per row, marked on Check like any other answer. */
+.pairing{
+    display:grid;
+    gap:6px;
+    margin:16px 0 4px;
+}
+
+.pair-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+    gap:14px;
+    align-items:center;
+    padding:9px 12px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    background:var(--card-bg);
+}
+
+.pair-row .pl{font-size:.93rem;line-height:1.45;}
+
+.pair-row .pr{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    min-width:0;
+}
+
+.pair-head{
+    background:transparent;
+    border:0;
+    padding:0 12px 2px;
+}
+
+.pair-head .pl,.pair-head .pr{
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+}
+
+select.ps{
+    width:100%;
+    padding:7px 9px;
+    font:inherit;
+    font-size:.88rem;
+    color:var(--text);
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:6px;
+    cursor:pointer;
+}
+
+select.ps:hover:not(:disabled){border-color:var(--q-accent);}
+select.ps:disabled{cursor:default;opacity:1;}
+
+.pmark{font-size:.78rem;line-height:1.4;}
+.pmark:empty{display:none;}
+
+.pair-row[data-mark="hit"]{border-color:var(--q-ok);background:var(--q-ok-soft);}
+.pair-row[data-mark="hit"] .pmark{color:var(--q-ok);font-weight:600;}
+.pair-row[data-mark="hit"] select.ps{border-color:var(--q-ok);}
+
+.pair-row[data-mark="miss"]{border-color:var(--q-bad);background:var(--q-bad-soft);}
+.pair-row[data-mark="miss"] .pmark{color:var(--q-bad);font-weight:600;}
+.pair-row[data-mark="miss"] select.ps{border-color:var(--q-bad);}
+
+/* a phone cannot hold two columns of clinical text side by side */
+@media (max-width:620px){
+    .pair-row{grid-template-columns:1fr;gap:7px;}
+    .pair-head{display:none;}
+}
+
 /* ---- the sat block ---- */
 .testbar{
     display:flex;

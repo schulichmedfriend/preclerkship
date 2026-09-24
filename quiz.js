@@ -214,8 +214,123 @@
      silently fails to score a fifth of itself is not a score, so blocks are
      drawn from the gradable ones only. */
   function gradable(q) {
-    return !q.free && !q.unscorable &&
-           Array.isArray(q.correct) && q.correct.length > 0;
+    if (q.unscorable) return false;
+    /* a pairing carries its key in pairs.items, not in correct[] */
+    if (q.kind === "pairing") return !!(q.pairs && q.pairs.items && q.pairs.items.length);
+    return !q.free && Array.isArray(q.correct) && q.correct.length > 0;
+  }
+
+  /* ---------- pairing ---------- */
+
+  /* The right-hand choices, deterministically shuffled by qid. Deterministic
+     because a fresh shuffle on every repaint would move the options under the
+     cursor; shuffled because presenting them in answer order gives the whole
+     thing away. */
+  function pairChoices(q) {
+    var seen = Object.create(null), out = [];
+    q.pairs.items.forEach(function (it) {
+      if (!seen[it.right]) { seen[it.right] = 1; out.push(it.right); }
+    });
+    var h = 2166136261;
+    for (var i = 0; i < q.qid.length; i++) {
+      h ^= q.qid.charCodeAt(i);
+      h = (h * 16777619) >>> 0;
+    }
+    for (var j = out.length - 1; j > 0; j--) {
+      h = (h * 1103515245 + 12345) >>> 0;
+      var k = h % (j + 1), t = out[j];
+      out[j] = out[k]; out[k] = t;
+    }
+    return out;
+  }
+
+  /* the choice index each row should be carrying */
+  function pairKey(q) {
+    var choices = pairChoices(q);
+    return q.pairs.items.map(function (it) { return choices.indexOf(it.right); });
+  }
+
+  function pairIsRight(q, picks) {
+    var want = pairKey(q);
+    return picks.length === want.length && want.every(function (v, i) { return picks[i] === v; });
+  }
+
+  /* picks restored from the store; -1 is a row left alone */
+  function pairStored(qid) {
+    var q = QMAP[qid];
+    if (!q || q.kind !== "pairing") return null;
+    var a = attemptsOf(qid);
+    if (!a.length) return null;
+    var c = a[a.length - 1].chosen;
+    if (typeof c !== "string") return null;
+    return c.split("|").map(function (x) { var n = parseInt(x, 10); return isNaN(n) ? -1 : n; });
+  }
+
+  function pairReadRows(art) {
+    return [].map.call(art.querySelectorAll("select.ps"), function (sel) {
+      return sel.value === "" ? -1 : parseInt(sel.value, 10);
+    });
+  }
+
+  function buildPairing(q, art) {
+    var choices = pairChoices(q);
+    var wrap = el("div", "pairing");
+
+    var head = el("div", "pair-row pair-head");
+    head.appendChild(el("span", "pl", q.pairs.leftLabel || "Item"));
+    head.appendChild(el("span", "pr", q.pairs.rightLabel || "Match"));
+    wrap.appendChild(head);
+
+    q.pairs.items.forEach(function (it, i) {
+      var row = el("div", "pair-row");
+      row.dataset.i = String(i);
+      row.appendChild(el("span", "pl", it.left));
+      var right = el("span", "pr");
+      var sel = document.createElement("select");
+      sel.className = "ps";
+      sel.dataset.i = String(i);
+      sel.setAttribute("aria-label", "Match for " + it.left);
+      var blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "Choose\u2026";
+      sel.appendChild(blank);
+      choices.forEach(function (c, ci) {
+        var o = document.createElement("option");
+        o.value = String(ci);
+        o.textContent = c;
+        sel.appendChild(o);
+      });
+      sel.addEventListener("change", function () { onPairChange(q, art); });
+      right.appendChild(sel);
+      right.appendChild(el("span", "pmark"));
+      row.appendChild(right);
+      wrap.appendChild(row);
+    });
+    return wrap;
+  }
+
+  /* While a block is being sat the rows stage like any other pick. In tutor
+     mode nothing is graded until Check, so a half-filled grid is not an
+     answer and does not get written through. */
+  function onPairChange(q, art) {
+    var picks = pairReadRows(art);
+    if (staging()) {
+      TEST.picks[q.qid] = picks;
+      paintTest();
+    }
+    var check = art.querySelector('[data-role="check"]');
+    if (check) check.disabled = picks.indexOf(-1) !== -1;
+  }
+
+  function submitPairing(q, art) {
+    if (staging()) return;
+    var picks = pairReadRows(art);
+    if (picks.indexOf(-1) !== -1) return;
+    var right = pairIsRight(q, picks);
+    persist(q.qid, {
+      status: right ? "correct" : "wrong",
+      attempt: { ts: Date.now(), chosen: picks.join("|"), correct: right }
+    });
   }
 
   function testChosen(qid) {
@@ -227,7 +342,7 @@
 
   /* ---------- build one question ---------- */
 
-  var KIND_LABEL = { matching: "matching", short: "short answer", broken: "unscorable" };
+  var KIND_LABEL = { matching: "matching", pairing: "matching", short: "short answer", broken: "unscorable" };
 
   function buildQuestion(q) {
     var art = el("article", "q");
@@ -293,6 +408,10 @@
       art.appendChild(list);
     }
 
+    if (q.kind === "pairing" && q.pairs && q.pairs.items) {
+      art.appendChild(buildPairing(q, art));
+    }
+
     if (q.unscorable) {
       var bn = el("div", "banner pre");
       bn.appendChild(el("b", null, "Not scored"));
@@ -305,6 +424,16 @@
       sh.addEventListener("click", function () { art.classList.add("revealed"); });
       a1.appendChild(sh);
       art.appendChild(a1);
+    } else if (q.kind === "pairing" && q.pairs && q.pairs.items) {
+      var a4 = el("div", "actions");
+      var pc = el("button", "btn", "Check answer");
+      pc.type = "button";
+      pc.dataset.role = "check";
+      pc.disabled = true;
+      pc.addEventListener("click", function () { submitPairing(q, art); });
+      a4.appendChild(pc);
+      a4.appendChild(el("span", "hint", "fill every row, then check"));
+      art.appendChild(a4);
     } else if (q.free) {
       var a2 = el("div", "actions");
       var show = el("button", "btn", "Show answer");
@@ -422,6 +551,28 @@
     });
   }
 
+  function paintPairing(art, q, qid, reveal) {
+    var picks = staging() ? (TEST.picks[qid] || null) : pairStored(qid);
+    var key = pairKey(q);
+    [].forEach.call(art.querySelectorAll("select.ps"), function (sel) {
+      var i = parseInt(sel.dataset.i, 10);
+      var v = (picks && picks[i] !== undefined) ? picks[i] : -1;
+      sel.value = v === -1 ? "" : String(v);
+      sel.disabled = reveal;
+      var row = sel.parentNode.parentNode, mark = row.querySelector(".pmark");
+      mark.textContent = "";
+      row.dataset.mark = "";
+      if (!reveal) return;
+      if (v === key[i]) { row.dataset.mark = "hit"; mark.textContent = "correct"; }
+      else {
+        row.dataset.mark = "miss";
+        mark.textContent = (v === -1 ? "left blank \u00b7 " : "\u2192 ") + q.pairs.items[i].right;
+      }
+    });
+    var chk = art.querySelector('[data-role="check"]');
+    if (chk && !reveal) chk.disabled = pairReadRows(art).indexOf(-1) !== -1;
+  }
+
   function paintQuestion(qid) {
     var art = byId("q-" + qid);
     if (!art) return;
@@ -458,6 +609,8 @@
       else if (wasPicked) { b.dataset.mark = "miss"; v.textContent = "your pick"; }
       else if (isKey) { b.dataset.mark = "key"; v.textContent = "correct"; }
     });
+
+    if (q.kind === "pairing" && q.pairs && q.pairs.items) paintPairing(art, q, qid, reveal);
 
     /* nothing to "check" while staging - the pick IS the answer until submit */
     var check = art.querySelector('[data-role="check"]');
@@ -669,12 +822,19 @@
     TEST.ids.forEach(function (qid) {
       var q = QMAP[qid], picked = testChosen(qid);
       if (!picked.length) return;         /* left blank stays left blank */
-      var correct = picked.slice().sort().join("+") === q.correct.slice().sort().join("+");
+      var correct, chosen;
+      if (q.kind === "pairing") {
+        correct = pairIsRight(q, picked);
+        chosen = picked.join("|");
+      } else {
+        correct = picked.slice().sort().join("+") === q.correct.slice().sort().join("+");
+        chosen = picked.join("+");
+      }
       persist(qid, {
         status: correct ? "correct" : "wrong",
         /* tagged, so "what is my accuracy when nothing tells me I am right"
            stays an answerable question later */
-        attempt: { ts: Date.now(), chosen: picked.join("+"), correct: correct, mode: "test" }
+        attempt: { ts: Date.now(), chosen: chosen, correct: correct, mode: "test" }
       });
     });
     pageIdx = 0;
