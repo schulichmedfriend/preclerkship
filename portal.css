@@ -1603,9 +1603,9 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     font-size:.8rem;
     line-height:1.6;
     color:var(--muted);
-    border:1px solid var(--border);
+    border:1px solid var(--q-bad);
     border-radius:6px;
-    background:var(--card-bg);
+    background:var(--q-bad-soft);
 }
 
 /* This is the only warning anywhere that progress lives on one device and
