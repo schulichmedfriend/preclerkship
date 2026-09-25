@@ -29,10 +29,11 @@ Three shapes need the geometry specifically:
   matching one, which the portal scores by self-report rather than by letter.
 * **Figures.** An image block's y puts it between the stem it illustrates and
   that question's first option, so it is attached to whichever question is open
-  when the flow reaches it, and inlined as a data: URI the way PoM 2 does.
+  when the flow reaches it, and written to fom/assets/figures/ by
+  question_figures.write_asset - named after its own bytes, so the same picture
+  appearing under four questions costs one file.
 """
 
-import base64
 import io
 import json
 import os
@@ -42,7 +43,9 @@ import sys
 import pymupdf
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import parse_workbook
+import question_figures
 
 QBANK_DIR = os.environ.get(
     "FOM_QBANK_DIR",
@@ -218,10 +221,10 @@ def drop_prefix(html, n):
 
 
 def fig_html(img):
-    b64 = base64.b64encode(img["bytes"]).decode("ascii")
-    return (u'<figure><img loading="lazy" src="data:image/%s;base64,%s" '
+    src = question_figures.write_asset("fom", img["bytes"], img.get("ext") or "png")
+    return (u'<figure><img loading="lazy" src="%s" '
             u'alt="Figure from the question bank, page %s"></figure>'
-            % (img["ext"], b64, img.get("page", "?")))
+            % (src, img.get("page", "?")))
 
 
 # --------------------------------------------------------------- the walker

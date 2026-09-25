@@ -25,11 +25,14 @@ The workbook covers the whole pre-clerkship, so only three of its seventeen
 chapters are FoM. The rest is PoM 1 and PoM 2 and is left alone.
 """
 
-import base64
 import os
 import re
+import sys
 
 import pymupdf
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import question_figures
 
 WORKBOOK = os.environ.get(
     "FOM_WORKBOOK",
@@ -539,8 +542,8 @@ META = (u"The Pre-Clerkship Workbook, 2023 edition - the student bank handed dow
 
 
 def fig_html(img):
-    b64 = base64.b64encode(img["bytes"]).decode("ascii")
-    return (u'<figure><img loading="lazy" src="data:image/%s;base64,%s" '
+    src = question_figures.write_asset("fom", img["bytes"], img.get("ext") or "png")
+    return (u'<figure><img loading="lazy" src="%s" '
             u'alt="Figure from the Pre-Clerkship Workbook, page %d"></figure>'
             % (img["ext"], b64, img["page"]))
 
