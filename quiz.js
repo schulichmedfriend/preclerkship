@@ -53,7 +53,19 @@
   var QUESTIONS = [];
   var QMAP = Object.create(null);
   var progress = Object.create(null);
-  var filters = { status: "all", family: null, week: "all", tag: "all" };
+  /* Every facet holds a LIST of picked keys, and an empty list means "all" -
+     not a key called "all". Week 1 and week 2 is a question people actually
+     ask, and a single-valued filter cannot answer it. Empty-means-all is what
+     keeps the "All weeks" row a clear button rather than a fifth checkbox
+     that has to be kept mutually exclusive with the other four. */
+  var filters = { status: [], family: [], week: [], tag: [] };
+
+  function isOn(name, k) { return filters[name].indexOf(k) !== -1; }
+
+  function anyFilter() {
+    return filters.status.length > 0 || filters.family.length > 0 ||
+           filters.week.length > 0 || filters.tag.length > 0;
+  }
 
   /* View and Mode are two axes, deliberately independent. VIEW is how the
      questions are laid out; MODE is when the answer is allowed to appear. The
@@ -626,9 +638,12 @@
   /* One predicate per filter group rather than one combined test: a facet's
      own count has to honour the other two groups and ignore itself, which is
      what makes "Week 3" read as "3 of the questions you are looking at". */
-  function famOk(q) { return !filters.family || q.family === filters.family; }
+  /* Within a group the picks are an OR - week 1 or week 2 - and the four
+     groups are ANDed together. That is the only reading that makes a second
+     pick widen the stream rather than empty it. */
+  function famOk(q) { return !filters.family.length || isOn("family", q.family); }
 
-  function weekOk(q) { return filters.week === "all" || weekKey(q) === filters.week; }
+  function weekOk(q) { return !filters.week.length || isOn("week", weekKey(q)); }
 
   /* Tags cut across the other three: the anatomy strand is taught in one block
      but its questions arrive as modules and as workbook chapters, so neither
@@ -637,18 +652,28 @@
   function tagsOf(q) { return Array.isArray(q.tags) ? q.tags : []; }
 
   function tagOk(q) {
-    return filters.tag === "all" || tagsOf(q).indexOf(filters.tag) !== -1;
+    if (!filters.tag.length) return true;
+    var t = tagsOf(q);
+    return filters.tag.some(function (k) { return t.indexOf(k) !== -1; });
   }
 
-  function statusOk(q) {
+  /* Starred is not a state the other three can be in - a starred question is
+     also unseen or wrong or correct - so picking Wrong and Starred asks for
+     the union of two overlapping sets, not for their intersection. */
+  function statusIs(q, k) {
     var st = stateOf(q.qid);
-    switch (filters.status) {
+    switch (k) {
       case "unseen":  return st === "unseen";
       case "wrong":   return st === "wrong";
       case "correct": return st === "correct";
       case "starred": return isStarred(q.qid);
       default:        return true;
     }
+  }
+
+  function statusOk(q) {
+    if (!filters.status.length) return true;
+    return filters.status.some(function (k) { return statusIs(q, k); });
   }
 
   function matches(qid) {
@@ -721,10 +746,10 @@
       h.hidden = !any;
     });
 
-    var narrowed = filters.status !== "all" || filters.week !== "all" ||
-                   filters.tag !== "all";
+    var narrowed = filters.status.length > 0 || filters.week.length > 0 ||
+                   filters.tag.length > 0;
     [].forEach.call(document.querySelectorAll(".family"), function (f) {
-      if (filters.family && f.dataset.family !== filters.family) { f.hidden = true; return; }
+      if (filters.family.length && !isOn("family", f.dataset.family)) { f.hidden = true; return; }
       if (f.dataset.count === "0") { f.hidden = !!narrowed; return; }
       f.hidden = !f.querySelector(".q:not([hidden])");
     });
@@ -746,9 +771,14 @@
     applyFilters();
   }
 
-  function setStatus(s) { filters.status = s; afterFilterChange(); }
-  function setWeek(w) { filters.week = w; afterFilterChange(); }
-  function setTag(t) { filters.tag = t; afterFilterChange(); }
+  function setFacet(name, keys) { filters[name] = keys; afterFilterChange(); }
+
+  function clearFilters() {
+    filters.family = [];
+    filters.week = [];
+    filters.tag = [];
+    filters.status = [];
+  }
 
   /* ---------- view + mode ---------- */
 
@@ -1140,8 +1170,7 @@
     byId("pb-where").textContent = q ? (q.weekLabel + " \u00b7 " + q.lecture) : "";
     byId("pb-count").textContent = (at === null ? "\u2013" : String(at + 1)) +
       " / " + VISIBLE.length +
-      ((filters.status !== "all" || filters.family ||
-         filters.week !== "all" || filters.tag !== "all") ? " shown" : "");
+      (anyFilter() ? " shown" : "");
     byId("pb-prev").disabled = at === null || at === 0;
     byId("pb-next").disabled = at === null || at === VISIBLE.length - 1;
     paintMark(at);
@@ -1319,30 +1348,26 @@
     if (!box) return;          // a page cached from before this shipped
 
     var live = [];
-    if (filters.family) {
-      live.push({
-        label: FAM_NAME[filters.family] || filters.family,
-        clear: function () { filters.family = null; }
+
+    /* One chip per PICKED value, not one per group. Two weeks means two
+       chips, each of which drops only itself - the collapsed button can only
+       say "2 weeks", so this row is where the second week is named and where
+       it can be taken back off without reopening anything. */
+    function chips(name, labelFor) {
+      filters[name].forEach(function (k) {
+        live.push({
+          label: labelFor(k),
+          clear: function () {
+            filters[name] = filters[name].filter(function (x) { return x !== k; });
+          }
+        });
       });
     }
-    if (filters.week !== "all") {
-      live.push({
-        label: WEEK_LABEL[filters.week] || ("Week " + filters.week),
-        clear: function () { filters.week = "all"; }
-      });
-    }
-    if (filters.tag !== "all") {
-      live.push({
-        label: TAG_LABEL[filters.tag] || filters.tag,
-        clear: function () { filters.tag = "all"; }
-      });
-    }
-    if (filters.status !== "all") {
-      live.push({
-        label: STATUS_LABEL[filters.status] || filters.status,
-        clear: function () { filters.status = "all"; }
-      });
-    }
+
+    chips("family", function (k) { return FAM_NAME[k] || k; });
+    chips("week", function (k) { return WEEK_LABEL[k] || ("Week " + k); });
+    chips("tag", function (k) { return TAG_LABEL[k] || k; });
+    chips("status", function (k) { return STATUS_LABEL[k] || k; });
 
     box.hidden = live.length === 0;
     box.textContent = "";
@@ -1367,10 +1392,7 @@
     var ca = el("button", "clear-all", "Clear all");
     ca.type = "button";
     ca.addEventListener("click", function () {
-      filters.family = null;
-      filters.week = "all";
-      filters.tag = "all";
-      filters.status = "all";
+      clearFilters();
       applyFilters();
     });
     list.appendChild(ca);
@@ -1380,42 +1402,25 @@
 
   /* An option worth zero is disabled rather than left live, which is what the
      family rows have always done and the chips never did. The one exception is
-     the option currently selected: disabling that would trap you in it. */
+     an option already ticked: disabling that would trap you in it.
+
+     The collapsed button prints c.shown for every facet, and that is not a
+     shortcut - "the questions passing the other three groups AND this one" IS
+     the whole filtered stream, whichever facet you ask from. Summing the
+     ticked options would be wrong the moment two of them overlap, which is
+     exactly what Wrong + Starred does. */
   function paintBar() {
     var c = facetCounts();
 
-    function paintSel(id, countFor, cur) {
-      var sel = byId(id);
-      if (!sel) return;
-      [].forEach.call(sel.options, function (o) {
-        var n = countFor(o.value);
-        o.textContent = o.dataset.base + " \u00b7 " + n;
-        o.disabled = o.value !== "all" && n === 0 && o.value !== cur;
-      });
-      sel.value = cur;
-    }
-
-    paintSel("f-status", function (k) { return c.status[k] || 0; }, filters.status);
-    paintSel("f-week", function (k) {
-      return k === "all" ? c.weekAll : (c.week[k] || 0);
-    }, filters.week);
-    paintSel("f-tag", function (k) {
-      return k === "all" ? c.tagAll : (c.tag[k] || 0);
-    }, filters.tag);
-
-    /* the family select is the one that cannot just print its count: a family
-       the block has none of says "none" for good, because that is a coverage
-       gap, and one the filters emptied says 0 */
-    var fsel = byId("f-family"), fcur = filters.family || "all";
-    if (fsel) {
-      [].forEach.call(fsel.options, function (o) {
-        var k = o.value, n = (k === "all") ? c.famAll : (c.fam[k] || 0);
-        var gap = k !== "all" && FAM_TOTAL[k] === 0;
-        o.textContent = o.dataset.base + " \u00b7 " + (gap ? "none" : n);
-        o.disabled = k !== "all" && n === 0 && k !== fcur;
-      });
-      fsel.value = fcur;
-    }
+    paintMulti("f-family", c.shown, c.famAll,
+               function (k) { return c.fam[k] || 0; },
+               function (k) { return FAM_TOTAL[k] === 0; });
+    paintMulti("f-week", c.shown, c.weekAll,
+               function (k) { return c.week[k] || 0; }, null);
+    paintMulti("f-tag", c.shown, c.tagAll,
+               function (k) { return c.tag[k] || 0; }, null);
+    paintMulti("f-status", c.shown, c.status.all,
+               function (k) { return c.status[k] || 0; }, null);
 
     paintApplied(c.shown);
     if (RESET_SHOWN_IDLE) RESET_SHOWN_IDLE();
@@ -1448,21 +1453,119 @@
     byId("sc-of").textContent = "/" + QUESTIONS.length;
   }
 
-  /* One <select> per facet, options built once. Their labels carry the live
-     counts, rewritten by paintBar, so a count still rides on the option the
-     way it used to ride on the chip - the one real thing a dropdown hides. */
-  function buildSelect(id, defs, onPick) {
-    var sel = byId(id);
-    if (!sel) return null;
-    defs.forEach(function (d) {
-      var o = document.createElement("option");
-      o.value = d.k;
-      o.dataset.base = d.label;
-      o.textContent = d.label;
-      sel.appendChild(o);
+  /* ---------- the facet dropdowns ---------- */
+
+  /* One control per facet, options built once, their live counts rewritten by
+     paintBar - so a count still rides on the option the way it used to ride on
+     the chip, which is the one real thing a collapsed dropdown hides.
+
+     These were <select>s until weeks 1 AND 2 turned out to be a thing people
+     ask for. A native <select multiple> can do it, but it is a scrolling list
+     box that wants ctrl-click and eats half the toolbar's height, so each
+     facet is now a button that opens a panel of checkboxes. The button still
+     reads like the select it replaces - one ticked option prints its own name
+     - and only falls back to "2 weeks" when the names would not fit. The
+     applied chips underneath are where they get named and dropped one at a
+     time.
+
+     Nothing ticked means everything, so the "All ..." row at the top clears
+     rather than being a fifth checkbox to keep mutually exclusive. */
+  var MSEL = Object.create(null);
+  var OPEN_MSEL = null;
+  var MSEL_DOC = false;
+
+  function closeMsel(refocus) {
+    if (!OPEN_MSEL) return;
+    var m = OPEN_MSEL;
+    OPEN_MSEL = null;
+    m.pop.hidden = true;
+    m.btn.setAttribute("aria-expanded", "false");
+    if (refocus) m.btn.focus();
+  }
+
+  function toggleMsel(m) {
+    if (OPEN_MSEL === m) { closeMsel(false); return; }
+    closeMsel(false);
+    OPEN_MSEL = m;
+    m.pop.hidden = false;
+    m.btn.setAttribute("aria-expanded", "true");
+  }
+
+  /* One panel open at a time; a click anywhere else, or escape, closes it.
+     Registered once for the whole bar rather than once per facet. */
+  function mselDocHandlers() {
+    if (MSEL_DOC) return;
+    MSEL_DOC = true;
+    document.addEventListener("click", function (e) {
+      if (OPEN_MSEL && !OPEN_MSEL.wrap.contains(e.target)) closeMsel(false);
     });
-    sel.addEventListener("change", function () { onPick(sel.value); });
-    return sel;
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeMsel(true);
+    });
+  }
+
+  function buildMulti(id, name, noun, defs) {
+    var wrap = byId(id + "-wrap"), btn = byId(id), pop = byId(id + "-pop");
+    if (!wrap || !btn || !pop || !defs.length) return null;
+
+    var m = { name: name, noun: noun, wrap: wrap, btn: btn, pop: pop,
+              val: byId(id + "-val"), order: [], rows: Object.create(null),
+              allLabel: defs[0].label, allRow: null, allN: null };
+
+    var all = el("button", "msel-opt msel-any");
+    all.type = "button";
+    all.appendChild(el("span", "t", m.allLabel));
+    m.allN = el("span", "n");
+    all.appendChild(m.allN);
+    all.addEventListener("click", function () { setFacet(name, []); });
+    pop.appendChild(all);
+    m.allRow = all;
+
+    defs.slice(1).forEach(function (d) {
+      var row = el("label", "msel-opt"), cnt = el("span", "n");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.value = d.k;
+      row.appendChild(cb);
+      row.appendChild(el("span", "t", d.label));
+      row.appendChild(cnt);
+      /* read back off the boxes in def order rather than pushed and spliced,
+         so the picks stay in panel order however they were ticked */
+      cb.addEventListener("change", function () {
+        setFacet(name, m.order.filter(function (k) { return m.rows[k].cb.checked; }));
+      });
+      pop.appendChild(row);
+      m.order.push(d.k);
+      m.rows[d.k] = { cb: cb, row: row, n: cnt, label: d.label };
+    });
+
+    btn.addEventListener("click", function () { toggleMsel(m); });
+    MSEL[id] = m;
+    mselDocHandlers();
+    return m;
+  }
+
+  function paintMulti(id, shown, allCount, countFor, gapFor) {
+    var m = MSEL[id];
+    if (!m) return;
+    var picked = filters[m.name], only = null;
+
+    m.order.forEach(function (k) {
+      var r = m.rows[k], n = countFor(k), on = picked.indexOf(k) !== -1;
+      r.cb.checked = on;
+      r.cb.disabled = n === 0 && !on;
+      r.n.textContent = (gapFor && gapFor(k)) ? "none" : String(n);
+      r.row.dataset.on = on ? "1" : "";
+      r.row.dataset.off = r.cb.disabled ? "1" : "";
+      if (on && only === null) only = r.label;
+    });
+
+    m.allRow.dataset.on = picked.length ? "" : "1";
+    m.allN.textContent = String(allCount);
+
+    m.val.textContent = (picked.length === 0 ? m.allLabel
+                      : picked.length === 1 ? only
+                      : picked.length + " " + m.noun) + " · " + shown;
   }
 
   function buildBar() {
@@ -1477,40 +1580,35 @@
     });
     STATUS_DEFS.forEach(function (d) { STATUS_LABEL[d.k] = d.label; });
 
-    buildSelect("f-family", famDefs, function (v) {
-      filters.family = (v === "all") ? null : v;
-      afterFilterChange();
-    });
+    buildMulti("f-family", "family", "question sets", famDefs);
 
     var wd = weekDefs();
     wd.forEach(function (d) { WEEK_LABEL[d.k] = d.label; });
-    buildSelect("f-week", wd.map(function (d) {
+    buildMulti("f-week", "week", "weeks", wd.map(function (d) {
       return { k: d.k, label: d.k === "all" ? "All weeks" : d.label };
-    }), setWeek);
+    }));
 
     /* The topic group only earns its slot where something is tagged, so the
        dropdown ships hidden and the block's own data is what reveals it. */
     var td = tagDefs();
     if (td.length) {
       td.forEach(function (d) { TAG_LABEL[d.k] = d.label; });
-      buildSelect("f-tag", td.map(function (d) {
+      buildMulti("f-tag", "tag", "topics", td.map(function (d) {
         return { k: d.k, label: d.k === "all" ? "All topics" : d.label };
-      }), setTag);
+      }));
       if (byId("f-tag-wrap")) byId("f-tag-wrap").hidden = false;
     }
 
-    buildSelect("f-status", STATUS_DEFS.map(function (d) {
+    buildMulti("f-status", "status", "statuses", STATUS_DEFS.map(function (d) {
       return { k: d.k, label: d.k === "all" ? "Any status" : d.label };
-    }), setStatus);
+    }));
 
     /* "wrong only" means every wrong answer in the block, so it clears what
        else is narrowing the stream rather than handing back an empty list.
        It is a review action, so it drops you out of a sat block. */
     byId("review-wrong").addEventListener("click", function () {
-      filters.family = null;
-      filters.week = "all";
-      filters.tag = "all";
-      filters.status = "wrong";
+      clearFilters();
+      filters.status = ["wrong"];
       if (MODE === "test") { setMode("tutor"); return; }
       afterFilterChange();
     });

@@ -228,10 +228,34 @@ saved in one go. Print it, annotate it, keep it.</p>
 <div class="qbar" id="qbar">
 
 <div class="qbar-filters">
-<label class="qsel"><span>Question set</span><select id="f-family"></select></label>
-<label class="qsel"><span>Week</span><select id="f-week"></select></label>
-<label class="qsel" id="f-tag-wrap" hidden><span>Topic</span><select id="f-tag"></select></label>
-<label class="qsel"><span>Status</span><select id="f-status"></select></label>
+<div class="qsel" id="f-family-wrap">
+<span id="f-family-lab">Question set</span>
+<div class="msel">
+<button class="msel-btn" id="f-family" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-family-lab f-family-val"><span class="msel-val" id="f-family-val">Question set</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-family-pop" role="group" aria-labelledby="f-family-lab" hidden></div>
+</div>
+</div>
+<div class="qsel" id="f-week-wrap">
+<span id="f-week-lab">Week</span>
+<div class="msel">
+<button class="msel-btn" id="f-week" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-week-lab f-week-val"><span class="msel-val" id="f-week-val">Week</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-week-pop" role="group" aria-labelledby="f-week-lab" hidden></div>
+</div>
+</div>
+<div class="qsel" hidden id="f-tag-wrap">
+<span id="f-tag-lab">Topic</span>
+<div class="msel">
+<button class="msel-btn" id="f-tag" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-tag-lab f-tag-val"><span class="msel-val" id="f-tag-val">Topic</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-tag-pop" role="group" aria-labelledby="f-tag-lab" hidden></div>
+</div>
+</div>
+<div class="qsel" id="f-status-wrap">
+<span id="f-status-lab">Status</span>
+<div class="msel">
+<button class="msel-btn" id="f-status" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-status-lab f-status-val"><span class="msel-val" id="f-status-val">Status</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-status-pop" role="group" aria-labelledby="f-status-lab" hidden></div>
+</div>
+</div>
 <button class="review-cta" id="review-wrong" type="button" disabled>Review wrong only <span class="n" id="review-n">0</span></button>
 </div>
 

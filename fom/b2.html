@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css?v=7f3d47b4">
-<link rel="stylesheet" href="../portal.css?v=195e5a54">
+<link rel="stylesheet" href="../portal.css?v=bb842869">
 <style>
 :root{--q-accent:#2f6b4f;--q-accent-soft:#e2efe9;--q-accent-ink:#275844;}
 </style>
@@ -122,10 +122,34 @@ cannot wipe newer answers &mdash; and it is the only backup there is.</p>
 <div class="qbar" id="qbar">
 
 <div class="qbar-filters">
-<label class="qsel"><span>Question set</span><select id="f-family"></select></label>
-<label class="qsel"><span>Week</span><select id="f-week"></select></label>
-<label class="qsel" id="f-tag-wrap" hidden><span>Topic</span><select id="f-tag"></select></label>
-<label class="qsel"><span>Status</span><select id="f-status"></select></label>
+<div class="qsel" id="f-family-wrap">
+<span id="f-family-lab">Question set</span>
+<div class="msel">
+<button class="msel-btn" id="f-family" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-family-lab f-family-val"><span class="msel-val" id="f-family-val">Question set</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-family-pop" role="group" aria-labelledby="f-family-lab" hidden></div>
+</div>
+</div>
+<div class="qsel" id="f-week-wrap">
+<span id="f-week-lab">Week</span>
+<div class="msel">
+<button class="msel-btn" id="f-week" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-week-lab f-week-val"><span class="msel-val" id="f-week-val">Week</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-week-pop" role="group" aria-labelledby="f-week-lab" hidden></div>
+</div>
+</div>
+<div class="qsel" hidden id="f-tag-wrap">
+<span id="f-tag-lab">Topic</span>
+<div class="msel">
+<button class="msel-btn" id="f-tag" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-tag-lab f-tag-val"><span class="msel-val" id="f-tag-val">Topic</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-tag-pop" role="group" aria-labelledby="f-tag-lab" hidden></div>
+</div>
+</div>
+<div class="qsel" id="f-status-wrap">
+<span id="f-status-lab">Status</span>
+<div class="msel">
+<button class="msel-btn" id="f-status" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-status-lab f-status-val"><span class="msel-val" id="f-status-val">Status</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-status-pop" role="group" aria-labelledby="f-status-lab" hidden></div>
+</div>
+</div>
 <button class="review-cta" id="review-wrong" type="button" disabled>Review wrong only <span class="n" id="review-n">0</span></button>
 </div>
 
@@ -173,7 +197,7 @@ cannot wipe newer answers &mdash; and it is the only backup there is.</p>
 <script>
 window.QUIZ_BLOCK = {"slug": "b2", "n": 2, "name": "Regulation, Neoplasia & Aging", "weeks": "5–8", "course": "FoM", "store": "nsq.fom.v1.", "families": [{"key": "module", "name": "Module questions", "blurb": "The knowledge checks inside the week's Elentra asynchronous learning modules, transcribed into the Meds 2025 question bank."}, {"key": "ra", "name": "Readiness assessments", "blurb": "The week's Readiness Assessment as it was sat. Several weeks never had one, and those say so rather than going missing."}, {"key": "sa", "name": "Self-assessments", "blurb": "The week's Self-Assessment as it was released."}, {"key": "meds2024", "name": "Meds 2024 bank", "blurb": "The student-written, instructor-approved bank built by the Class of 2024 Academic Directors in December 2020, re-filed week by week. Its questions went to the teaching faculty and the instructors' edits are folded in, except for a tail of each week that time ran out on."}, {"key": "new", "name": "New questions", "blurb": "Written fresh by the Meds 2025 volunteers in December 2021. The bank states on its own second page that these were not verified by faculty, so treat a disagreement as a question worth chasing rather than a correction to accept."}, {"key": "workbook", "name": "Pre-Clerkship Workbook", "blurb": "The 2023 edition of the workbook handed down through the Schulich classes of 2015 to 2025: its Foundations, Hematology and Infection & Immunity chapters. The workbook files by subject rather than by week, so the block is its own but the week here is inferred; where nothing in a question placed it, it says so on its face. The Foundations chapter's own subject labels are in the Topic filter."}], "qv": "109b69db", "nv": "d38e8d1d"};
 </script>
-<script src="../quiz.js?v=7c0afa58"></script>
+<script src="../quiz.js?v=e81d1909"></script>
 <script src="../notes.js?v=c16ba83f"></script>
 <script src="../portal.js?v=a68cb585"></script>
 

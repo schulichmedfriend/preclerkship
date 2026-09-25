@@ -1621,11 +1621,28 @@
     color:var(--muted);
 }
 
-.qsel select{
+.qsel[hidden]{display:none;}
+
+/* Each facet is a button over a panel of checkboxes, not a <select>: weeks 1
+   AND 2 is a real request and a select can only answer one of them. A native
+   <select multiple> can, but it is a permanently-open scrolling list box that
+   wants ctrl-click, which would cost the toolbar the height the toolbar was
+   built to win back.
+
+   So the closed button is styled to be the select it replaced - same box,
+   same count after the middot - and the change only shows up on opening it. */
+.msel{position:relative;}
+
+.msel-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
     width:100%;
     padding:8px 10px;
     font:inherit;
     font-size:.86rem;
+    text-align:left;
     color:var(--text);
     background:var(--bg);
     border:1px solid var(--border);
@@ -1633,8 +1650,90 @@
     cursor:pointer;
 }
 
-.qsel select:hover{border-color:var(--q-accent);}
-.qsel[hidden]{display:none;}
+.msel-btn:hover,
+.msel-btn[aria-expanded="true"]{border-color:var(--q-accent);}
+.msel-val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.msel-caret{flex:0 0 auto;font-size:.66rem;color:var(--muted);}
+
+/* Absolutely placed, so opening a panel never reflows the bar and shoves the
+   stream down the page; capped and scrollable, because a twelve-week block
+   would otherwise run off the bottom of the screen. */
+.msel-pop{
+    position:absolute;
+    z-index:40;
+    top:calc(100% + 5px);
+    left:0;
+    right:0;
+    min-width:205px;
+    max-height:290px;
+    overflow-y:auto;
+    display:grid;
+    gap:1px;
+    padding:5px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:7px;
+    box-shadow:0 12px 28px rgba(0,0,0,.16);
+}
+
+.msel-pop[hidden]{display:none;}
+
+.msel-opt{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    width:100%;
+    padding:7px 9px;
+    font:inherit;
+    font-size:.84rem;
+    text-align:left;
+    color:var(--text);
+    background:none;
+    border:0;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.msel-opt:hover{background:var(--q-accent-soft);}
+.msel-opt .t{flex:1 1 auto;min-width:0;}
+
+.msel-opt .n{
+    flex:0 0 auto;
+    font-size:.75rem;
+    color:var(--muted);
+    font-variant-numeric:tabular-nums;
+}
+
+.msel-opt input{
+    flex:0 0 auto;
+    width:15px;
+    height:15px;
+    margin:0;
+    accent-color:var(--q-accent);
+    cursor:pointer;
+}
+
+.msel-opt[data-on="1"]{
+    color:var(--q-accent-ink);
+    font-weight:600;
+    background:var(--q-accent-soft);
+}
+
+.msel-opt[data-on="1"] .n{color:var(--q-accent-ink);}
+
+/* an option worth nothing stays readable and stops being clickable */
+.msel-opt[data-off="1"]{color:var(--muted);opacity:.5;cursor:default;}
+.msel-opt[data-off="1"]:hover{background:none;}
+
+/* The clear row. Nothing ticked already means everything, so this is a button
+   that unticks, not a fifth checkbox - and it indents to the same text column
+   as the rows below so the list still reads as one column of names. */
+.msel-any{
+    padding-left:33px;
+    margin-bottom:3px;
+    border-bottom:1px solid var(--border);
+    border-radius:5px 5px 0 0;
+}
 
 /* View and Mode: two framed segments rather than four loose buttons,
    because each is one decision and the label inside the frame says
