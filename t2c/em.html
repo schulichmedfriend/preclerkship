@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css?v=7f3d47b4">
-<link rel="stylesheet" href="../portal.css?v=8287d844">
+<link rel="stylesheet" href="../portal.css?v=fd5a39ff">
 <style>
 :root{--q-accent:#a83232;--q-accent-soft:#f8dedd;--q-accent-ink:#8a2828;}
 </style>
@@ -164,6 +164,13 @@ cannot wipe newer answers &mdash; and it is the only backup there is.</p>
 </div>
 </div>
 <div class="qseg-field">
+<span id="order-lab">Order</span>
+<div class="qseg" id="order-seg" role="group" aria-labelledby="order-lab">
+<button type="button" data-order="bank" aria-pressed="true">In order</button>
+<button type="button" data-order="shuffle" aria-pressed="false" title="Shuffle the questions. Pick it again to deal a new order.">Shuffled</button>
+</div>
+</div>
+<div class="qseg-field">
 <span id="mode-lab">Mode</span>
 <div class="qseg" id="mode-seg" role="group" aria-labelledby="mode-lab">
 <button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
@@ -199,7 +206,7 @@ cannot wipe newer answers &mdash; and it is the only backup there is.</p>
 <script>
 window.QUIZ_BLOCK = {"slug": "em", "n": 4, "name": "Emergency Medicine", "weeks": "7", "course": "T2C", "store": "nsq.t2c.v1.", "families": [{"key": "hipponotes", "name": "HippoNotes", "blurb": "The T2C question bank at the back of the Meds 2025 HippoNotes (Academic Resources Team, May 2023), filed under the rotation each question was written for. Peer-written, so the key is worth checking rather than trusting."}], "qv": "3cfbe052", "nv": "dfac7782"};
 </script>
-<script src="../quiz.js?v=c0b2d234"></script>
+<script src="../quiz.js?v=bb1bbff1"></script>
 <script src="../notes.js?v=c16ba83f"></script>
 <script src="../portal.js?v=545340c8"></script>
 

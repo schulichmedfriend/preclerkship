@@ -268,6 +268,13 @@ saved in one go. Print it, annotate it, keep it.</p>
 </div>
 </div>
 <div class="qseg-field">
+<span id="order-lab">Order</span>
+<div class="qseg" id="order-seg" role="group" aria-labelledby="order-lab">
+<button type="button" data-order="bank" aria-pressed="true">In order</button>
+<button type="button" data-order="shuffle" aria-pressed="false" title="Shuffle the questions. Pick it again to deal a new order.">Shuffled</button>
+</div>
+</div>
+<div class="qseg-field">
 <span id="mode-lab">Mode</span>
 <div class="qseg" id="mode-seg" role="group" aria-labelledby="mode-lab">
 <button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>

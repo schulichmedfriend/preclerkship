@@ -76,6 +76,18 @@
   var MODE = "tutor";           /* "tutor"  | "test"  */
   var pageIdx = 0;
 
+  /* A third axis, and bank order is the default for a reason: the stream reads
+     week by week, which is the order the material was taught in. Shuffling is
+     the other thing worth practising against - an exam does not ask five
+     thyroid questions in a row, and knowing which lecture a question came
+     from is half of some answers. So it sits beside View and Mode rather than
+     being folded into Test, which draws WHICH questions and now leaves WHAT
+     ORDER to this. */
+  var ORDER = "bank";           /* "bank" | "shuffle" */
+  var SHUFFLE = null;           /* qid -> its place in the shuffled deck */
+
+  function shuffling() { return ORDER === "shuffle" && !!SHUFFLE; }
+
   /* A sat block is a lifecycle, not a toggle: drawn, sat, submitted, reviewed.
      Its answers stage HERE and are only written to the store on submit, so
      abandoning a block half-done leaves no trace - which is right, because you
@@ -94,6 +106,10 @@
   var STATUS_LABEL = Object.create(null);
   var RESET_SHOWN_IDLE = null;
   var storeWritable = true;
+
+  /* every section's children in the order buildStream made them, which is how
+     a shuffled stream gets put back without rebuilding a card */
+  var HOME = [];
 
   function byId(id) { return document.getElementById(id); }
 
@@ -386,6 +402,12 @@
     });
     head.appendChild(star);
     art.appendChild(head);
+
+    /* Shown only in a shuffled stream, where the week and lecture headings are
+       gone. In bank order the heading three lines up already says this, and
+       repeating it on every card is noise. */
+    art.appendChild(el("p", "qwhere",
+      (q.week === null ? "Off-curriculum" : "Week " + q.week) + " \u00b7 " + q.lecture));
 
     if (q.preamble) {
       var pre = el("div", "preamble");
@@ -695,11 +717,11 @@
     if (MODE === "test" && TEST.ids) {
       var set = Object.create(null);
       TEST.ids.forEach(function (id) { set[id] = 1; });
-      return QUESTIONS.filter(function (q) { return set[q.qid]; })
-                      .map(function (q) { return q.qid; });
+      return inDeckOrder(QUESTIONS.filter(function (q) { return set[q.qid]; })
+                                  .map(function (q) { return q.qid; }));
     }
-    return QUESTIONS.filter(function (q) { return matches(q.qid); })
-                    .map(function (q) { return q.qid; });
+    return inDeckOrder(QUESTIONS.filter(function (q) { return matches(q.qid); })
+                                .map(function (q) { return q.qid; }));
   }
 
   /* Paging is the filter trick with a narrower predicate: the stream already
@@ -750,7 +772,9 @@
                    filters.tag.length > 0;
     [].forEach.call(document.querySelectorAll(".family"), function (f) {
       if (filters.family.length && !isOn("family", f.dataset.family)) { f.hidden = true; return; }
-      if (f.dataset.count === "0") { f.hidden = !!narrowed; return; }
+      /* a coverage gap is worth showing where the stream is grouped by set,
+         and means nothing in a shuffled list that is not grouped at all */
+      if (f.dataset.count === "0") { f.hidden = shuffling() || !!narrowed; return; }
       f.hidden = !f.querySelector(".q:not([hidden])");
     });
     /* the empty state belongs to the filters, not to the page you are on */
@@ -780,11 +804,91 @@
     filters.status = [];
   }
 
+  /* ---------- order ---------- */
+
+  /* Fisher-Yates, in place. Sorting on Math.random() is the usual shortcut and
+     it is not a uniform shuffle; with 611 questions that shows. */
+  function shuffleInto(list) {
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)), t = list[i];
+      list[i] = list[j]; list[j] = t;
+    }
+    return list;
+  }
+
+  /* One deck for the whole bank, not one per filter. Drawing a fresh order
+     every time the filters move would reshuffle the questions under someone
+     who only wanted to drop a week, and in one-at-a-time that means losing
+     your place. The deck changes when you ask it to and at no other time. */
+  function reshuffle() {
+    var deck = shuffleInto(QUESTIONS.map(function (q) { return q.qid; }));
+    SHUFFLE = Object.create(null);
+    deck.forEach(function (qid, i) { SHUFFLE[qid] = i; });
+  }
+
+  function inDeckOrder(ids) {
+    if (!shuffling()) return ids;
+    return ids.slice().sort(function (a, b) { return SHUFFLE[a] - SHUFFLE[b]; });
+  }
+
+  /* One at a time needs nothing here - it shows whichever card inPlayIds hands
+     it. The continuous stream does: its cards are built inside their family,
+     week and lecture headings, so a shuffled stream cannot be made by hiding
+     things, the cards have to move. They move into one flat container and come
+     back by re-appending each section's children in the order they were built,
+     which is exact and cheaper than rebuilding 611 cards. */
+  function applyStreamOrder(force) {
+    var flat = byId("shuffled");
+    if (!flat) return;                 /* a page cached from before this shipped */
+    var want = shuffling(), on = flat.dataset.on === "1";
+    if (want === on && !force) return;
+
+    if (want) {
+      var frag = document.createDocumentFragment();
+      QUESTIONS.slice().sort(function (a, b) {
+        return SHUFFLE[a.qid] - SHUFFLE[b.qid];
+      }).forEach(function (q) {
+        var art = byId("q-" + q.qid);
+        if (art) frag.appendChild(art);
+      });
+      flat.appendChild(frag);
+      flat.hidden = false;
+      flat.dataset.on = "1";
+    } else if (on) {
+      HOME.forEach(function (h) {
+        h.kids.forEach(function (n) { h.sec.appendChild(n); });
+      });
+      flat.hidden = true;
+      flat.dataset.on = "";
+    }
+    if (byId("stream")) byId("stream").dataset.order = want ? "shuffle" : "bank";
+  }
+
+  /* Picking Shuffled while already shuffled deals again - the segment is the
+     only place to ask for a new order, and wanting another one is the whole
+     reason to press it twice. */
+  function setOrder(o) {
+    if (o !== "bank" && o !== "shuffle") return;
+    if (o === ORDER && o === "bank") return;
+    ORDER = o;
+    if (o === "shuffle") reshuffle();
+    applyStreamOrder(true);
+    pageIdx = 0;
+    syncSegs();
+    /* not afterFilterChange: the order a sat block is presented in is not a
+       different block, so changing it must not redraw one */
+    applyFilters();
+    toTop();
+  }
+
   /* ---------- view + mode ---------- */
 
   function syncSegs() {
     [].forEach.call(document.querySelectorAll("#view-seg button"), function (b) {
       b.setAttribute("aria-pressed", b.dataset.view === VIEW ? "true" : "false");
+    });
+    [].forEach.call(document.querySelectorAll("#order-seg button"), function (b) {
+      b.setAttribute("aria-pressed", b.dataset.order === ORDER ? "true" : "false");
     });
     [].forEach.call(document.querySelectorAll("#mode-seg button"), function (b) {
       b.setAttribute("aria-pressed", b.dataset.mode === MODE ? "true" : "false");
@@ -830,12 +934,10 @@
       return matches(q.qid) && gradable(q);
     }).map(function (q) { return q.qid; });
 
-    /* Fisher-Yates. Drawn in bank order, a block would be the same block every
-       time, and the first twenty questions of week 1 are not a rehearsal. */
-    for (var i = pool.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1)), t = pool[i];
-      pool[i] = pool[j]; pool[j] = t;
-    }
+    /* Drawn in bank order, a block would be the same block every time, and the
+       first twenty questions of week 1 are not a rehearsal. This picks WHICH
+       questions; the Order segment decides what order they arrive in. */
+    shuffleInto(pool);
     TEST.poolN = pool.length;
     TEST.asked = TEST.size;
     TEST.ids = pool.slice(0, Math.min(TEST.size, pool.length));
@@ -1641,6 +1743,9 @@
     [].forEach.call(document.querySelectorAll("#view-seg button"), function (b) {
       b.addEventListener("click", function () { setView(b.dataset.view); });
     });
+    [].forEach.call(document.querySelectorAll("#order-seg button"), function (b) {
+      b.addEventListener("click", function () { setOrder(b.dataset.order); });
+    });
     [].forEach.call(document.querySelectorAll("#mode-seg button"), function (b) {
       b.addEventListener("click", function () { setMode(b.dataset.mode); });
     });
@@ -1884,8 +1989,19 @@
         }
         sec.appendChild(buildQuestion(q));
       });
+      HOME.push({ sec: sec, kids: [].slice.call(sec.childNodes) });
       frag.appendChild(sec);
     });
+
+    /* where the cards go when the order is shuffled: one flat list, no
+       headings, because there is nothing left for a heading to group */
+    var flat = el("div", "shuffled");
+    flat.id = "shuffled";
+    flat.hidden = true;
+    flat.appendChild(el("p", "shuffle-note",
+      "Shuffled order. Each card says which week and lecture it came from; pick Shuffled again to deal a new order."));
+    frag.appendChild(flat);
+
     var empty = el("div", "empty", "Nothing matches that filter.");
     empty.id = "empty";
     empty.hidden = true;
