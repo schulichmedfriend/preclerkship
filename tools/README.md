@@ -111,6 +111,43 @@ parent site. Fill either in and every generated page picks it up.
 own questions, write that JSON yourself. One object per question, in a flat list.
 The fields the front end reads are documented in the main [README](../README.md).
 
+## Publishing an Anki deck
+
+One more script off to the side. It needs **Anki running** with the
+[AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on on
+`127.0.0.1:8765`, so unlike the four above it only runs on a machine holding the
+collection.
+
+```bash
+python tools/build_anki.py pom2 endo "PoM2::Block 1"
+```
+
+It writes two things: `pom2/anki/endo.apkg`, the deck itself, and
+`pom2/data/anki/endo.json`, the manifest of per-week and per-lecture card counts
+that `build_pages.py` renders the Anki tab from. **Run `build_pages.py` after
+it**, the way you would after editing a stylesheet - the counts on the tab come
+from the manifest at build time.
+
+A block with no manifest keeps the empty state on its Anki tab, which is what
+every block but endo still shows. That is the whole switch: no manifest, no
+deck, and the tab says so rather than offering a download that 404s.
+
+**Scheduling is stripped on the way out** (`includeSched=False`). The due dates
+in the collection are one person's review history; what gets published is the
+cards. Anyone importing starts their own scheduling, and re-importing a later
+export updates the cards without resetting their progress.
+
+The deck is a **binary in a git repo** and endo's is 35 MB, most of it the 442
+media files behind the image-occlusion cards. Each re-export commits another
+copy, and git keeps every one of them forever. That is affordable a few times a
+year and not affordable weekly, so re-export when the deck has meaningfully
+changed rather than on every card edit.
+
+AnkiConnect writes the `.apkg` itself, so the path it is handed is a path on the
+machine **Anki** runs on. Under WSL that is a Windows path, and the script copies
+the result back across `/mnt/c`. The two constants at the top of the script are
+the two spellings of that one temporary file.
+
 ## Pulling a weekly quiz out of Elentra
 
 Two more scripts, off to the side of the four above. They do not touch `data/`

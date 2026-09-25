@@ -1,0 +1,223 @@
+{
+ "bytes": 36625090,
+ "cards": 1017,
+ "deck": "PoM2::Block 1",
+ "file": "anki/endo.apkg",
+ "highyield": 247,
+ "notes": 825,
+ "weeks": [
+  {
+   "lectures": [
+    {
+     "cards": 40,
+     "highyield": 0,
+     "name": "01 - Intro to Diabetes",
+     "notes": 23
+    },
+    {
+     "cards": 27,
+     "highyield": 4,
+     "name": "02 - Diagnosis and Management of Type 1 Diabetes",
+     "notes": 21
+    },
+    {
+     "cards": 14,
+     "highyield": 1,
+     "name": "03 - Pharmacology of Insulin",
+     "notes": 13
+    },
+    {
+     "cards": 16,
+     "highyield": 2,
+     "name": "04 - Clinically Useful Endocrine Principles",
+     "notes": 14
+    },
+    {
+     "cards": 21,
+     "highyield": 4,
+     "name": "05 - Type 2 Diabetes Mellitus - Diagnosis & Epidemiology",
+     "notes": 16
+    },
+    {
+     "cards": 31,
+     "highyield": 12,
+     "name": "06 - Acute and Chronic Complications of Diabetes",
+     "notes": 29
+    },
+    {
+     "cards": 43,
+     "highyield": 15,
+     "name": "07 - Pharmacology of Glucose-Lowering Drugs",
+     "notes": 40
+    },
+    {
+     "cards": 7,
+     "highyield": 2,
+     "name": "08 - Glycemic Goals of Care in Adults with Diabetes",
+     "notes": 6
+    },
+    {
+     "cards": 27,
+     "highyield": 8,
+     "name": "09 - Introduction to Obesity",
+     "notes": 26
+    },
+    {
+     "cards": 11,
+     "highyield": 4,
+     "name": "10 - Prevention of Complications of Diabetes",
+     "notes": 9
+    },
+    {
+     "cards": 18,
+     "highyield": 8,
+     "name": "11 - Pregnancy and Diabetes",
+     "notes": 16
+    },
+    {
+     "cards": 4,
+     "highyield": 1,
+     "name": "12 - Prevention of Type 2 Diabetes",
+     "notes": 4
+    }
+   ],
+   "week": "Week 1"
+  },
+  {
+   "lectures": [
+    {
+     "cards": 57,
+     "highyield": 18,
+     "name": "01 - Thyroid and Parathyroid Gland Physiology",
+     "notes": 43
+    },
+    {
+     "cards": 34,
+     "highyield": 16,
+     "name": "02 - Drugs Affecting Calcium Homeostasis",
+     "notes": 31
+    },
+    {
+     "cards": 58,
+     "highyield": 32,
+     "name": "03 - Clinical Presentation and Evaluation of Hypothyroidism and Thyrotoxicosis",
+     "notes": 51
+    },
+    {
+     "cards": 38,
+     "highyield": 12,
+     "name": "04 - Clinical Presentation and Evaluation of Hyperparathyroidism and Hypoparathyroidism",
+     "notes": 29
+    },
+    {
+     "cards": 7,
+     "highyield": 4,
+     "name": "05 - Pathology of Thyroid Masses",
+     "notes": 6
+    },
+    {
+     "cards": 23,
+     "highyield": 12,
+     "name": "06 - Clinical Presentation and Evaluation of Osteoporosis",
+     "notes": 19
+    },
+    {
+     "cards": 13,
+     "highyield": 3,
+     "name": "07 - Overview of Metabolic Bone Disease",
+     "notes": 12
+    },
+    {
+     "cards": 9,
+     "highyield": 1,
+     "name": "08 - Embryology & Histology",
+     "notes": 7
+    },
+    {
+     "cards": 18,
+     "highyield": 4,
+     "name": "09 - Hypothalamic-Pituitary-Gonadal Axis",
+     "notes": 14
+    },
+    {
+     "cards": 37,
+     "highyield": 16,
+     "name": "10 - Approach to the Menstrual Cycle",
+     "notes": 27
+    },
+    {
+     "cards": 39,
+     "highyield": 6,
+     "name": "11 - Testicular and Ovarian Function",
+     "notes": 31
+    }
+   ],
+   "week": "Week 2"
+  },
+  {
+   "lectures": [
+    {
+     "cards": 45,
+     "highyield": 21,
+     "name": "01 - Clinical Presentation and Evaluation of Adrenal Gland Disease",
+     "notes": 37
+    },
+    {
+     "cards": 31,
+     "highyield": 7,
+     "name": "02 - Clinical Presentation and Evaluation of Pituitary Gland Disease",
+     "notes": 23
+    },
+    {
+     "cards": 14,
+     "highyield": 3,
+     "name": "03 - Physiologic Changes that Lead to Puberty",
+     "notes": 13
+    },
+    {
+     "cards": 45,
+     "highyield": 11,
+     "name": "04 - Disorders of Puberty",
+     "notes": 36
+    },
+    {
+     "cards": 34,
+     "highyield": 4,
+     "name": "05 - Disorders of Growth",
+     "notes": 26
+    },
+    {
+     "cards": 121,
+     "highyield": 0,
+     "name": "06 - Anatomy of the Female Pelvis, Perineum, & Sexual Function",
+     "notes": 99
+    },
+    {
+     "cards": 43,
+     "highyield": 0,
+     "name": "07 - Development of the Female Reproductive System",
+     "notes": 30
+    },
+    {
+     "cards": 27,
+     "highyield": 3,
+     "name": "08 - Introduction to Transgender Medicine",
+     "notes": 22
+    },
+    {
+     "cards": 26,
+     "highyield": 8,
+     "name": "09 - Disorders of Sexual Differentiation",
+     "notes": 25
+    },
+    {
+     "cards": 39,
+     "highyield": 5,
+     "name": "10 - Polyendocrine Metabolic Ovarian Syndrome (PMOS)",
+     "notes": 27
+    }
+   ],
+   "week": "Week 3"
+  }
+ ]
+}

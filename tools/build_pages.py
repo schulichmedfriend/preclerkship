@@ -123,6 +123,82 @@ def block_counts(course, slug):
     return len(qs), len([l for l in lects if l.get("hasNote")]), len(lects)
 
 
+ANKI_EMPTY = u"""<div class="tab-empty">
+<h2>The decks are not up yet.</h2>
+<p>This is where the {course} Anki cards for weeks {weeks} will live, filed by week and
+lecture the way the notes are. Nothing has been uploaded into it yet.</p>
+</div>"""
+
+
+def anki_panel(course, slug, weeks):
+    """The Anki tab: the deck if one has been exported, else the empty state.
+
+    A block earns the real panel by having a manifest under data/anki/, which
+    tools/build_anki.py writes beside the .apkg it exports. No manifest means no
+    deck, and the tab says so rather than offering a dead download.
+    """
+    p = os.path.join(course["slug"], "data", "anki", "%s.json" % slug)
+    if not os.path.exists(p):
+        return ANKI_EMPTY.format(course=course["short"], weeks=weeks)
+    m = json.load(io.open(p, encoding="utf-8"))
+
+    mb = "%.0f MB" % (m["bytes"] / 1048576.0)
+    out = ['<div class="deck">',
+           '<div class="deck-head">',
+           '<div class="deck-what">',
+           '<h2>%s, weeks %s</h2>' % (course["short"], weeks),
+           '<p class="deck-sum"><b>%d</b> cards from <b>%d</b> notes, '
+           'across %d lectures. <b>%d</b> are marked high-yield.</p>'
+           % (m["cards"], m["notes"],
+              sum(len(w["lectures"]) for w in m["weeks"]), m["highyield"]),
+           '</div>',
+           '<a class="deck-dl" href="%s" download>Download the deck '
+           '<span class="sz">%s</span></a>' % (m["file"], mb),
+           '</div>',
+           '<div class="deck-how">',
+           '<p><strong>To import it:</strong> open Anki on a computer, then '
+           '<strong>File &rarr; Import</strong> and pick the file. It arrives as '
+           '<code>%s</code> with the week and lecture subdecks intact, so it sits '
+           'beside whatever you already have rather than merging into it.</p>' % m["deck"],
+           '<p><strong>It carries no scheduling.</strong> The due dates are stripped on '
+           'the way out, so every card starts new for you and nothing you have already '
+           'reviewed gets overwritten. Re-importing a later version updates the cards '
+           'and leaves your progress where it is.</p>',
+           '<p><strong>Images come with it.</strong> Occlusion cards need the '
+           '<a href="https://ankiweb.net/shared/info/1374772155" rel="noopener" '
+           'target="_blank">Image Occlusion Enhanced</a> add-on to show properly; '
+           'everything else works on a plain Anki install, and on AnkiMobile or '
+           'AnkiDroid once it has synced.</p>',
+           '</div>',
+           '<div class="deck-weeks">']
+    for w in m["weeks"]:
+        n = sum(l["cards"] for l in w["lectures"])
+        out.append('<section class="deck-week">')
+        out.append('<p class="panel-h">%s <span class="tc">%d</span></p>'
+                   % (w["week"], n))
+        out.append('<ul class="deck-lecs">')
+        for l in w["lectures"]:
+            hy = (' <span class="hy">&middot; %d high-yield</span>'
+                  % l["highyield"]) if l["highyield"] else ''
+            out.append('<li><span class="lc-n">%s</span>'
+                       '<span class="lc-c"><b>%d</b>%s</span></li>'
+                       % (l["name"], l["cards"], hy))
+        out.append('</ul>')
+        out.append('</section>')
+    out.append('</div>')
+    out.append('</div>')
+    return "\n".join(out)
+
+
+def anki_tc(course, slug):
+    """The card count beside the Anki tab, or nothing while there is no deck."""
+    p = os.path.join(course["slug"], "data", "anki", "%s.json" % slug)
+    if not os.path.exists(p):
+        return u""
+    return u' <span class="tc">%d</span>' % json.load(
+        io.open(p, encoding="utf-8"))["cards"]
+
+
 def blocknav(course, active):
     rows = ['<a class="home" href="%s">All courses</a>' % portal.HUB_URL]
     for slug, n, name, _w in course["blocks"]:
@@ -178,16 +254,12 @@ PAGE = u"""<!DOCTYPE html>
 
 <div class="tabs" role="tablist" aria-label="Notes, Anki or questions">
 <button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes">Notes <span class="tc" id="tc-notes">{written}/{lectures}</span></button>
-<button type="button" id="tab-anki" role="tab" aria-selected="false" aria-controls="panel-anki">Anki</button>
+<button type="button" id="tab-anki" role="tab" aria-selected="false" aria-controls="panel-anki">Anki{ankitc}</button>
 <button type="button" id="tab-questions" role="tab" aria-selected="false" aria-controls="panel-questions">Practice questions <span class="tc">{questions}</span></button>
 </div>
 
 <div class="q-shell is-solo" id="panel-anki" role="tabpanel" aria-labelledby="tab-anki" hidden>
-<div class="tab-empty">
-<h2>The decks are not up yet.</h2>
-<p>This is where the {course} Anki cards for weeks {weeks} will live, filed by week and
-lecture the way the notes are. Nothing has been uploaded into it yet.</p>
-</div>
+{anki}
 </div>
 
 <div class="q-shell" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes">
@@ -222,8 +294,6 @@ saved in one go. Print it, annotate it, keep it.</p>
 </div>
 
 <div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor" hidden>
-
-{howto}
 
 <div class="qbar" id="qbar">
 
@@ -287,6 +357,8 @@ saved in one go. Print it, annotate it, keep it.</p>
 
 </div>
 
+{howto}
+
 <div class="testbar" id="testbar" hidden></div>
 
 <main class="stream" id="stream">
@@ -344,6 +416,7 @@ def main():
                 name=name, course=course["short"], weeks=weeks, lead=lead, desc=desc, accent=accent,
                 fonts=portal.FONTS, nocache=portal.NOCACHE, cf=portal.CF, footer=portal.footer(), howto=HOWTO, favicon=portal.favicon(label, fill),
                 blocknav=blocknav(course, slug), questions=q,
+                anki=anki_panel(course, slug, weeks), ankitc=anki_tc(course, slug),
                 written=written, lectures=lectures,
                 block_json=json.dumps(cfg, ensure_ascii=False))
             io.open(os.path.join(d, "%s.html" % slug), "w",

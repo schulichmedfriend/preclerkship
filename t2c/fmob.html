@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css?v=7f3d47b4">
-<link rel="stylesheet" href="../portal.css?v=fd5a39ff">
+<link rel="stylesheet" href="../portal.css?v=69f23523">
 <style>
 :root{--q-accent:#8a5320;--q-accent-soft:#f6e8d8;--q-accent-ink:#70431a;}
 </style>
@@ -99,28 +99,6 @@ saved in one go. Print it, annotate it, keep it.</p>
 
 <div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor" hidden>
 
-<details class="howto">
-<summary>Remember to save your progress</summary>
-<div class="body">
-<p><strong>On this device, and nowhere else.</strong> Your answers live in this
-browser&rsquo;s local storage &mdash; never sent to this site, never in its repository, visible
-to nobody but you. They also don&rsquo;t follow you: a different browser, a different laptop,
-or cleared site data all start from zero.</p>
-<p><strong>To carry them:</strong> press <strong>Download all my progress</strong> below. One
-file covers every block of this course. On the other machine, open any block and press
-<strong>Restore from a file</strong>. A restore only adds and updates, so an out of date file
-cannot wipe newer answers &mdash; and it is the only backup there is.</p>
-<p class="storenote" id="storenote" hidden></p>
-<div class="resets">
-<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
-<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
-<input type="file" id="import-file" accept="application/json,.json" hidden>
-<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
-<button class="danger" id="reset-all" type="button">Reset all progress</button>
-</div>
-</div>
-</details>
-
 <div class="qbar" id="qbar">
 
 <div class="qbar-filters">
@@ -183,6 +161,28 @@ cannot wipe newer answers &mdash; and it is the only backup there is.</p>
 
 </div>
 
+<details class="howto">
+<summary>Remember to save your progress</summary>
+<div class="body">
+<p><strong>On this device, and nowhere else.</strong> Your answers live in this
+browser&rsquo;s local storage &mdash; never sent to this site, never in its repository, visible
+to nobody but you. They also don&rsquo;t follow you: a different browser, a different laptop,
+or cleared site data all start from zero.</p>
+<p><strong>To carry them:</strong> press <strong>Download all my progress</strong> below. One
+file covers every block of this course. On the other machine, open any block and press
+<strong>Restore from a file</strong>. A restore only adds and updates, so an out of date file
+cannot wipe newer answers &mdash; and it is the only backup there is.</p>
+<p class="storenote" id="storenote" hidden></p>
+<div class="resets">
+<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
+<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
+<button class="danger" id="reset-all" type="button">Reset all progress</button>
+</div>
+</div>
+</details>
+
 <div class="testbar" id="testbar" hidden></div>
 
 <main class="stream" id="stream">
@@ -208,7 +208,7 @@ window.QUIZ_BLOCK = {"slug": "fmob", "n": 5, "name": "Family Medicine & Obstetri
 </script>
 <script src="../quiz.js?v=bb1bbff1"></script>
 <script src="../notes.js?v=c16ba83f"></script>
-<script src="../portal.js?v=545340c8"></script>
+<script src="../portal.js?v=618aaa13"></script>
 
 <footer>
 For questions, email <a href="mailto:schulichmedfriends@gmail.com">schulichmedfriends@gmail.com</a>

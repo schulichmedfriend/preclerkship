@@ -23,7 +23,7 @@
     anki: {
       tab: "tab-anki",
       panel: "panel-anki",
-      board: null,          /* a placeholder has nothing to count yet */
+      board: null,          /* the scoreboard counts answers; a deck has none */
       boot: function () {}
     },
     questions: {

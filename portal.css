@@ -182,6 +182,140 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     line-height:1.7;
 }
 
+/* the Anki tab, once a block has a deck
+   ---------------------------------------------------------------
+   The deck is one file and the page's job is to answer the three questions
+   asked before downloading 35 MB: what is in it, what happens when I import
+   it, and is my own review history at risk. So the counts and the download sit
+   together at the top, the import notes follow as prose, and the week-by-week
+   listing goes last - it is the reassurance, not the headline.
+
+   The panel is .is-solo, so there is no rail and no 250px track to span. */
+.deck{
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--card-bg);
+    overflow:hidden;
+}
+
+.deck-head{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px 24px;
+    padding:22px 24px;
+    border-bottom:1px solid var(--border);
+}
+
+.deck-what{min-width:0;flex:1 1 20ch;}
+
+.deck-what h2{
+    margin:0 0 5px;
+    font-family:var(--serif);
+    font-size:1.2rem;
+    font-weight:600;
+    color:var(--text);
+}
+
+.deck-sum{
+    font-size:.85rem;
+    line-height:1.6;
+    color:var(--muted);
+}
+
+.deck-sum b{color:var(--text);font-weight:600;}
+
+/* Same shape as the review CTA on the questions tab. It is the one action on
+   the panel, so it carries the block's accent and nothing else does. */
+.deck-dl{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 18px;
+    font-size:.9rem;
+    font-weight:600;
+    text-decoration:none;
+    white-space:nowrap;
+    color:var(--on-q-accent);
+    background:var(--q-accent);
+    border:1px solid var(--q-accent);
+    border-radius:6px;
+}
+
+.deck-dl:hover{filter:brightness(1.08);}
+
+.deck-dl .sz{
+    font-size:.78rem;
+    font-weight:500;
+    padding:1px 8px;
+    border-radius:999px;
+    background:rgba(255,255,255,.22);
+}
+
+.deck-how{
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
+    font-size:.84rem;
+    line-height:1.7;
+    color:var(--muted);
+}
+
+.deck-how p{margin-bottom:11px;}
+.deck-how p:last-child{margin-bottom:0;}
+.deck-how strong{color:var(--text);font-weight:600;}
+.deck-how code{
+    font-size:.92em;
+    padding:1px 5px;
+    border-radius:4px;
+    background:var(--bg);
+    border:1px solid var(--border);
+}
+
+/* Three weeks side by side where there is room, stacked where there is not.
+   The lecture names are long enough that a fixed column count would either
+   clip them or leave a third of the panel empty. */
+.deck-weeks{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));
+    gap:8px 28px;
+    padding:20px 24px 22px;
+}
+
+.deck-week .panel-h .tc{
+    font-size:.72rem;
+    font-weight:400;
+    opacity:.75;
+    text-transform:none;
+    letter-spacing:0;
+}
+
+.deck-lecs{list-style:none;}
+
+.deck-lecs li{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:14px;
+    padding:5px 0;
+    font-size:.82rem;
+    line-height:1.45;
+    border-bottom:1px solid var(--border);
+}
+
+.deck-lecs li:last-child{border-bottom:none;}
+.deck-lecs .lc-n{color:var(--text);min-width:0;}
+
+.deck-lecs .lc-c{
+    flex:none;
+    font-size:.76rem;
+    color:var(--muted);
+    white-space:nowrap;
+}
+
+.deck-lecs .lc-c b{color:var(--text);font-weight:600;}
+.deck-lecs .hy{color:var(--q-accent-ink);}
+
 /* A grid item is min-width:auto by default, so one long lecture name in the
    index would stretch the whole rail past its 250px track and slide it under
    the stream. Both the rail and the panels inside it have to be allowed to be
@@ -1454,10 +1588,16 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 .print-cta:hover:not(:disabled){color:var(--q-accent);border-color:var(--q-accent);}
 .print-cta:disabled{opacity:.5;cursor:default;}
 
-/* how progress is kept - across the top of the questions panel, folded away,
-   because it only matters once. The panel is a two-track grid, so it has to be
-   told to span both. */
-.q-shell > .howto{grid-column:1 / -1;margin-bottom:6px;}
+/* how progress is kept - folded away under the filter bar, because it only
+   matters once and the questions matter every time. It sat above the bar until
+   the bar itself became the first thing on the panel; a warning that reads once
+   should not be what stands between the tab and its filters. The panel is a
+   two-track grid, so it has to be told to span both. */
+.q-shell > .howto{grid-column:1 / -1;margin-bottom:18px;}
+
+/* It hangs off the bar above it rather than floating between the two, so the
+   gap above is closed and the 18px is spent below, against the stream. */
+.qbar + .howto{margin-top:-10px;}
 
 .howto{
     font-size:.8rem;
@@ -2146,7 +2286,7 @@ select.ps:disabled{cursor:default;opacity:1;}
 /* a note is a one-pager by design, so printing gives one per sheet and drops
    every control - the gaps go too, they are screen bookkeeping */
 @media print{
-    .uplink,.blocknav,.tabs,.rail,.qbar,.testbar,.pagebar,.scoreboard,.storenote,footer,.pdf-btn,.pw-open,.fig-open,.posbar{display:none !important;}
+    .uplink,.blocknav,.tabs,.rail,.qbar,.testbar,.pagebar,.scoreboard,.storenote,footer,.pdf-btn,.pw-open,.fig-open,.posbar,.deck-dl{display:none !important;}
 
     /* one note, one week, or the lot: whatever was marked survives the print
        and everything else steps out of the way */

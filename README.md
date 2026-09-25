@@ -72,6 +72,7 @@ tools/portal.py       the course roster: blocks, families, accents, store keys
 tools/build_pages.py  every course's block pages, from one template
 tools/build_index.py  every course's landing page
 tools/build_hub.py    the front door
+tools/build_anki.py   a block's deck out of Anki, plus the manifest its tab reads
 tools/                PoM 2's extractors (an Obsidian vault in)
 tools/fom/            FoM's extractors (the question-bank PDFs in)
 ```
