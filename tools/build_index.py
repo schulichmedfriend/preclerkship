@@ -17,7 +17,7 @@ seed below, which is deliberately thin - it is a placeholder saying the course
 is not built, not a pretence that it is.
 """
 
-import io, os, re, sys
+import io, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import portal
@@ -47,16 +47,38 @@ def existing(course):
     return (hero.group(1) if hero else course["blurb"]), prose
 
 
+def qbank_card(course):
+    """The one card that is not a block: every question in the course.
+
+    It sits after the blocks and spans the grid, because it is not a sixth
+    block competing with the five - it is the other thing on the site, and a
+    card the same size and shape as its neighbours would say it was one more
+    of them.
+    """
+    if len(course["blocks"]) <= 1:
+        return u""
+    total = 0
+    for slug, _n, _name, _weeks in course["blocks"]:
+        total += len(json.load(io.open(
+            os.path.join(course["slug"], "data", "questions", "%s.json" % slug),
+            encoding="utf-8")))
+    return (u'<a class="qbank-card" href="qbank.html">\n'
+            u'<p class="bmeta">Every block &middot; %d questions</p>\n'
+            u'<h2>Question bank</h2>\n'
+            u'<p>All %d blocks in one bank, filtered by block, week, question set '
+            u'and whether you got it right. Build a practice test any length you '
+            u'like out of whatever you filter to, and sit it against a clock.</p>\n'
+            u'</a>' % (total, len(course["blocks"])))
+
+
 def cards(course):
-    """Both halves get the same weight: a block is notes AND questions, and
-       leading with the question count made it read as a quiz."""
+    """A block is its notes and its Anki deck; its questions are in the bank."""
     out = []
     for slug, n, name, weeks in course["blocks"]:
         page = io.open(os.path.join(course["slug"], "%s.html" % slug),
                        encoding="utf-8").read()
         blurb = re.search(r'<p class="lead">\s*(.*?)\s*</p>', page, re.S).group(1)
         hue = re.search(r'--q-accent:(#\w+);', page).group(1)
-        import json
         qs = json.load(io.open(os.path.join(course["slug"], "data", "questions",
                                             "%s.json" % slug), encoding="utf-8"))
         nt = json.load(io.open(os.path.join(course["slug"], "data", "notes",
@@ -69,7 +91,7 @@ def cards(course):
             u'<h2>%s</h2>\n<p>%s</p>\n'
             u'<span class="tally">\n'
             u'<span><b>%d</b> of %d lecture notes</span>\n'
-            u'<span><b>%d</b> practice questions</span>\n'
+            u'<span><b>%d</b> questions in the bank</span>\n'
             u'</span>\n'
             u'</a>' % (slug, hue, n, weeks, name, blurb, written, len(lects), len(qs)))
     return "\n".join(out)
@@ -109,6 +131,8 @@ TEMPLATE = u"""<!DOCTYPE html>
 {cards}
 </div>
 
+{qbank}
+
 {prose}
 
 {footer}
@@ -129,7 +153,8 @@ def main():
             favicon=portal.favicon(label, fill), fonts=portal.FONTS, nocache=portal.NOCACHE,
             base_css=portal.asset("base.css"), portal_css=portal.asset("portal.css"),
             accent=course["accent"], cf=portal.CF, uplink=portal.uplink(1),
-            hero=hero, cards=cards(course) or "", prose=prose, footer=portal.footer())
+            hero=hero, cards=cards(course) or "", qbank=qbank_card(course),
+            prose=prose, footer=portal.footer())
         io.open(os.path.join(course["slug"], "index.html"), "w",
                 encoding="utf-8", newline="\n").write(html)
         q, w, l = portal.counts(course)

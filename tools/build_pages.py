@@ -21,14 +21,11 @@ import portal
 HOWTO = """<details class="howto">
 <summary>Remember to save your progress</summary>
 <div class="body">
-<p><strong>On this device, and nowhere else.</strong> Your answers live in this
-browser&rsquo;s local storage &mdash; never sent to this site, never in its repository, visible
-to nobody but you. They also don&rsquo;t follow you: a different browser, a different laptop,
-or cleared site data all start from zero.</p>
-<p><strong>To carry them:</strong> press <strong>Download all my progress</strong> below. One
-file covers every block of this course. On the other machine, open any block and press
-<strong>Restore from a file</strong>. A restore only adds and updates, so an out of date file
-cannot wipe newer answers &mdash; and it is the only backup there is.</p>
+<p>Your answers live in your browser&rsquo;s local storage. They don&rsquo;t follow you
+on a different browser or laptop, and could be lost if the site data is cleared.</p>
+<p>To save your progress, press <strong>Download all my progress</strong> below. On your other
+device, press <strong>Restore from a file</strong>. A restore only adds and updates, so an out
+of date file cannot wipe newer answers.</p>
 <p class="storenote" id="storenote" hidden></p>
 <div class="resets">
 <button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
@@ -126,7 +123,8 @@ def block_counts(course, slug):
 ANKI_EMPTY = u"""<div class="tab-empty">
 <h2>The decks are not up yet.</h2>
 <p>This is where the {course} Anki cards for weeks {weeks} will live, filed by week and
-lecture the way the notes are. Nothing has been uploaded into it yet.</p>
+lecture the way the notes are &mdash; Christina&rsquo;s deck, brought up to date against this
+year&rsquo;s lecture slides. Nothing has been uploaded into it yet.</p>
 </div>"""
 
 
@@ -151,6 +149,10 @@ def anki_panel(course, slug, weeks):
            'across %d lectures. <b>%d</b> are marked high-yield.</p>'
            % (m["cards"], m["notes"],
               sum(len(w["lectures"]) for w in m["weeks"]), m["highyield"]),
+           '<p class="deck-src">Christina&rsquo;s deck, brought up to date. It is the '
+           'deck the classes pass down, re-exported against this year&rsquo;s lecture '
+           'slides &mdash; lectures that changed are updated and new ones are added, so '
+           'what you download matches the course as it is being taught now.</p>',
            '</div>',
            '<a class="deck-dl" href="%s" download>Download the deck '
            '<span class="sz">%s</span></a>' % (m["file"], mb),
@@ -160,15 +162,6 @@ def anki_panel(course, slug, weeks):
            '<strong>File &rarr; Import</strong> and pick the file. It arrives as '
            '<code>%s</code> with the week and lecture subdecks intact, so it sits '
            'beside whatever you already have rather than merging into it.</p>' % m["deck"],
-           '<p><strong>It carries no scheduling.</strong> The due dates are stripped on '
-           'the way out, so every card starts new for you and nothing you have already '
-           'reviewed gets overwritten. Re-importing a later version updates the cards '
-           'and leaves your progress where it is.</p>',
-           '<p><strong>Images come with it.</strong> Occlusion cards need the '
-           '<a href="https://ankiweb.net/shared/info/1374772155" rel="noopener" '
-           'target="_blank">Image Occlusion Enhanced</a> add-on to show properly; '
-           'everything else works on a plain Anki install, and on AnkiMobile or '
-           'AnkiDroid once it has synced.</p>',
            '</div>',
            '<div class="deck-weeks">']
     for w in m["weeks"]:
@@ -204,100 +197,73 @@ def blocknav(course, active):
     for slug, n, name, _w in course["blocks"]:
         cls = ' class="here"' if slug == active else ''
         rows.append('<a href="%s.html"%s>%d &middot; %s</a>' % (slug, cls, n, name))
+    # The questions live here now, so this is not one more way in - it is the
+    # way in. It still sits in the block strip, because that is where someone
+    # looking for a block's questions will look for them.
+    if len(course["blocks"]) > 1:
+        cls = "qbank here" if active == "qbank" else "qbank"
+        rows.append('<a href="qbank.html" class="%s">Question bank</a>' % cls)
     return "\n".join(rows)
 
 
-PAGE = u"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{name} &middot; {course}</title>
-<meta name="description" content="{desc}">
-<meta name="robots" content="noindex, nofollow">
-{favicon}
+def tint(hex6, toward, amount):
+    """hex6 mixed `amount` of the way towards white (1) or black (0).
 
-{nocache}
-{fonts}
-<link rel="stylesheet" href="{base_css}">
-<link rel="stylesheet" href="{portal_css}">
-<style>
-:root{{{accent}}}
-</style>
-{cf}
-</head>
-<body>
+    The term page needs the soft and ink shades of the course accent that each
+    block page carries by hand, and portal.py holds one colour per course. One
+    accent in, three out, so a course added to the roster needs no palette.
+    """
+    h = hex6.lstrip("#")
+    rgb = [int(h[i:i + 2], 16) for i in (0, 2, 4)]
+    end = 255 if toward else 0
+    return "#%02x%02x%02x" % tuple(
+        int(round(c + (end - c) * amount)) for c in rgb)
 
-<div class="pom2-page">
 
-<nav class="blocknav">
-{blocknav}
-</nav>
+def term_accent(course):
+    a = course["accent"]
+    return "--q-accent:%s;--q-accent-soft:%s;--q-accent-ink:%s;" % (
+        a, tint(a, True, 0.88), tint(a, False, 0.18))
 
-<header class="q-masthead">
-<div>
-<p class="eyebrow" id="m-eyebrow"></p>
-<h1>{name}</h1>
-<p class="lead">{lead}</p>
-</div>
-<div class="scoreboard" id="sb-notes">
-<div class="score"><b><span id="cv-notes">0</span><span class="of" id="cv-of"></span></b><span>Notes written</span></div>
-<div class="score"><b><span id="cv-weeks">0</span><span class="of" id="cv-weeks-of"></span></b><span>Weeks covered</span></div>
-</div>
-<div class="scoreboard" id="sb-questions" hidden>
-<div class="score"><b><span id="sc-done">0</span><span class="of" id="sc-of"></span></b><span>Attempted</span></div>
-<div class="score"><b id="sc-first">&ndash;</b><span>Correct</span></div>
-<div class="score is-bad"><b id="sc-wrong">0</b><span>Wrong</span></div>
-<div class="score is-star"><b id="sc-star">0</b><span>Starred</span></div>
-</div>
-</header>
 
-<div class="tabs" role="tablist" aria-label="Notes, Anki or questions">
-<button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes">Notes <span class="tc" id="tc-notes">{written}/{lectures}</span></button>
-<button type="button" id="tab-anki" role="tab" aria-selected="false" aria-controls="panel-anki">Anki{ankitc}</button>
-<button type="button" id="tab-questions" role="tab" aria-selected="false" aria-controls="panel-questions">Practice questions <span class="tc">{questions}</span></button>
-</div>
+# Only until the page exists; after that its own copy is the source of truth,
+# exactly as the block pages work.
+QBANK_SEED = {
+    "fom": (u"Every question in Foundations of Medicine in one bank — all four blocks, weeks 1 to 15. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
+             u"The whole Foundations of Medicine question bank, filterable by block, week, question set and status."),
+    "pom2": (u"Every question in Principles of Medicine 2 in one bank — all five blocks, weeks 1 to 20. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
+             u"The whole Principles of Medicine 2 question bank, filterable by block, week, question set and status."),
+    "t2c": (u"Every question in Transition to Clerkship in one bank — all six rotations, weeks 1 to 13. Filter by rotation, week, question set, or whether you got it right, then build a paper any length you like and sit it against the clock.",
+             u"The whole Transition to Clerkship question bank, filterable by rotation, week, question set and status."),
+}
 
-<div class="q-shell is-solo" id="panel-anki" role="tabpanel" aria-labelledby="tab-anki" hidden>
-{anki}
-</div>
 
-<div class="q-shell" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes">
-<aside class="rail">
+def existing_term(course):
+    """The qbank page's lead and description, hand edits surviving a rebuild."""
+    p = os.path.join(course["slug"], "qbank.html")
+    if not os.path.exists(p):
+        return QBANK_SEED[course["slug"]]
+    t = io.open(p, encoding="utf-8").read()
+    return (re.search(r'<p class="lead">\s*(.*?)\s*</p>', t, re.S).group(1),
+            re.search(r'<meta name="description" content="(.*?)">', t, re.S).group(1))
 
-<section>
-<p class="panel-h">Week</p>
-<div class="chips" id="note-week-chips"></div>
-</section>
 
-<section>
-<p class="panel-h">Lectures</p>
-<nav class="lecindex" id="note-index" aria-label="Jump to a lecture"></nav>
-</section>
-
-<section>
-<p class="panel-h">Save as PDF</p>
-<button class="print-cta" id="print-all" type="button" disabled>Save every note as one PDF</button>
-<p class="railnote">Each note has its own <strong>PDF</strong> button, and each week can be
-saved in one go. Print it, annotate it, keep it.</p>
-</section>
-
-</aside>
-
-<main class="stream" id="note-stream">
-<div class="q-loading">Loading notes&hellip;</div>
-</main>
-
-<div class="posbar notebar" id="notebar" hidden>
-<button class="pb-step pb-top" id="nb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
-</div>
-</div>
-
-<div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor" hidden>
+# The questions panel, shared by a block page and the pooled term page -
+# the toolbar, the stream and the sat-block bar are the same machine on
+# both, and the block filter reveals itself from quiz.js where there is
+# more than one block to choose between.
+QPANEL = u"""<div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor"{hidden}>
 
 <div class="qbar" id="qbar">
 
 <div class="qbar-filters">
+<div class="qsel" hidden id="f-block-wrap">
+<span id="f-block-lab">Block</span>
+<div class="msel">
+<button class="msel-btn" id="f-block" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-block-lab f-block-val"><span class="msel-val" id="f-block-val">Block</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
+<div class="msel-pop" id="f-block-pop" role="group" aria-labelledby="f-block-lab" hidden></div>
+</div>
+</div>
 <div class="qsel" id="f-family-wrap">
 <span id="f-family-lab">Question set</span>
 <div class="msel">
@@ -377,12 +343,92 @@ saved in one go. Print it, annotate it, keep it.</p>
 </span>
 <button class="pb-mark" id="pb-mark" type="button" hidden></button>
 </div>
+</div>"""
+
+
+PAGE = u"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{name} &middot; {course}</title>
+<meta name="description" content="{desc}">
+<meta name="robots" content="noindex, nofollow">
+{favicon}
+
+{nocache}
+{fonts}
+<link rel="stylesheet" href="{base_css}">
+<link rel="stylesheet" href="{portal_css}">
+<style>
+:root{{{accent}}}
+</style>
+{cf}
+</head>
+<body>
+
+<div class="pom2-page">
+
+<nav class="blocknav">
+{blocknav}
+</nav>
+
+<header class="q-masthead">
+<div>
+<p class="eyebrow" id="m-eyebrow"></p>
+<h1>{name}</h1>
+<p class="lead">{lead}</p>
+</div>
+<div class="scoreboard" id="sb-notes">
+<div class="score"><b><span id="cv-notes">0</span><span class="of" id="cv-of"></span></b><span>Notes written</span></div>
+<div class="score"><b><span id="cv-weeks">0</span><span class="of" id="cv-weeks-of"></span></b><span>Weeks covered</span></div>
+</div>
+</header>
+
+<div class="tabs" role="tablist" aria-label="Notes or Anki">
+<button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes">Notes <span class="tc" id="tc-notes">{written}/{lectures}</span></button>
+<button type="button" id="tab-anki" role="tab" aria-selected="false" aria-controls="panel-anki">Anki{ankitc}</button>
+<a class="tab-out" id="to-qbank" href="qbank.html#block={slug}">Practice questions <span class="tc">{questions}</span><span class="done" id="qb-done" hidden></span></a>
+</div>
+
+<div class="q-shell is-solo" id="panel-anki" role="tabpanel" aria-labelledby="tab-anki" hidden>
+{anki}
+</div>
+
+<div class="q-shell" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes">
+<aside class="rail">
+
+<section>
+<p class="panel-h">Week</p>
+<div class="chips" id="note-week-chips"></div>
+</section>
+
+<section>
+<p class="panel-h">Lectures</p>
+<nav class="lecindex" id="note-index" aria-label="Jump to a lecture"></nav>
+</section>
+
+<section>
+<p class="panel-h">Save as PDF</p>
+<button class="print-cta" id="print-all" type="button" disabled>Save every note as one PDF</button>
+<p class="railnote">Each note has its own <strong>PDF</strong> button, and each week can be
+saved in one go. Print it, annotate it, keep it.</p>
+</section>
+
+</aside>
+
+<main class="stream" id="note-stream">
+<div class="q-loading">Loading notes&hellip;</div>
+</main>
+
+<div class="posbar notebar" id="notebar" hidden>
+<button class="pb-step pb-top" id="nb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
+</div>
 </div>
 
 <script>
 window.QUIZ_BLOCK = {block_json};
 </script>
-<script src="{quiz_js}"></script>
 <script src="{notes_js}"></script>
 <script src="{portal_js}"></script>
 
@@ -393,6 +439,115 @@ window.QUIZ_BLOCK = {block_json};
 </body>
 </html>
 """
+
+
+QBANK_PAGE = u"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Question bank &middot; {course}</title>
+<meta name="description" content="{desc}">
+<meta name="robots" content="noindex, nofollow">
+{favicon}
+
+{nocache}
+{fonts}
+<link rel="stylesheet" href="{base_css}">
+<link rel="stylesheet" href="{portal_css}">
+<style>
+:root{{{accent}}}
+</style>
+{cf}
+</head>
+<body>
+
+<div class="pom2-page">
+
+<nav class="blocknav">
+{blocknav}
+</nav>
+
+<header class="q-masthead">
+<div>
+<p class="eyebrow" id="m-eyebrow"></p>
+<h1>Question bank</h1>
+<p class="lead">{lead}</p>
+</div>
+<div class="scoreboard" id="sb-questions">
+<div class="score"><b><span id="sc-done">0</span><span class="of" id="sc-of"></span></b><span>Attempted</span></div>
+<div class="score"><b id="sc-first">&ndash;</b><span>Correct</span></div>
+<div class="score is-bad"><b id="sc-wrong">0</b><span>Wrong</span></div>
+<div class="score is-star"><b id="sc-star">0</b><span>Starred</span></div>
+</div>
+</header>
+
+{qpanel}
+
+<script>
+window.QUIZ_BLOCK = {block_json};
+</script>
+<script src="{quiz_js}"></script>
+<script src="{portal_js}"></script>
+
+{footer}
+
+</div>
+
+</body>
+</html>
+"""
+
+
+def span(course):
+    """First week of the first block to the last of the last."""
+    dash = u"\u2013"
+    first = course["blocks"][0][3].split(dash)[0]
+    last = course["blocks"][-1][3].split(dash)[-1]
+    return first + dash + last
+
+
+def build_qbank(course):
+    """The one page that serves a course's questions, every block pooled.
+
+    This is the same engine the block pages used to run, handed a list of
+    blocks instead of one - which is why there is no second quiz.js, and why
+    an answer given here lands in that block's own store and shows up
+    wherever else that block's progress is read.
+
+    A block is one value of one filter, so a page per block was a page per
+    filter value. What it cost was everything that crosses a block: review
+    every wrong answer in the course, sit a hundred questions before the
+    summative, drill weeks 7 to 11. None of those can be said on a page whose
+    scope is one block, and they are what people ask for near an exam.
+    """
+    d = course["slug"]
+    lead, desc = existing_term(course)
+    blocks, total = [], 0
+    for slug, n, name, weeks in course["blocks"]:
+        qp = os.path.join(d, "data", "questions", "%s.json" % slug)
+        total += len(json.load(io.open(qp, encoding="utf-8")))
+        blocks.append({"slug": slug, "n": n, "name": name, "weeks": weeks,
+                       "qv": portal.digest(qp)})
+    cfg = {
+        "slug": "term", "name": u"the whole term", "course": course["short"],
+        "store": course["store"], "families": course["families"],
+        "eyebrow": u"Every block \u00b7 Weeks %s \u00b7 %d questions" % (span(course), total),
+        "blocks": blocks,
+    }
+    label, fill = FAVICON[d]
+    html = QBANK_PAGE.format(
+        base_css=portal.asset("base.css"), portal_css=portal.asset("portal.css"),
+        quiz_js=portal.asset("quiz.js"), portal_js=portal.asset("portal.js"),
+        course=course["short"], lead=lead, desc=desc, accent=term_accent(course),
+        fonts=portal.FONTS, nocache=portal.NOCACHE, cf=portal.CF,
+        footer=portal.footer(), favicon=portal.favicon(label, fill),
+        blocknav=blocknav(course, "qbank"),
+        qpanel=QPANEL.format(howto=HOWTO, questions=total, hidden=""),
+        block_json=json.dumps(cfg, ensure_ascii=False))
+    io.open(os.path.join(d, "qbank.html"), "w",
+            encoding="utf-8", newline="\n").write(html)
+    print("%-5s %-6s %d blocks pooled  %4d questions" % (d, "qbank", len(blocks), total))
 
 
 def main():
@@ -415,13 +570,16 @@ def main():
                 portal_js=portal.asset("portal.js"),
                 name=name, course=course["short"], weeks=weeks, lead=lead, desc=desc, accent=accent,
                 fonts=portal.FONTS, nocache=portal.NOCACHE, cf=portal.CF, footer=portal.footer(), howto=HOWTO, favicon=portal.favicon(label, fill),
-                blocknav=blocknav(course, slug), questions=q,
+                blocknav=blocknav(course, slug), questions=q, slug=slug,
                 anki=anki_panel(course, slug, weeks), ankitc=anki_tc(course, slug),
                 written=written, lectures=lectures,
                 block_json=json.dumps(cfg, ensure_ascii=False))
             io.open(os.path.join(d, "%s.html" % slug), "w",
                     encoding="utf-8", newline="\n").write(html)
             print("%-5s %-6s %2d/%d notes  %4d questions" % (d, slug, written, lectures, q))
+        # a one-block course has nothing to pool, and no page to pool it on
+        if len(course["blocks"]) > 1:
+            build_qbank(course)
 
 
 if __name__ == "__main__":

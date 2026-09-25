@@ -18,7 +18,23 @@
 
   var BLOCK = window.QUIZ_BLOCK;
   var STORE_PREFIX = BLOCK.store || "nsq.v1.";
-  var STORE_KEY = STORE_PREFIX + BLOCK.slug;
+
+  /* One page, one block or all of them. A block page names itself; the term
+     page names every block the course has and pools them into one bank. Every
+     line below works off BLOCKS, so the pooled page is this engine with a
+     longer list rather than a second copy of it - which is the whole reason
+     the portal has one quiz.js and not four. */
+  var BLOCKS = (BLOCK.blocks && BLOCK.blocks.length)
+    ? BLOCK.blocks
+    : [{ slug: BLOCK.slug, n: BLOCK.n, name: BLOCK.name,
+         weeks: BLOCK.weeks, qv: BLOCK.qv }];
+  var TERM = BLOCKS.length > 1;
+  var BLOCK_NAME = Object.create(null);
+  BLOCKS.forEach(function (b) { BLOCK_NAME[b.slug] = b.name; });
+
+  /* Headings shift down one level on the pooled page, because the block name
+     becomes the h2 that the question set used to be. */
+  function hTag(level) { return "h" + (TERM ? level + 1 : level); }
 
   /* every family the course has is listed, empty ones included: an empty family
      is a visible gap in coverage, which is the point. */
@@ -58,13 +74,14 @@
      ask, and a single-valued filter cannot answer it. Empty-means-all is what
      keeps the "All weeks" row a clear button rather than a fifth checkbox
      that has to be kept mutually exclusive with the other four. */
-  var filters = { status: [], family: [], week: [], tag: [] };
+  var filters = { status: [], block: [], family: [], week: [], tag: [] };
 
   function isOn(name, k) { return filters[name].indexOf(k) !== -1; }
 
   function anyFilter() {
-    return filters.status.length > 0 || filters.family.length > 0 ||
-           filters.week.length > 0 || filters.tag.length > 0;
+    return filters.status.length > 0 || filters.block.length > 0 ||
+           filters.family.length > 0 || filters.week.length > 0 ||
+           filters.tag.length > 0;
   }
 
   /* View and Mode are two axes, deliberately independent. VIEW is how the
@@ -94,7 +111,23 @@
      did not answer those questions. Drawing a block never erases what you
      already had. */
   var TEST = { size: 20, ids: null, picks: Object.create(null),
-               submitted: false, poolN: 0, asked: 0 };
+               submitted: false, poolN: 0, asked: 0,
+               /* minutes asked for, and the wall-clock instant that becomes.
+                  Off by default: a sat block is worth practising under time,
+                  but imposing one on someone drilling twenty questions is not
+                  what they asked for. */
+               limit: 0, deadline: null };
+
+  var TICK = null;
+
+  function stopTick() {
+    if (TICK) { clearInterval(TICK); TICK = null; }
+  }
+
+  function clockText(ms) {
+    var s = Math.max(0, Math.round(ms / 1000));
+    return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2);
+  }
 
   /* label and total lookups, filled in by buildBar: the applied-filter line
      needs a filter's human name, and a family's block total is what tells an
@@ -141,28 +174,48 @@
     };
   }
 
+  /* Progress stays keyed per BLOCK, one localStorage entry each, and the
+     pooled page reads and writes those same entries rather than a sixth of
+     its own. Answer a question on the term page and the block page already
+     has it: there is nothing to migrate, nothing to merge, and no second
+     copy of an answer that could disagree with the first. */
+  function storeKey(slug) { return STORE_PREFIX + slug; }
+
   function load() {
-    var raw = null;
-    try { raw = window.localStorage.getItem(STORE_KEY); }
-    catch (e) { storeWritable = false; return; }
-    if (!raw) return;
-    var parsed;
-    try { parsed = JSON.parse(raw); }
-    catch (e) { return; }
-    if (!parsed || typeof parsed !== "object") return;
-    Object.keys(parsed).forEach(function (qid) {
-      var rec = sanitize(qid, parsed[qid]);
-      if (rec) progress[qid] = rec;
+    BLOCKS.forEach(function (b) {
+      var raw = null;
+      try { raw = window.localStorage.getItem(storeKey(b.slug)); }
+      catch (e) { storeWritable = false; return; }
+      if (!raw) return;
+      var parsed;
+      try { parsed = JSON.parse(raw); }
+      catch (e) { return; }
+      if (!parsed || typeof parsed !== "object") return;
+      Object.keys(parsed).forEach(function (qid) {
+        var rec = sanitize(qid, parsed[qid]);
+        if (rec) progress[qid] = rec;
+      });
     });
   }
 
-  function save() {
+  /* Given a slug, writes that one block. Without one, all of them - which is
+     what a restore needs and what a single answer must not do, or every tick
+     on the term page would re-serialise fifteen hundred records five times. */
+  function save(slug) {
     if (!storeWritable) return;
-    try { window.localStorage.setItem(STORE_KEY, JSON.stringify(progress)); }
-    catch (e) {
-      storeWritable = false;
-      note("Progress could not be saved - the browser refused to write to local storage. Every question still works, but nothing is being kept.");
-    }
+    var want = slug ? [slug] : BLOCKS.map(function (b) { return b.slug; });
+    want.forEach(function (s) {
+      var mine = Object.create(null);
+      Object.keys(progress).forEach(function (qid) {
+        var q = QMAP[qid];
+        if (q && q.block === s) mine[qid] = progress[qid];
+      });
+      try { window.localStorage.setItem(storeKey(s), JSON.stringify(mine)); }
+      catch (e) {
+        storeWritable = false;
+        note("Progress could not be saved - the browser refused to write to local storage. Every question still works, but nothing is being kept.");
+      }
+    });
   }
 
   function note(text) {
@@ -214,18 +267,31 @@
       next.attempts = next.attempts.concat([patch.attempt]);
     }
     progress[qid] = next;
-    save();
+    save(q.block);
     paintQuestion(qid);
     paintStats();
     setAnchor(qid);
   }
 
-  function forget(qid) {
-    delete progress[qid];
-    save();
-    paintQuestion(qid);
+  function forget(qid) { forgetMany([qid]); }
+
+  /* One pass, one write per block touched. Clearing what is shown on the
+     pooled page can mean a thousand questions, and the old one-at-a-time
+     forget wrote the whole store back on every single one of them. */
+  function forgetMany(ids) {
+    if (!ids.length) return;
+    var touched = Object.create(null);
+    ids.forEach(function (qid) {
+      var q = QMAP[qid];
+      if (q) touched[q.block] = 1;
+      delete progress[qid];
+    });
+    Object.keys(touched).forEach(function (slug) { save(slug); });
+    ids.forEach(paintQuestion);
     paintStats();
-    if (ANCHOR === qid) { ANCHOR = null; RESUMING = false; paintPos(); }
+    if (ANCHOR && ids.indexOf(ANCHOR) !== -1) {
+      ANCHOR = null; RESUMING = false; paintPos();
+    }
   }
 
   /* ---------- mode helpers ---------- */
@@ -407,6 +473,7 @@
        gone. In bank order the heading three lines up already says this, and
        repeating it on every card is noise. */
     art.appendChild(el("p", "qwhere",
+      (TERM ? (BLOCK_NAME[q.block] || q.block) + " \u00b7 " : "") +
       (q.week === null ? "Off-curriculum" : "Week " + q.week) + " \u00b7 " + q.lecture));
 
     if (q.preamble) {
@@ -663,6 +730,11 @@
   /* Within a group the picks are an OR - week 1 or week 2 - and the four
      groups are ANDed together. That is the only reading that makes a second
      pick widen the stream rather than empty it. */
+  /* The block a question came from. On a block page every question shares
+     one, so the group is hidden and this is always true; on the term page it
+     is the first cut most people want. */
+  function blockOk(q) { return !filters.block.length || isOn("block", q.block); }
+
   function famOk(q) { return !filters.family.length || isOn("family", q.family); }
 
   function weekOk(q) { return !filters.week.length || isOn("week", weekKey(q)); }
@@ -700,7 +772,7 @@
 
   function matches(qid) {
     var q = QMAP[qid];
-    return famOk(q) && weekOk(q) && tagOk(q) && statusOk(q);
+    return blockOk(q) && famOk(q) && weekOk(q) && tagOk(q) && statusOk(q);
   }
 
   // qids currently passing the filters that actually have something to clear
@@ -769,13 +841,20 @@
     });
 
     var narrowed = filters.status.length > 0 || filters.week.length > 0 ||
-                   filters.tag.length > 0;
+                   filters.tag.length > 0 || filters.block.length > 0;
     [].forEach.call(document.querySelectorAll(".family"), function (f) {
       if (filters.family.length && !isOn("family", f.dataset.family)) { f.hidden = true; return; }
       /* a coverage gap is worth showing where the stream is grouped by set,
          and means nothing in a shuffled list that is not grouped at all */
       if (f.dataset.count === "0") { f.hidden = shuffling() || !!narrowed; return; }
       f.hidden = !f.querySelector(".q:not([hidden])");
+    });
+    [].forEach.call(document.querySelectorAll(".fam-gap"), function (g) {
+      g.hidden = shuffling() || !!narrowed;
+    });
+    /* after the sets, because it asks which of them are left standing */
+    [].forEach.call(document.querySelectorAll(".blockgroup"), function (g) {
+      g.hidden = !g.querySelector(".family:not([hidden])");
     });
     /* the empty state belongs to the filters, not to the page you are on */
     byId("empty").hidden = ids.length > 0;
@@ -795,9 +874,44 @@
     applyFilters();
   }
 
-  function setFacet(name, keys) { filters[name] = keys; afterFilterChange(); }
+  function setFacet(name, keys) {
+    filters[name] = keys;
+    if (name === "block") writeHash();
+    afterFilterChange();
+  }
+
+  /* ---------- the block in the address bar ---------- */
+
+  /* A block page used to BE the link to a block's questions. Now the block is
+     one value of one filter, so the filter has to be linkable or that address
+     is lost - it is what every block page's third tab points at, and what
+     someone sends when they say "these are the ones to do".
+
+     Only the block, and only on the pooled page: the other four facets are
+     things you try and drop within a session, where the block is where you
+     started. replaceState rather than the hash, so dragging the filter does
+     not fill the Back button with every combination passed through. */
+  function readHash() {
+    if (!TERM) return;
+    var m = /(?:^|[#&])block=([a-z0-9_,-]+)/i.exec(window.location.hash || "");
+    if (!m) return;
+    var want = m[1].split(",").filter(function (k) {
+      return BLOCK_NAME[k] !== undefined;
+    });
+    if (want.length) filters.block = want;
+  }
+
+  function writeHash() {
+    if (!TERM || !window.history || !window.history.replaceState) return;
+    var h = filters.block.length ? "#block=" + filters.block.join(",") : "";
+    try {
+      window.history.replaceState(null, "",
+        window.location.pathname + window.location.search + h);
+    } catch (e) { /* a file:// page refuses this; the filter still works */ }
+  }
 
   function clearFilters() {
+    filters.block = [];
     filters.family = [];
     filters.week = [];
     filters.tag = [];
@@ -918,6 +1032,8 @@
       TEST.ids = null;
       TEST.picks = Object.create(null);
       TEST.submitted = false;
+      TEST.deadline = null;
+      stopTick();
       pageIdx = 0;
     }
     syncSegs();
@@ -943,6 +1059,7 @@
     TEST.ids = pool.slice(0, Math.min(TEST.size, pool.length));
     TEST.picks = Object.create(null);
     TEST.submitted = false;
+    TEST.deadline = TEST.limit ? Date.now() + TEST.limit * 60000 : null;
     pageIdx = 0;
   }
 
@@ -951,6 +1068,8 @@
     /* flipped before the writes so persist() paints a revealed card, not a
        staged one */
     TEST.submitted = true;
+    TEST.deadline = null;
+    stopTick();
     TEST.ids.forEach(function (qid) {
       var q = QMAP[qid], picked = testChosen(qid);
       if (!picked.length) return;         /* left blank stays left blank */
@@ -1012,16 +1131,32 @@
       (n ? Math.round(right / n * 100) : 0) + "% on this block" +
       (blank ? " \u00b7 " + blank + " left blank" : "") + "."));
 
-    if (missed.length) {
-      var bySrc = Object.create(null);
+    /* The grouping a tutor stream structurally cannot show you, and on a
+       pooled paper the block is the cut that changes what you revise next -
+       "eleven of your fourteen misses were neurology" is the whole reason to
+       sit one paper across the term instead of five papers one at a time. */
+    function breakdown(label, keyOf) {
+      var by = Object.create(null), order = [];
       missed.forEach(function (q) {
-        bySrc[q.sourceLabel] = (bySrc[q.sourceLabel] || 0) + 1;
+        var k = keyOf(q);
+        if (by[k] === undefined) { by[k] = 0; order.push(k); }
+        by[k]++;
       });
+      if (label) box.appendChild(el("p", "tb-cut", label));
       var ul = document.createElement("ul");
-      Object.keys(bySrc).forEach(function (k) {
-        ul.appendChild(el("li", null, bySrc[k] + " missed from " + k));
+      order.forEach(function (k) {
+        ul.appendChild(el("li", null, by[k] + " missed from " + k));
       });
       box.appendChild(ul);
+    }
+
+    if (missed.length) {
+      if (TERM) {
+        breakdown("By block", function (q) { return BLOCK_NAME[q.block] || q.block; });
+        breakdown("By question set", function (q) { return q.sourceLabel; });
+      } else {
+        breakdown(null, function (q) { return q.sourceLabel; });
+      }
     }
     var stream = byId("stream");
     stream.parentNode.insertBefore(box, stream);
@@ -1050,6 +1185,49 @@
       : " \u00b7 " + answered + " of " + ids.length +
         " answered \u00b7 no feedback until you submit"));
     bar.appendChild(head);
+
+    stopTick();
+    if (!TEST.submitted && TEST.limit && TEST.deadline) {
+      var cEl = el("span", "tb-clock", clockText(TEST.deadline - Date.now()));
+      bar.appendChild(cEl);
+      TICK = setInterval(function () {
+        if (!TEST.deadline || TEST.submitted) { stopTick(); return; }
+        var left = TEST.deadline - Date.now();
+        cEl.textContent = clockText(left);
+        cEl.dataset.low = left < 60000 ? "1" : "";
+        /* Time up marks the paper where it stands. Blanks stay blank, which
+           is what an unanswered question on a real paper is. */
+        if (left <= 0) { stopTick(); submitTest(); }
+      }, 1000);
+    }
+
+    if (!TEST.submitted) {
+      var tf = el("div", "tb-time");
+      var tlab = document.createElement("label");
+      tlab.setAttribute("for", "tb-limit");
+      tlab.textContent = "Time";
+      var sel = document.createElement("select");
+      sel.id = "tb-limit";
+      [[0, "No limit"], [15, "15 min"], [30, "30 min"], [45, "45 min"],
+       [60, "60 min"], [90, "90 min"], [120, "2 hours"], [180, "3 hours"]
+      ].forEach(function (o) {
+        var opt = document.createElement("option");
+        opt.value = String(o[0]);
+        opt.textContent = o[1];
+        sel.appendChild(opt);
+      });
+      sel.value = String(TEST.limit);
+      sel.addEventListener("change", function () {
+        TEST.limit = parseInt(sel.value, 10) || 0;
+        /* the clock restarts from now rather than back-dating itself onto a
+           block you are already part-way through */
+        TEST.deadline = TEST.limit ? Date.now() + TEST.limit * 60000 : null;
+        paintTest();
+      });
+      tf.appendChild(tlab);
+      tf.appendChild(sel);
+      bar.appendChild(tf);
+    }
 
     var sf = el("div", "tb-size");
     var lab = document.createElement("label");
@@ -1425,29 +1603,34 @@
      were wrong, and the week counts were written once at build and never
      repainted at all. */
   function facetCounts() {
-    var fam = Object.create(null), week = Object.create(null);
-    var tag = Object.create(null);
+    var blk = Object.create(null), fam = Object.create(null);
+    var week = Object.create(null), tag = Object.create(null);
     var status = { all: 0, unseen: 0, wrong: 0, correct: 0, starred: 0 };
-    var famAll = 0, weekAll = 0, tagAll = 0, shown = 0;
+    var blkAll = 0, famAll = 0, weekAll = 0, tagAll = 0, shown = 0;
     QUESTIONS.forEach(function (q) {
-      var f = famOk(q), w = weekOk(q), t = tagOk(q), sOk = statusOk(q), wk, st;
-      if (w && t && sOk) {
+      var b = blockOk(q), f = famOk(q), w = weekOk(q), t = tagOk(q);
+      var sOk = statusOk(q), wk, st;
+      if (f && w && t && sOk) {
+        blk[q.block] = (blk[q.block] || 0) + 1;
+        blkAll++;
+      }
+      if (b && w && t && sOk) {
         fam[q.family] = (fam[q.family] || 0) + 1;
         famAll++;
       }
-      if (f && t && sOk) {
+      if (b && f && t && sOk) {
         wk = weekKey(q);
         week[wk] = (week[wk] || 0) + 1;
         weekAll++;
       }
-      if (f && w && sOk) {
+      if (b && f && w && sOk) {
         /* a question with two tags counts under each, so these never sum to
            tagAll - the same way the week chips are a partition and these are
            not */
         tagsOf(q).forEach(function (k) { tag[k] = (tag[k] || 0) + 1; });
         tagAll++;
       }
-      if (f && w && t) {
+      if (b && f && w && t) {
         st = stateOf(q.qid);
         status.all++;
         if (st === "unseen") status.unseen++;
@@ -1455,9 +1638,10 @@
         else status.correct++;
         if (isStarred(q.qid)) status.starred++;
       }
-      if (f && w && t && sOk) shown++;
+      if (b && f && w && t && sOk) shown++;
     });
     return {
+      blk: blk, blkAll: blkAll,
       fam: fam, famAll: famAll,
       week: week, weekAll: weekAll,
       tag: tag, tagAll: tagAll,
@@ -1491,6 +1675,7 @@
       });
     }
 
+    chips("block", function (k) { return BLOCK_NAME[k] || k; });
     chips("family", function (k) { return FAM_NAME[k] || k; });
     chips("week", function (k) { return WEEK_LABEL[k] || ("Week " + k); });
     chips("tag", function (k) { return TAG_LABEL[k] || k; });
@@ -1520,6 +1705,7 @@
     ca.type = "button";
     ca.addEventListener("click", function () {
       clearFilters();
+      writeHash();
       applyFilters();
     });
     list.appendChild(ca);
@@ -1539,6 +1725,8 @@
   function paintBar() {
     var c = facetCounts();
 
+    paintMulti("f-block", c.shown, c.blkAll,
+               function (k) { return c.blk[k] || 0; }, null);
     paintMulti("f-family", c.shown, c.famAll,
                function (k) { return c.fam[k] || 0; },
                function (k) { return FAM_TOTAL[k] === 0; });
@@ -1696,6 +1884,20 @@
   }
 
   function buildBar() {
+    /* Only where there is more than one block to choose between. A block page
+       ships the same markup and leaves it hidden, so the two pages stay one
+       template. */
+    if (TERM) {
+      var blkCount = {};
+      QUESTIONS.forEach(function (q) { blkCount[q.block] = (blkCount[q.block] || 0) + 1; });
+      var blkDefs = [{ k: "all", label: "All blocks" }];
+      BLOCKS.forEach(function (b) {
+        blkDefs.push({ k: b.slug, label: b.n + " \u00b7 " + b.name });
+      });
+      buildMulti("f-block", "block", "blocks", blkDefs);
+      if (byId("f-block-wrap")) byId("f-block-wrap").hidden = false;
+    }
+
     var famCount = {};
     QUESTIONS.forEach(function (q) { famCount[q.family] = (famCount[q.family] || 0) + 1; });
 
@@ -1735,6 +1937,7 @@
        It is a review action, so it drops you out of a sat block. */
     byId("review-wrong").addEventListener("click", function () {
       clearFilters();
+      writeHash();
       filters.status = ["wrong"];
       if (MODE === "test") { setMode("tutor"); return; }
       afterFilterChange();
@@ -1770,7 +1973,7 @@
         return;
       }
       clearTimeout(rsTimer);
-      hit.forEach(forget);
+      forgetMany(hit);
       rsIdle();
     });
     RESET_SHOWN_IDLE = rsIdle;
@@ -1785,13 +1988,15 @@
       if (!armed) {
         armed = true;
         ra.classList.add("armed");
-        ra.textContent = "Erase every answer in " + BLOCK.name + ", click to confirm";
+        ra.textContent = TERM
+          ? "Erase every answer in all " + BLOCKS.length + " blocks, click to confirm"
+          : "Erase every answer in " + BLOCK.name + ", click to confirm";
         timer = setTimeout(raIdle, 5000);
         return;
       }
       clearTimeout(timer);
       raIdle();
-      Object.keys(progress).slice().forEach(forget);
+      forgetMany(Object.keys(progress).slice());
     });
 
     buildBackup();
@@ -1946,51 +2151,85 @@
 
   function buildStream() {
     var stream = byId("stream"), frag = document.createDocumentFragment();
-    FAMILIES.forEach(function (f) {
-      var mine = QUESTIONS.filter(function (q) { return q.family === f.key; });
-      var sec = el("section", "family");
-      sec.dataset.family = f.key;
-      sec.dataset.count = String(mine.length);
-
-      var head = el("div", "fam-head");
-      head.appendChild(el("p", "fam-meta",
-        mine.length ? mine.length + " questions" : "nothing transcribed yet"));
-      head.appendChild(el("h2", null, f.name));
-      /* f.blurb still describes each set in portal.py and is worth keeping
-         there, but on the page it is a paragraph of preamble sitting between
-         you and the first question, re-read every time you scroll past. The
-         count and the name say enough. */
-      sec.appendChild(head);
-
-      if (!mine.length) {
-        sec.appendChild(el("p", "fam-empty",
-          "No " + f.name.toLowerCase() + " questions exist for this block yet. When they are written, they appear here."));
+    BLOCKS.forEach(function (b) {
+      /* On the pooled page each block gets a group and the question sets nest
+         inside it, so the stream still reads the way the term was taught -
+         block by block, week by week - instead of interleaving five blocks
+         under one heading called "Pre-Clerkship Workbook". One block means no
+         wrapper, and the markup is then exactly what it has always been. */
+      var host = frag, gaps = [];
+      if (TERM) {
+        var grp = el("section", "blockgroup");
+        grp.dataset.block = b.slug;
+        var bh = el("div", "blockbar");
+        bh.appendChild(el("p", "block-n",
+          "Block " + b.n + " \u00b7 Weeks " + b.weeks));
+        bh.appendChild(el("h2", null, b.name));
+        grp.appendChild(bh);
+        frag.appendChild(grp);
+        host = grp;
       }
 
-      var lastWeek = null, lastLecture = null;
-      mine.forEach(function (q) {
-        if (q.weekLabel !== lastWeek) {
-          lastWeek = q.weekLabel;
-          lastLecture = null;
-          var wb = el("div", "weekbar");
-          wb.appendChild(el("h3", null, q.weekLabel));
-          sec.appendChild(wb);
+      FAMILIES.forEach(function (f) {
+        var mine = QUESTIONS.filter(function (q) {
+          return q.block === b.slug && q.family === f.key;
+        });
+
+        /* A set with nothing in it is a coverage gap, and the block page is
+           where that is worth a panel of its own. Five blocks times six sets
+           would put sixteen of those panels on one page, so here the gap is
+           collected into one line at the foot of the block instead. */
+        if (TERM && !mine.length) { gaps.push(f.name); return; }
+
+        var sec = el("section", "family");
+        sec.dataset.family = f.key;
+        sec.dataset.count = String(mine.length);
+
+        var head = el("div", "fam-head");
+        head.appendChild(el("p", "fam-meta",
+          mine.length ? mine.length + " questions" : "nothing transcribed yet"));
+        head.appendChild(el(hTag(2), null, f.name));
+        /* f.blurb still describes each set in portal.py and is worth keeping
+           there, but on the page it is a paragraph of preamble sitting between
+           you and the first question, re-read every time you scroll past. The
+           count and the name say enough. */
+        sec.appendChild(head);
+
+        if (!mine.length) {
+          sec.appendChild(el("p", "fam-empty",
+            "No " + f.name.toLowerCase() + " questions exist for this block yet. When they are written, they appear here."));
         }
-        if (q.lecture !== lastLecture) {
-          lastLecture = q.lecture;
-          var lb = el("div", "lecbar");
-          lb.appendChild(el("h4", null, q.lecture));
-          /* lectureMeta is provenance - which deck, which pages, keyed or
-             reasoned - and it stays in the bank and in the vault note. It is
-             not shown here: on the page it sat between the lecture name and
-             the first question as a paragraph of housekeeping, which is not
-             what you are there to read. */
-          sec.appendChild(lb);
-        }
-        sec.appendChild(buildQuestion(q));
+
+        var lastWeek = null, lastLecture = null;
+        mine.forEach(function (q) {
+          if (q.weekLabel !== lastWeek) {
+            lastWeek = q.weekLabel;
+            lastLecture = null;
+            var wb = el("div", "weekbar");
+            wb.appendChild(el(hTag(3), null, q.weekLabel));
+            sec.appendChild(wb);
+          }
+          if (q.lecture !== lastLecture) {
+            lastLecture = q.lecture;
+            var lb = el("div", "lecbar");
+            lb.appendChild(el(hTag(4), null, q.lecture));
+            /* lectureMeta is provenance - which deck, which pages, keyed or
+               reasoned - and it stays in the bank and in the vault note. It is
+               not shown here: on the page it sat between the lecture name and
+               the first question as a paragraph of housekeeping, which is not
+               what you are there to read. */
+            sec.appendChild(lb);
+          }
+          sec.appendChild(buildQuestion(q));
+        });
+        HOME.push({ sec: sec, kids: [].slice.call(sec.childNodes) });
+        host.appendChild(sec);
       });
-      HOME.push({ sec: sec, kids: [].slice.call(sec.childNodes) });
-      frag.appendChild(sec);
+
+      if (gaps.length) {
+        host.appendChild(el("p", "fam-gap",
+          "Nothing transcribed yet from: " + gaps.join(", ") + "."));
+      }
     });
 
     /* where the cards go when the order is shuffled: one flat list, no
@@ -2014,6 +2253,7 @@
     QUESTIONS = data;
     QUESTIONS.forEach(function (q) { QMAP[q.qid] = q; });
     load();
+    readHash();
     buildMasthead();
     buildBar();
     buildStream();
@@ -2034,15 +2274,29 @@
     boot: function () {
       if (booted) return;
       booted = true;
-      fetch("data/questions/" + BLOCK.slug + ".json" +
-            /* build_pages.py stamps the file's content hash here. Without it this
-               one fetch was the only thing on the page with no cache busting, so a
-               browser could keep serving the previous deploy's bank however hard
-               you refreshed. Older pages carry no hash and simply go without. */
-            (BLOCK.qv ? "?v=" + BLOCK.qv : ""))
-        .then(function (r) {
-          if (!r.ok) throw new Error("HTTP " + r.status);
-          return r.json();
+      /* One request per block, in parallel, concatenated in block order -
+         which is why the pooled stream reads week 1 to week 20 without
+         anything having to sort it. Each question is stamped with the block
+         it came from on the way in; that stamp is what the block filter
+         reads and what tells save() which store to write. */
+      Promise.all(BLOCKS.map(function (b) {
+        return fetch("data/questions/" + b.slug + ".json" +
+              /* build_pages.py stamps the file's content hash here. Without it this
+                 one fetch was the only thing on the page with no cache busting, so a
+                 browser could keep serving the previous deploy's bank however hard
+                 you refreshed. Older pages carry no hash and simply go without. */
+              (b.qv ? "?v=" + b.qv : ""))
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .then(function (rows) {
+            rows.forEach(function (q) { q.block = b.slug; });
+            return rows;
+          });
+      }))
+        .then(function (lists) {
+          return lists.reduce(function (all, rows) { return all.concat(rows); }, []);
         })
         .then(start)
         .catch(function () {

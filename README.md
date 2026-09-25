@@ -1,12 +1,24 @@
 # Pre-clerkship portal
 
 A static study portal for the pre-clerkship years at Schulich. One directory per
-course, one page per block, two tabs per page: **notes**, a coverage map of every
-lecture in the block whether or not it has been written up, and **practice
-questions**, a quiz runner that keeps score. The questions tab reads the whole
-block as one scrolling stream by default, and answers on the spot; a **View**
-switch takes it one question at a time, and a **Mode** switch turns it into a
-sat block of however many questions you ask for, marked only once you submit.
+course. Each **block** gets a page with two tabs: **notes**, a coverage map of
+every lecture in the block whether or not it has been written up, and **Anki**,
+the deck for those weeks. Each **course** gets one more page, the **question
+bank**, which holds every question in the course at once.
+
+The bank reads as one scrolling stream and answers on the spot. Five filters
+narrow it - block, question set, week, topic, and whether you got it right - a
+**View** switch takes it one question at a time, an **Order** switch shuffles
+it, and a **Mode** switch turns whatever you have filtered to into a sat paper
+of however many questions you ask for, optionally against a clock, marked only
+once you submit.
+
+**A block is a filter value, not a page.** That is the whole reason the bank is
+one page: the things people want near an exam - every question they have got
+wrong, a hundred questions across the term, weeks 7 to 11 - cannot be said on a
+page whose scope is one block. Each block page's third tab is a link into the
+bank, pre-filtered to that block, and the address carries the filter
+(`qbank.html#block=msk`) so it can be sent to someone.
 
 No build step, no framework, no server. HTML, three JS files, two stylesheets and
 a folder of JSON per course. Serve the folder and it works.
@@ -69,10 +81,11 @@ pom2/              the same
 pom1/              a placeholder, a landing page and nothing behind it
 
 tools/portal.py       the course roster: blocks, families, accents, store keys
-tools/build_pages.py  every course's block pages, from one template
+tools/build_pages.py  every course's block pages AND its question bank
 tools/build_index.py  every course's landing page
 tools/build_hub.py    the front door
 tools/build_anki.py   a block's deck out of Anki, plus the manifest its tab reads
+tools/question_figures.py  question pictures out of the JSON and into assets/figures/
 tools/                PoM 2's extractors (an Obsidian vault in)
 tools/fom/            FoM's extractors (the question-bank PDFs in)
 ```
@@ -88,6 +101,22 @@ each page. Adding a fifth course is a dictionary, a directory and some JSON.
 That matters because the alternative was a copy of `quiz.js` per course, and
 those copies diverge. When Foundations was first built as its own site, its copy
 of the engine had already drifted in three places within a day.
+
+The same engine runs the block-scoped view and the whole-course bank: a page
+hands `quiz.js` a list of blocks, and a list of one behaves exactly as a block
+page did. Progress is stored per block either way, one `localStorage` key each,
+so an answer given in the bank is already there on the block page and there is
+no second copy of it to disagree.
+
+### Pictures are files, not base64
+
+A question's pictures live in `<course>/assets/figures/`, named after the hash
+of their own bytes, and the bank holds a path. They used to be inlined as
+`data:` URIs, which cost 3.1 MB across PoM 2 and FoM for 1.9 MB of actual
+picture, made a bank uncacheable and un-deltaable, and gave four questions
+sharing one figure four copies of it. `tools/question_figures.py` is the
+backfill and the check; the three places that could put one back -
+`tools/embed_image.py` and FoM's two PDF parsers - write files now.
 
 ## Run it
 
@@ -110,7 +139,9 @@ python tools/fom/rosters_from_vault.py  # the vault              -> fom/data/not
 python tools/rosters_from_vault.py      # the vault              -> pom2/data/notes/
 python tools/charts_from_vault.py       # folds written notes on top
 
-python tools/build_pages.py             # every course's block pages
+python tools/question_figures.py        # any newly-inlined picture -> assets/figures/
+
+python tools/build_pages.py             # every course's block pages + question bank
 python tools/build_index.py             # every course's landing page
 python tools/build_hub.py               # the hub and its totals
 ```

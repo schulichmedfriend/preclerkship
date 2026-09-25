@@ -60,6 +60,55 @@
     font-weight:600;
 }
 
+/* Every question in the course is on one page, and it sits in the same strip
+   as the blocks because that is where someone after a block's questions will
+   look. It is not a sixth block, so it is marked rather than numbered. */
+/* Not a sixth block card. It spans the grid it follows and drops the tally,
+   because the thing it offers is not "more of these" - it is the one place all
+   of them meet, and a card the same size would have said otherwise. */
+.qbank-card{
+    display:block;
+    padding:22px 26px;
+    margin-bottom:26px;
+    background:var(--card-bg);
+    border:1px solid var(--q-accent);
+    border-radius:10px;
+    transition:border-color .15s,transform .15s;
+}
+
+.qbank-card:hover{transform:translateY(-1px);}
+
+.qbank-card h2{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    font-weight:600;
+    letter-spacing:-.01em;
+    color:var(--q-accent-ink);
+    margin-bottom:8px;
+}
+
+.qbank-card p:last-child{
+    max-width:68ch;
+    color:var(--muted);
+    font-size:.92rem;
+    line-height:1.65;
+}
+
+/* the nav entry */
+.blocknav a.qbank{
+    margin-left:6px;
+    font-weight:600;
+    color:var(--q-accent);
+}
+
+.blocknav a.qbank::before{
+    content:"\2605";
+    margin-right:6px;
+    font-size:.76rem;
+}
+
+.blocknav a.qbank:hover{color:var(--q-accent-ink);}
+
 .blocknav .home{
     margin-right:6px;
     font-size:.7rem;
@@ -225,6 +274,18 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 }
 
 .deck-sum b{color:var(--text);font-weight:600;}
+
+/* Where the deck came from, beside what is in it. The question sets each carry
+   their provenance; a deck handed down and re-cut against this year's slides
+   has exactly the same question behind it - how current is what I am about to
+   download - and it is answered here rather than left to be asked. */
+.deck-src{
+    max-width:60ch;
+    margin-top:9px;
+    color:var(--muted);
+    font-size:.84rem;
+    line-height:1.6;
+}
 
 /* Same shape as the review CTA on the questions tab. It is the one action on
    the panel, so it carries the block's accent and nothing else does. */
@@ -670,6 +731,51 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .family{margin-bottom:36px;}
 
+/* The pooled page nests the question sets inside the block they came from, so
+   the stream still reads block by block and week by week the way the term was
+   taught. A block page has one block and never draws this. */
+.blockgroup{margin-bottom:52px;}
+.blockgroup[hidden]{display:none;}
+
+.blockbar{
+    padding:14px 18px;
+    margin-bottom:22px;
+    background:var(--q-accent-soft);
+    border-radius:9px;
+}
+
+.block-n{
+    font-size:.7rem;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--q-accent);
+    margin-bottom:5px;
+}
+
+.blockbar h2{
+    font-family:var(--serif);
+    font-size:1.85rem;
+    font-weight:600;
+    letter-spacing:-.015em;
+    color:var(--q-accent-ink);
+}
+
+/* Sixteen empty question sets would be sixteen dashed panels on one page, so
+   on the pooled page a block's gaps are one line instead. The panel is still
+   what the block page draws, where a gap is the thing you went to look at. */
+.fam-gap{
+    padding:11px 14px;
+    color:var(--muted);
+    font-size:.82rem;
+    font-style:italic;
+    background:var(--card-bg);
+    border:1px dashed var(--border);
+    border-radius:7px;
+}
+
+.fam-gap[hidden]{display:none;}
+
 .fam-head{
     padding-bottom:11px;
     margin-bottom:16px;
@@ -685,7 +791,8 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     margin-bottom:8px;
 }
 
-.fam-head h2{
+.fam-head h2,
+.fam-head h3{
     font-family:var(--serif);
     font-size:1.6rem;
     font-weight:600;
@@ -711,7 +818,8 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .weekbar{margin:26px 0 14px;}
 
-.weekbar h3{
+.weekbar h3,
+.weekbar h4{
     font-family:var(--sans);
     font-size:.78rem;
     font-weight:600;
@@ -724,7 +832,8 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .lecbar{margin:20px 0 10px;}
 
-.lecbar h4{
+.lecbar h4,
+.lecbar h5{
     font-family:var(--serif);
     font-size:1.12rem;
     font-weight:600;
@@ -771,6 +880,22 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     color:var(--muted);
 }
 
+/* content-visibility is doing real work here, not micro-tuning. The engine
+   builds every card once and hides what the filters exclude - which is what
+   makes filtering instant, and what makes first paint expensive, because the
+   browser lays out and paints all of them before anyone has scrolled. This
+   hands the off-screen ones back: they stay in the DOM, keep their ids, and
+   answer querySelector, but cost nothing until they approach the viewport.
+
+   Measured on a 4x-throttled CPU, navigation to a painted stream:
+     endo block page,  611 cards   3315 ms -> 886 ms
+     pooled PoM 2,   1,487 cards   5775 ms -> 1399 ms
+     pooled FoM,     1,979 cards   6183 ms -> 1517 ms
+
+   contain-intrinsic-size is the height guessed for a card not yet laid out.
+   It only has to be close: `auto` remembers the real height once a card has
+   been rendered, so the guess matters on the first pass down the page and
+   never again. Too small and the scrollbar lurches as cards are measured. */
 .q{
     position:relative;
     padding:16px 22px 12px 26px;
@@ -778,6 +903,15 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     background:var(--card-bg);
     border:1px solid var(--border);
     border-radius:8px;
+    content-visibility:auto;
+    contain-intrinsic-size:auto 420px;
+}
+
+/* Printing walks the whole document, and a card the browser has skipped has
+   no laid-out contents to put on the page. Both PDF paths - a single note and
+   the print-everything button - depend on this. */
+@media print{
+    .q{content-visibility:visible;}
 }
 
 .q::before{
@@ -1100,7 +1234,8 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .block-card.is-empty .tally span{font-style:italic;}
 
-.block-card .bmeta{
+.block-card .bmeta,
+.qbank-card .bmeta{
     font-size:.72rem;
     font-weight:600;
     letter-spacing:.08em;
@@ -1249,7 +1384,8 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     border-radius:8px;
 }
 
-.tabs button{
+.tabs button,
+.tabs .tab-out{
     display:inline-flex;
     align-items:baseline;
     gap:7px;
@@ -1265,7 +1401,8 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
     transition:color .15s,background .15s;
 }
 
-.tabs button:hover{color:var(--text);}
+.tabs button:hover,
+.tabs .tab-out:hover{color:var(--text);}
 
 .tabs button[aria-selected="true"]{
     background:var(--q-accent-soft);
@@ -1569,7 +1706,7 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 .note-head .spacer{flex:1;}
 
 .weekbar{display:flex;align-items:baseline;gap:12px;}
-.weekbar h3{flex:1;}
+.weekbar h3,.weekbar h4{flex:1;}
 
 .print-cta{
     width:100%;
@@ -1598,6 +1735,31 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 /* It hangs off the bar above it rather than floating between the two, so the
    gap above is closed and the 18px is spent below, against the stream. */
 .qbar + .howto{margin-top:-10px;}
+
+/* The third tab leads somewhere rather than opening a panel, so it reads as a
+   tab and behaves as a link: same box and baseline as its two neighbours, with
+   an arrow saying it leaves the page. Faking a panel it does not have would be
+   the worse lie. */
+.tab-out::after{
+    content:"\2192";
+    font-size:.9em;
+    opacity:.55;
+}
+
+.tab-out:hover::after{opacity:1;}
+
+/* How many of this block's questions are already answered. Hidden at zero:
+   before you have started, a nought is noise. */
+.tab-out .done{
+    padding:2px 7px;
+    font-size:.72rem;
+    font-weight:600;
+    color:var(--q-accent-ink);
+    background:var(--q-accent-soft);
+    border-radius:999px;
+}
+
+.tab-out .done[hidden]{display:none;}
 
 .howto{
     font-size:.8rem;
@@ -2117,7 +2279,36 @@ select.ps:disabled{cursor:default;opacity:1;}
    Clamping silently reads as a broken control. */
 .testbar .tb-note{flex-basis:100%;font-size:.8rem;font-style:italic;opacity:.9;}
 
-.tb-size{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.tb-time{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.tb-time label{font-size:.83rem;font-weight:600;white-space:nowrap;}
+
+.tb-time select{
+    padding:6px 9px;
+    font:inherit;
+    font-size:.86rem;
+    font-weight:600;
+    color:var(--q-warn);
+    background:var(--card-bg);
+    border:1px solid var(--q-warn);
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* Tabular figures, or the whole bar shifts sideways once a second. */
+.tb-clock{
+    padding:5px 11px;
+    font-size:1rem;
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+    color:var(--q-warn);
+    background:var(--card-bg);
+    border:1px solid var(--q-warn);
+    border-radius:5px;
+}
+
+.tb-clock[data-low="1"]{color:var(--on-q-accent);background:var(--q-warn);}
+
+.tb-size{display:flex;align-items:center;gap:8px;}
 .tb-size label{font-size:.83rem;font-weight:600;white-space:nowrap;}
 
 .tb-size input{
@@ -2184,6 +2375,16 @@ select.ps:disabled{cursor:default;opacity:1;}
 .tb-result p{font-size:.9rem;line-height:1.6;}
 .tb-result ul{margin:0;padding-left:18px;font-size:.87rem;line-height:1.6;}
 
+.tb-cut{
+    margin-top:12px;
+    margin-bottom:4px;
+    font-size:.7rem;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+}
+
 /* ---- one at a time ---- */
 /* The stream already builds every question into the DOM once and filters
    by hiding them. Paging is that same trick with a narrower predicate,
@@ -2191,12 +2392,15 @@ select.ps:disabled{cursor:default;opacity:1;}
    working without a second render path to maintain. */
 .q-flow[data-view="paged"] .fam-head,
 .q-flow[data-view="paged"] .fam-empty,
+.q-flow[data-view="paged"] .fam-gap,
+.q-flow[data-view="paged"] .blockbar,
 .q-flow[data-view="paged"] .weekbar{display:none;}
 
 /* One card on screen, so every margin meant to separate it from its
    neighbours is dead space you have to scroll past to reach the pager.
    The section, the lecture heading and the card itself all collapse. */
 .q-flow[data-view="paged"] .family{margin-bottom:0;}
+.q-flow[data-view="paged"] .blockgroup{margin-bottom:0;}
 .q-flow[data-view="paged"] .lecbar{margin:0 0 10px;}
 .q-flow[data-view="paged"] .q{margin-bottom:0;}
 .q-flow[data-view="paged"] .stream{margin-bottom:0;}
@@ -2256,7 +2460,8 @@ select.ps:disabled{cursor:default;opacity:1;}
     .q-masthead{align-items:flex-start;gap:24px;}
     .scoreboard{gap:22px;flex-wrap:wrap;}
     .tabs{width:100%;}
-    .tabs button{flex:1;justify-content:center;}
+    .tabs button,
+    .tabs .tab-out{flex:1;justify-content:center;}
 
     /* The phone filter accordion used to live here: below 960px the rail
        stopped being sticky and sat on top of the stream, sixteen controls

@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../base.css?v=7f3d47b4">
-<link rel="stylesheet" href="../portal.css?v=69f23523">
+<link rel="stylesheet" href="../portal.css?v=c39d83bf">
 <style>
 :root{--q-accent:#2f6b4f;--q-accent-soft:#e2efe9;--q-accent-ink:#275844;}
 </style>
@@ -32,6 +32,7 @@
 <a href="em.html">4 &middot; Emergency Medicine</a>
 <a href="fmob.html">5 &middot; Family Medicine & Obstetrics</a>
 <a href="dermim.html">6 &middot; Dermatology & Internal Medicine</a>
+<a href="qbank.html" class="qbank">Question bank</a>
 </nav>
 
 <header class="q-masthead">
@@ -44,25 +45,20 @@
 <div class="score"><b><span id="cv-notes">0</span><span class="of" id="cv-of"></span></b><span>Notes written</span></div>
 <div class="score"><b><span id="cv-weeks">0</span><span class="of" id="cv-weeks-of"></span></b><span>Weeks covered</span></div>
 </div>
-<div class="scoreboard" id="sb-questions" hidden>
-<div class="score"><b><span id="sc-done">0</span><span class="of" id="sc-of"></span></b><span>Attempted</span></div>
-<div class="score"><b id="sc-first">&ndash;</b><span>Correct</span></div>
-<div class="score is-bad"><b id="sc-wrong">0</b><span>Wrong</span></div>
-<div class="score is-star"><b id="sc-star">0</b><span>Starred</span></div>
-</div>
 </header>
 
-<div class="tabs" role="tablist" aria-label="Notes, Anki or questions">
+<div class="tabs" role="tablist" aria-label="Notes or Anki">
 <button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes">Notes <span class="tc" id="tc-notes">0/2</span></button>
 <button type="button" id="tab-anki" role="tab" aria-selected="false" aria-controls="panel-anki">Anki</button>
-<button type="button" id="tab-questions" role="tab" aria-selected="false" aria-controls="panel-questions">Practice questions <span class="tc">28</span></button>
+<a class="tab-out" id="to-qbank" href="qbank.html#block=psych">Practice questions <span class="tc">28</span><span class="done" id="qb-done" hidden></span></a>
 </div>
 
 <div class="q-shell is-solo" id="panel-anki" role="tabpanel" aria-labelledby="tab-anki" hidden>
 <div class="tab-empty">
 <h2>The decks are not up yet.</h2>
 <p>This is where the T2C Anki cards for weeks 5–6 will live, filed by week and
-lecture the way the notes are. Nothing has been uploaded into it yet.</p>
+lecture the way the notes are &mdash; Christina&rsquo;s deck, brought up to date against this
+year&rsquo;s lecture slides. Nothing has been uploaded into it yet.</p>
 </div>
 </div>
 
@@ -97,118 +93,11 @@ saved in one go. Print it, annotate it, keep it.</p>
 </div>
 </div>
 
-<div class="q-shell q-flow" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" data-view="stream" data-mode="tutor" hidden>
-
-<div class="qbar" id="qbar">
-
-<div class="qbar-filters">
-<div class="qsel" id="f-family-wrap">
-<span id="f-family-lab">Question set</span>
-<div class="msel">
-<button class="msel-btn" id="f-family" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-family-lab f-family-val"><span class="msel-val" id="f-family-val">Question set</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
-<div class="msel-pop" id="f-family-pop" role="group" aria-labelledby="f-family-lab" hidden></div>
-</div>
-</div>
-<div class="qsel" id="f-week-wrap">
-<span id="f-week-lab">Week</span>
-<div class="msel">
-<button class="msel-btn" id="f-week" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-week-lab f-week-val"><span class="msel-val" id="f-week-val">Week</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
-<div class="msel-pop" id="f-week-pop" role="group" aria-labelledby="f-week-lab" hidden></div>
-</div>
-</div>
-<div class="qsel" hidden id="f-tag-wrap">
-<span id="f-tag-lab">Topic</span>
-<div class="msel">
-<button class="msel-btn" id="f-tag" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-tag-lab f-tag-val"><span class="msel-val" id="f-tag-val">Topic</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
-<div class="msel-pop" id="f-tag-pop" role="group" aria-labelledby="f-tag-lab" hidden></div>
-</div>
-</div>
-<div class="qsel" id="f-status-wrap">
-<span id="f-status-lab">Status</span>
-<div class="msel">
-<button class="msel-btn" id="f-status" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="f-status-lab f-status-val"><span class="msel-val" id="f-status-val">Status</span><span class="msel-caret" aria-hidden="true">&#9662;</span></button>
-<div class="msel-pop" id="f-status-pop" role="group" aria-labelledby="f-status-lab" hidden></div>
-</div>
-</div>
-<button class="review-cta" id="review-wrong" type="button" disabled>Review wrong only <span class="n" id="review-n">0</span></button>
-</div>
-
-<div class="qbar-modes">
-<div class="qseg-field">
-<span id="view-lab">View</span>
-<div class="qseg" id="view-seg" role="group" aria-labelledby="view-lab">
-<button type="button" data-view="stream" aria-pressed="true">Continuous</button>
-<button type="button" data-view="paged" aria-pressed="false">One at a time</button>
-</div>
-</div>
-<div class="qseg-field">
-<span id="order-lab">Order</span>
-<div class="qseg" id="order-seg" role="group" aria-labelledby="order-lab">
-<button type="button" data-order="bank" aria-pressed="true">In order</button>
-<button type="button" data-order="shuffle" aria-pressed="false" title="Shuffle the questions. Pick it again to deal a new order.">Shuffled</button>
-</div>
-</div>
-<div class="qseg-field">
-<span id="mode-lab">Mode</span>
-<div class="qseg" id="mode-seg" role="group" aria-labelledby="mode-lab">
-<button type="button" data-mode="tutor" aria-pressed="true">Tutor</button>
-<button type="button" data-mode="test" aria-pressed="false">Test</button>
-</div>
-</div>
-</div>
-
-<div class="applied" id="applied" hidden></div>
-
-</div>
-
-<details class="howto">
-<summary>Remember to save your progress</summary>
-<div class="body">
-<p><strong>On this device, and nowhere else.</strong> Your answers live in this
-browser&rsquo;s local storage &mdash; never sent to this site, never in its repository, visible
-to nobody but you. They also don&rsquo;t follow you: a different browser, a different laptop,
-or cleared site data all start from zero.</p>
-<p><strong>To carry them:</strong> press <strong>Download all my progress</strong> below. One
-file covers every block of this course. On the other machine, open any block and press
-<strong>Restore from a file</strong>. A restore only adds and updates, so an out of date file
-cannot wipe newer answers &mdash; and it is the only backup there is.</p>
-<p class="storenote" id="storenote" hidden></p>
-<div class="resets">
-<button class="backup-btn" id="export-progress" type="button">Download all my progress</button>
-<button class="backup-btn" id="import-progress" type="button">Restore from a file</button>
-<input type="file" id="import-file" accept="application/json,.json" hidden>
-<button class="danger" id="reset-shown" type="button" disabled>Reset the questions shown (0)</button>
-<button class="danger" id="reset-all" type="button">Reset all progress</button>
-</div>
-</div>
-</details>
-
-<div class="testbar" id="testbar" hidden></div>
-
-<main class="stream" id="stream">
-<div class="q-loading">Loading 28 questions&hellip;</div>
-</main>
-
-<div class="pagebar" id="pagebar" hidden></div>
-
-<div class="posbar" id="posbar" hidden>
-<span class="pb-where" id="pb-where"></span>
-<span class="pb-count" id="pb-count"></span>
-<span class="pb-steps">
-<button class="pb-step pb-top" id="pb-top" type="button" title="Back to the top" aria-label="Back to the top">Top</button>
-<button class="pb-step" id="pb-prev" type="button" title="Previous question (k)" aria-label="Previous question">&uarr;</button>
-<button class="pb-step" id="pb-next" type="button" title="Next question (j)" aria-label="Next question">&darr;</button>
-</span>
-<button class="pb-mark" id="pb-mark" type="button" hidden></button>
-</div>
-</div>
-
 <script>
 window.QUIZ_BLOCK = {"slug": "psych", "n": 3, "name": "Psychiatry, Palliative & Geriatrics", "weeks": "5–6", "course": "T2C", "store": "nsq.t2c.v1.", "families": [{"key": "hipponotes", "name": "HippoNotes", "blurb": "The T2C question bank at the back of the Meds 2025 HippoNotes (Academic Resources Team, May 2023), filed under the rotation each question was written for. Peer-written, so the key is worth checking rather than trusting."}], "qv": "f64b24cd", "nv": "3dfa1549"};
 </script>
-<script src="../quiz.js?v=bb1bbff1"></script>
 <script src="../notes.js?v=c16ba83f"></script>
-<script src="../portal.js?v=618aaa13"></script>
+<script src="../portal.js?v=bd2d65db"></script>
 
 <footer>
 For questions, email <a href="mailto:schulichmedfriends@gmail.com">schulichmedfriends@gmail.com</a>
