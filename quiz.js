@@ -1008,7 +1008,7 @@
     var prev = el("button", "pg-btn", "\u2190 Previous");
     prev.type = "button";
     prev.disabled = pageIdx === 0;
-    prev.addEventListener("click", function () { pageIdx--; applyFilters(); toTop(); });
+    prev.addEventListener("click", function () { pageIdx--; applyFilters(); showPage(); });
     bar.appendChild(prev);
 
     bar.appendChild(el("span", "pg-pos", (pageIdx + 1) + " of " + ids.length));
@@ -1023,7 +1023,7 @@
       var next = el("button", "pg-btn", "Next \u2192");
       next.type = "button";
       next.disabled = atEnd;
-      next.addEventListener("click", function () { pageIdx++; applyFilters(); toTop(); });
+      next.addEventListener("click", function () { pageIdx++; applyFilters(); showPage(); });
       bar.appendChild(next);
     }
   }
@@ -1083,21 +1083,46 @@
 
   /* the stream runs to hundreds of questions, so the bar owes you the way
      out of it as well as the way around it. It hides itself once you land. */
-  function toTop() {
+  function scrollToY(y) {
     var still = window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    try { window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); }
-    catch (e) { window.scrollTo(0, 0); }
+    try { window.scrollTo({ top: y, behavior: still ? "auto" : "smooth" }); }
+    catch (e) { window.scrollTo(0, y); }
+  }
+
+  function toTop() { scrollToY(0); }
+
+  /* Paging used to call toTop, which threw the whole document to 0 on every
+     single Next - up past the masthead, the tabs, the how-to and the toolbar.
+     In this view the stream is one question tall, so there was never anything
+     up there worth being sent to, and the jump was the loudest thing on the
+     page.
+
+     Two changes. It scrolls to the QUESTION - taking the week and lecture
+     headings above it when they are showing, since those are its label - and
+     it does nothing at all when the question's top is already on screen,
+     which after a short stem is most of the time. Answering a question and
+     pressing Next should leave the page where it is. */
+  function showPage() {
+    var ids = inPlayIds(), art = ids.length ? byId("q-" + ids[pageIdx]) : null;
+    if (!art) return;
+
+    var target = art, p = art.previousElementSibling;
+    while (p && !p.hidden &&
+           (p.classList.contains("lecbar") || p.classList.contains("weekbar"))) {
+      target = p;
+      p = p.previousElementSibling;
+    }
+
+    var r = target.getBoundingClientRect();
+    if (r.top >= 0 && r.top <= window.innerHeight * 0.5) return;
+    scrollToY(r.top + window.pageYOffset - 16);
   }
 
   function goTo(qid) {
     var art = byId("q-" + qid);
     if (!art) return;
-    var top = art.getBoundingClientRect().top + window.pageYOffset - 16;
-    var still = window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    try { window.scrollTo({ top: top, behavior: still ? "auto" : "smooth" }); }
-    catch (e) { window.scrollTo(0, top); }
+    scrollToY(art.getBoundingClientRect().top + window.pageYOffset - 16);
     CURRENT = qid;
     paintPos();
   }

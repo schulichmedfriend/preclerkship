@@ -15,10 +15,16 @@
     --on-q-accent:#ffffff;
 }
 
+/* A block page opens on roughly 600px of chrome - switcher, masthead, tabs,
+   how-to, toolbar - and on a 1366x768 laptop that IS the screen: you land on
+   a block and the first question is below the fold, every time. Every number
+   from here down to the toolbar was cut for that, and the questions tab
+   drops the block's blurb as well, since by then you are working rather than
+   arriving. */
 .pom2-page{
     width:min(1240px,94%);
     margin:auto;
-    padding:32px 0 0;
+    padding:22px 0 0;
 }
 
 /* block switcher */
@@ -27,15 +33,15 @@
     flex-wrap:wrap;
     align-items:center;
     gap:4px;
-    padding:6px;
-    margin-bottom:28px;
+    padding:5px;
+    margin-bottom:16px;
     background:var(--card-bg);
     border:1px solid var(--border);
     border-radius:8px;
 }
 
 .blocknav a{
-    padding:7px 14px;
+    padding:6px 12px;
     border-radius:4px;
     font-size:.82rem;
     font-weight:500;
@@ -69,9 +75,9 @@
     flex-wrap:wrap;
     justify-content:space-between;
     align-items:flex-end;
-    gap:32px;
-    padding-bottom:28px;
-    margin-bottom:32px;
+    gap:16px 28px;
+    padding-bottom:16px;
+    margin-bottom:20px;
     border-bottom:1px solid var(--border);
 }
 
@@ -81,40 +87,48 @@
     letter-spacing:.08em;
     text-transform:uppercase;
     color:var(--q-accent);
-    margin-bottom:10px;
+    margin-bottom:6px;
 }
 
 .q-masthead h1{
     font-family:var(--serif);
-    font-size:clamp(2.1rem,5vw,3rem);
+    font-size:clamp(1.65rem,3.3vw,2.25rem);
     font-weight:600;
     letter-spacing:-.02em;
-    line-height:1.1;
+    line-height:1.15;
 }
 
 .q-masthead .lead{
     max-width:620px;
-    margin-top:12px;
+    margin-top:8px;
     color:var(--muted);
-    font-size:.98rem;
-    line-height:1.6;
+    font-size:.92rem;
+    line-height:1.5;
 }
+
+/* The blurb is an arrival note: it says what the block covers, which is worth
+   a paragraph the first time and nothing at all once you are answering. The
+   questions tab is the working view, so it takes the paragraph back and
+   leaves the eyebrow - Schulich PoM 2, block 2, weeks 5 to 8 - to say which
+   block this is. */
+body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .scoreboard{
     display:flex;
-    gap:28px;
+    flex-wrap:wrap;
+    gap:8px 22px;
 }
 
 .score b{
     display:block;
     font-family:var(--serif);
-    font-size:1.7rem;
+    font-size:1.4rem;
     font-weight:600;
     line-height:1.2;
 }
 
 .score .of{
-    font-size:1rem;
+    font-size:.88rem;
     font-weight:400;
     color:var(--muted);
 }
@@ -216,9 +230,10 @@
     justify-content:space-between;
     gap:8px;
     width:100%;
-    padding:11px 14px;
+    padding:8px 13px;
     font:inherit;
-    font-size:.88rem;
+    font-size:.85rem;
+    line-height:1.3;
     font-weight:600;
     text-align:left;
     color:var(--on-q-accent);
@@ -1060,8 +1075,8 @@
 .tabs{
     display:inline-flex;
     gap:2px;
-    padding:6px;
-    margin-bottom:32px;
+    padding:5px;
+    margin-bottom:18px;
     background:var(--card-bg);
     border:1px solid var(--border);
     border-radius:8px;
@@ -1071,7 +1086,7 @@
     display:inline-flex;
     align-items:baseline;
     gap:7px;
-    padding:9px 20px;
+    padding:8px 16px;
     font:inherit;
     font-size:.85rem;
     font-weight:500;
@@ -1589,11 +1604,19 @@
     gap:0;
 }
 
+/* Filters and the two segments were stacked rows with a rule between them,
+   costing about 65px of a screen that did not have it. They are one wrapping
+   flex row now, so the segments sit beside the dropdowns wherever there is
+   room and drop to their own line where there is not - at 1366 they wrap, on
+   a wide monitor they do not. The rule between them is gone either way: it
+   was drawing a boundary that is no longer always there. */
 .qbar{
-    display:grid;
-    gap:14px;
-    padding:15px 16px;
-    margin-bottom:28px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+    padding:12px 14px;
+    margin-bottom:18px;
     background:var(--card-bg);
     border:1px solid var(--border);
     border-radius:9px;
@@ -1602,14 +1625,16 @@
 .qbar-filters{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
+    gap:9px;
     align-items:flex-end;
+    flex:1 1 100%;
+    min-width:0;
 }
 
 .qsel{
     display:grid;
-    gap:5px;
-    flex:1 1 180px;
+    gap:4px;
+    flex:1 1 168px;
     min-width:0;
 }
 
@@ -1631,7 +1656,7 @@
 
    So the closed button is styled to be the select it replaced - same box,
    same count after the middot - and the change only shows up on opening it. */
-.msel{position:relative;}
+.msel{position:relative;min-width:0;}
 
 .msel-btn{
     display:flex;
@@ -1639,9 +1664,10 @@
     justify-content:space-between;
     gap:8px;
     width:100%;
-    padding:8px 10px;
+    padding:7px 9px;
     font:inherit;
     font-size:.86rem;
+    line-height:1.3;
     text-align:left;
     color:var(--text);
     background:var(--bg);
@@ -1652,7 +1678,7 @@
 
 .msel-btn:hover,
 .msel-btn[aria-expanded="true"]{border-color:var(--q-accent);}
-.msel-val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.msel-val{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .msel-caret{flex:0 0 auto;font-size:.66rem;color:var(--muted);}
 
 /* Absolutely placed, so opening a panel never reflows the bar and shoves the
@@ -1741,18 +1767,18 @@
 .qbar-modes{
     display:flex;
     flex-wrap:wrap;
-    gap:14px;
-    align-items:flex-end;
-    padding-top:13px;
-    border-top:1px solid var(--border);
+    gap:8px 18px;
+    align-items:center;
+    flex:0 1 auto;
 }
 
 /* View and Mode caption their controls the same way the filters do, so the
    whole bar reads as one row of labelled fields rather than two dropdowns
    and a pair of unexplained button pairs. */
 .qseg-field{
-    display:grid;
-    gap:5px;
+    display:flex;
+    align-items:center;
+    gap:8px;
     min-width:0;
 }
 
@@ -1775,9 +1801,10 @@
 }
 
 .qseg button{
-    padding:6px 13px;
+    padding:6px 11px;
     font:inherit;
-    font-size:.82rem;
+    font-size:.81rem;
+    line-height:1.25;
     font-weight:500;
     color:var(--muted);
     background:none;
@@ -1799,7 +1826,8 @@
 /* the applied row lives inside the bar, under everything else, because
    it is the one thing here that has to survive a glance */
 .qbar .applied{
-    padding-top:13px;
+    flex:1 1 100%;
+    padding-top:11px;
     padding-bottom:0;
     border-top:1px solid var(--border);
     border-bottom:0;
@@ -2061,8 +2089,9 @@ select.ps:disabled{cursor:default;opacity:1;}
        stopped being sticky and sat on top of the stream, sixteen controls
        deep, so it folded behind a button. The toolbar needs none of that -
        it is four dropdowns that wrap - so that second filter UI is gone. */
+    .qbar-filters{flex-basis:100%;}
     .qbar-filters .qsel{flex-basis:100%;}
-    .qbar-modes{gap:12px;}
+    .qbar-modes{gap:10px;flex:1 1 100%;}
     .qseg-field{flex:1 1 100%;}
     .qseg{justify-content:center;}
     .qseg button{flex:1;}

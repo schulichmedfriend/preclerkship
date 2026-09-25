@@ -51,6 +51,9 @@
   }
 
   function show(key) {
+    /* the stylesheet reads this: the questions tab is a working view and drops
+       the block's blurb from the masthead, where the notes tab keeps it */
+    document.body.dataset.tab = key;
     Object.keys(TABS).forEach(function (k) {
       var t = TABS[k], on = k === key;
       byId(t.tab).setAttribute("aria-selected", on ? "true" : "false");
