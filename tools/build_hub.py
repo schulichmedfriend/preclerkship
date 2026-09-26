@@ -56,7 +56,7 @@ TEMPLATE = u"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pre-clerkship</title>
+<title>Schulich Pre-clerkship</title>
 <meta name="description" content="Notes and practice questions for the pre-clerkship years at Schulich: Foundations of Medicine, Principles of Medicine 1 and 2, and Transition to Clerkship.">
 <meta name="robots" content="noindex, nofollow">
 {favicon}
@@ -75,7 +75,7 @@ TEMPLATE = u"""<!DOCTYPE html>
 <div class="pom2-page">
 
 <div class="page-hero">
-<h1>Pre-clerkship.</h1>
+<h1>Schulich Pre-clerkship.</h1>
 <p>
 A centralized, dynamic, up-to-date resource for all Schulich med students in
 pre-clerkship.

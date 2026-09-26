@@ -35,6 +35,20 @@
   var CURRENT = null;             // the note the index is pointing at
   var PENDING = null;             // a clicked note whose scroll is still running
 
+  var query = "";                 // the search box, lowercased and trimmed
+  /* Highlighting is the expensive half of a search, and its cost is the number
+     of HITS, not the number of notes. One letter typed into a 43-note block
+     matches about 27,000 times, and painting that many <mark>s locks the page
+     up for seconds. So a query earns highlighting by being long enough to mean
+     something, and even then it stops at a budget. Filtering is never capped -
+     the stream and the index always tell the truth, whether or not the words
+     inside them get painted. */
+  var MARK_MIN = 3;               // shorter than this, filter but do not paint
+  var MARK_BUDGET = 800;          // and never paint more than this in one pass
+  var HAY = Object.create(null);  // lecture id -> everything in it, lowercased
+  var MARKED = [];                // notes currently carrying highlights
+  var QT = null;                  // the keystroke debounce
+
   function byId(id) { return document.getElementById(id); }
 
   function el(tag, cls, text) {
@@ -617,6 +631,86 @@
     });
   }
 
+  /* ---------- search ---------- */
+
+  /* What gets searched is the note as it was rendered, read back off the page
+     rather than re-derived from the JSON. A note is a title, a framing
+     paragraph, tables, callouts and key points in whatever order they were
+     written, and textContent already carries all of it. Re-walking the blocks
+     here would be a second parser that could disagree with the first.
+
+     A lecture with no note still has its number and name in the haystack, so
+     searching for one finds the gap where it will go rather than nothing. */
+  function indexText() {
+    lectures().forEach(function (lec) {
+      var art = byId("n-" + lec.key);
+      HAY[lec.key] = (lec.num + " " + lec.name + " " +
+                      (art ? art.textContent : "")).toLowerCase();
+    });
+  }
+
+  function hit(id) {
+    return !query || (HAY[id] || "").indexOf(query) !== -1;
+  }
+
+  function unmark() {
+    MARKED.forEach(function (art) {
+      [].forEach.call(art.querySelectorAll("mark.hit"), function (m) {
+        m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
+      });
+      // the split halves of every text node put back together, so the next
+      // search sees whole words rather than the pieces this one left behind
+      art.normalize();
+    });
+    MARKED = [];
+  }
+
+  /* Highlighting walks text nodes instead of rewriting innerHTML: these notes
+     are real markup, and a string replace across them would corrupt a tag the
+     moment a search term straddled one.
+
+     .pathway is skipped because mermaid parses that element's own text, and a
+     <mark> inside it is a syntax error rather than a highlight. */
+  function markHits(art, budget) {
+    if (!document.createTreeWalker) return 0;
+    var walk = document.createTreeWalker(art, NodeFilter.SHOW_TEXT, null, false);
+    var targets = [], n;
+    while ((n = walk.nextNode())) {
+      if (!n.nodeValue || n.nodeValue.toLowerCase().indexOf(query) === -1) continue;
+      var host = n.parentNode;
+      if (host && host.closest && host.closest(".pathway")) continue;
+      targets.push(n);
+    }
+    if (!targets.length) return 0;
+
+    var made = 0;
+    targets.forEach(function (node) {
+      if (made >= budget) return;
+      var raw = node.nodeValue, low = raw.toLowerCase();
+      var frag = document.createDocumentFragment(), i = 0, j;
+      while (made < budget && (j = low.indexOf(query, i)) !== -1) {
+        if (j > i) frag.appendChild(document.createTextNode(raw.slice(i, j)));
+        frag.appendChild(el("mark", "hit", raw.slice(j, j + query.length)));
+        i = j + query.length;
+        made++;
+      }
+      // whatever the budget did not reach stays as it was written
+      if (i < raw.length) frag.appendChild(document.createTextNode(raw.slice(i)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    if (made) MARKED.push(art);
+    return made;
+  }
+
+  function setQuery(v) {
+    var next = (v || "").replace(/^\s+|\s+$/g, "").toLowerCase();
+    if (next === query) return;
+    query = next;
+    var clear = byId("note-q-clear");
+    if (clear) clear.hidden = !query;
+    applyFilter();
+  }
+
   /* ---------- filter ---------- */
 
   /* Week numbers run across the whole year, not from 1 inside each block - msk
@@ -638,16 +732,22 @@
   }
 
   function matches(lec) {
-    return week === "all" || WK[lec.key] === week;
+    return (week === "all" || WK[lec.key] === week) && hit(lec.key);
   }
 
   function applyFilter() {
     var shown = 0;
+    /* every highlight from the last query comes off before this one goes on,
+       and a note that is about to be hidden is left clean rather than carrying
+       marks nobody can see */
+    unmark();
+    var budget = query.length >= MARK_MIN ? MARK_BUDGET : 0;
     lectures().forEach(function (lec) {
       var art = byId("n-" + lec.key);
       if (!art) return;
       var ok = matches(lec);
       art.hidden = !ok;
+      if (ok && budget > 0) budget -= markHits(art, budget);
       if (ok) shown++;
     });
 
@@ -665,13 +765,22 @@
        than from a lookup, so a roster that repeats an id cannot leave a row
        behind that never hides */
     [].forEach.call(document.querySelectorAll("#note-index .lecrow"), function (row) {
-      row.hidden = !(week === "all" || row.dataset.k === week);
+      row.hidden = !((week === "all" || row.dataset.k === week) &&
+                     hit(row.dataset.id));
     });
 
     /* the week headings inside the index earn their line only on All, where the
-       numbering restarts at 01 once per week and would otherwise be unreadable */
+       numbering restarts at 01 once per week and would otherwise be unreadable.
+       A search thins the rows under them, so a heading left with nothing beneath
+       it goes too - otherwise the rail reads as a list of empty weeks. */
     [].forEach.call(document.querySelectorAll("#note-index .lecgroup"), function (g) {
-      g.hidden = week !== "all";
+      if (week !== "all") { g.hidden = true; return; }
+      var any = false, n = g.nextElementSibling;
+      while (n && !n.classList.contains("lecgroup")) {
+        if (n.classList.contains("lecrow") && !n.hidden) { any = true; break; }
+        n = n.nextElementSibling;
+      }
+      g.hidden = !any;
     });
 
     /* Nothing is marked before the first scroll, because at the top of the page
@@ -687,7 +796,16 @@
     }
 
     byId("note-empty").hidden = shown > 0;
+    paintHits(shown);
     paintChips();
+  }
+
+  function paintHits(shown) {
+    var line = byId("note-q-count");
+    if (!line) return;
+    line.hidden = !query;
+    line.textContent = shown === 1 ? "1 lecture matches"
+                                   : shown + " lectures match";
   }
 
   function counts() {
@@ -737,8 +855,38 @@
       });
     }
 
+    buildSearch();
     buildIndex();
     byId("print-all").addEventListener("click", printAll);
+  }
+
+  function buildSearch() {
+    /* a page cached from before the search shipped still has to work */
+    var box = byId("note-q");
+    if (!box) return;
+
+    /* Debounced, because every keystroke re-filters the stream and re-walks
+       the text nodes of whatever still matches. 150ms is below the gap between
+       two typed characters and above the cost of one pass. */
+    box.addEventListener("input", function () {
+      if (QT) window.clearTimeout(QT);
+      QT = window.setTimeout(function () { setQuery(box.value); }, 150);
+    });
+    box.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" || e.keyCode === 27) {
+        box.value = "";
+        setQuery("");
+      }
+    });
+
+    var clear = byId("note-q-clear");
+    if (clear) {
+      clear.addEventListener("click", function () {
+        box.value = "";
+        setQuery("");
+        box.focus();
+      });
+    }
   }
 
   function buildStream() {
@@ -810,6 +958,7 @@
     });
     buildRail();
     buildStream();
+    indexText();
     paintCoverage();
     applyFilter();
     initSpy();

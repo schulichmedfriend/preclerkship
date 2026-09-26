@@ -47,30 +47,6 @@ def existing(course):
     return (hero.group(1) if hero else course["blurb"]), prose
 
 
-def qbank_card(course):
-    """The one card that is not a block: every question in the course.
-
-    It sits after the blocks and spans the grid, because it is not a sixth
-    block competing with the five - it is the other thing on the site, and a
-    card the same size and shape as its neighbours would say it was one more
-    of them.
-    """
-    if len(course["blocks"]) <= 1:
-        return u""
-    total = 0
-    for slug, _n, _name, _weeks in course["blocks"]:
-        total += len(json.load(io.open(
-            os.path.join(course["slug"], "data", "questions", "%s.json" % slug),
-            encoding="utf-8")))
-    return (u'<a class="qbank-card" href="qbank.html">\n'
-            u'<p class="bmeta">Every block &middot; %d questions</p>\n'
-            u'<h2>Question bank</h2>\n'
-            u'<p>All %d blocks in one bank, filtered by block, week, question set '
-            u'and whether you got it right. Build a practice test any length you '
-            u'like out of whatever you filter to, and sit it against a clock.</p>\n'
-            u'</a>' % (total, len(course["blocks"])))
-
-
 def cards(course):
     """A block is its notes and its Anki deck; its questions are in the bank."""
     out = []
@@ -134,8 +110,6 @@ TEMPLATE = u"""<!DOCTYPE html>
 {cards}
 </div>
 
-{qbank}
-
 {prose}
 
 {footer}
@@ -156,7 +130,7 @@ def main():
             favicon=portal.favicon(label, fill), fonts=portal.FONTS, nocache=portal.NOCACHE,
             base_css=portal.asset("base.css"), portal_css=portal.asset("portal.css"),
             accent=course["accent"], cf=portal.CF, uplink=portal.uplink(1),
-            hero=hero, cards=cards(course) or "", qbank=qbank_card(course),
+            hero=hero, cards=cards(course) or "",
             prose=prose, footer=portal.footer())
         io.open(os.path.join(course["slug"], "index.html"), "w",
                 encoding="utf-8", newline="\n").write(html)

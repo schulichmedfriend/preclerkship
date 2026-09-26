@@ -438,6 +438,46 @@
 
   var KIND_LABEL = { matching: "matching", pairing: "matching", short: "short answer", broken: "unscorable" };
 
+  /* ---------- where a question came from ---------- */
+
+  /* Not every set knows its lecture. The FoM and PoM 1 banks file by week, so
+     each of their questions carries the SET's name where a lecture would go,
+     and a HippoNotes chapter covers a whole week and names that week. Printing
+     either back as "the lecture to review" would be a promise the data cannot
+     keep.
+
+     A lecture earns its place on the line only when it says something the week
+     heading has not already said. What makes a set's label detectable without a
+     hand-kept list is that every question in that block and set carries it: a
+     real lecture name never does. */
+  var LABEL = null;
+
+  function setLabels() {
+    if (LABEL) return LABEL;
+    LABEL = Object.create(null);
+    var only = Object.create(null);
+    QUESTIONS.forEach(function (q) {
+      var k = q.block + "\u0000" + q.family;
+      if (only[k] === undefined) only[k] = q.lecture;
+      else if (only[k] !== q.lecture) only[k] = null;
+    });
+    Object.keys(only).forEach(function (k) { if (only[k]) LABEL[only[k]] = true; });
+    return LABEL;
+  }
+
+  function whereFrom(q) {
+    var parts = [];
+    if (TERM) parts.push(BLOCK_NAME[q.block] || q.block);
+    parts.push(q.weekLabel ||
+      (q.week === null ? "Off-curriculum" : "Week " + q.week));
+    var lec = q.lecture;
+    if (lec && !setLabels()[lec] && lec !== BLOCK_NAME[q.block] &&
+        parts.join(" ").toLowerCase().indexOf(lec.toLowerCase()) === -1) {
+      parts.push(lec);
+    }
+    return parts.join(" \u00b7 ");
+  }
+
   function buildQuestion(q) {
     var art = el("article", "q");
     art.id = "q-" + q.qid;
@@ -594,6 +634,15 @@
       c.appendChild(cb);
       ans.appendChild(c);
     });
+
+    /* The lecture to go back to, at the FOOT of the explanation rather than the
+       head of the card. It is the next thing wanted after reading why an answer
+       was wrong, and before answering it is a hint. */
+    var src = el("p", "ans-src");
+    src.appendChild(el("span", "sl", "Review"));
+    src.appendChild(el("span", "sw", whereFrom(q)));
+    ans.appendChild(src);
+
     art.appendChild(ans);
 
     var foot = el("div", "qfoot");

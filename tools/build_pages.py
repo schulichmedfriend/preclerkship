@@ -431,6 +431,15 @@ PAGE = u"""<!DOCTYPE html>
 <aside class="rail">
 
 <section>
+<p class="panel-h"><label for="note-q">Search</label></p>
+<div class="notesearch">
+<input type="search" id="note-q" placeholder="Search every note" autocomplete="off" spellcheck="false">
+<button class="ns-clear" id="note-q-clear" type="button" title="Clear the search" aria-label="Clear the search" hidden>&times;</button>
+</div>
+<p class="railnote hits" id="note-q-count" hidden></p>
+</section>
+
+<section>
 <p class="panel-h">Week</p>
 <div class="chips" id="note-week-chips"></div>
 </section>

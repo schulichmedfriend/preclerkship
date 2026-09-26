@@ -11,7 +11,13 @@ narrow it - block, question set, week, topic, and whether you got it right - a
 **View** switch takes it one question at a time, an **Order** switch shuffles
 it, and a **Mode** switch turns whatever you have filtered to into a sat paper
 of however many questions you ask for, optionally against a clock, marked only
-once you submit.
+once you submit. Every explanation closes by naming the block, the week and,
+where the set knows it, the lecture the question came from, so the next step
+after getting one wrong is on the card rather than in a filter.
+
+The notes tab carries a **search** above the week chips. It reads the whole
+note, not just the lecture title, narrows the stream and the lecture index
+together, and highlights what it found.
 
 **A block is a filter value, not a page.** That is the whole reason the bank is
 one page: the things people want near an exam - every question they have got

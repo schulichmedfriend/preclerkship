@@ -419,6 +419,67 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .railnote strong{color:var(--text);font-weight:600;}
 
+/* The notes search. It sits at the top of the rail rather than over the stream
+   because it narrows the same two things the week chips below it narrow - the
+   stream and the lecture index - and a filter that lives beside the other
+   filters reads as one control panel instead of two. */
+.notesearch{position:relative;display:flex;}
+
+.notesearch input{
+    width:100%;
+    padding:7px 28px 7px 10px;
+    font:inherit;
+    font-size:.85rem;
+    color:var(--text);
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:6px;
+    /* Safari renders a search input as a pill with its own inset shadow and
+       ignores most of the above until this is off */
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+.notesearch input::placeholder{color:var(--muted);}
+.notesearch input:focus{outline:none;border-color:var(--q-accent);}
+
+/* the browser's own clear button is a search-input-only control that Firefox
+   does not draw at all, so the portal supplies its own and hides that one */
+.notesearch input::-webkit-search-cancel-button{-webkit-appearance:none;}
+
+.ns-clear{
+    position:absolute;
+    top:50%;
+    right:4px;
+    transform:translateY(-50%);
+    width:22px;
+    height:22px;
+    padding:0;
+    font:inherit;
+    font-size:1.05rem;
+    line-height:1;
+    color:var(--muted);
+    background:none;
+    border:0;
+    border-radius:4px;
+    cursor:pointer;
+}
+
+.ns-clear:hover{color:var(--text);}
+
+.railnote.hits{margin-top:8px;font-weight:600;color:var(--q-accent-ink,var(--accent));}
+
+/* A hit inside a note. Underlined as well as tinted, because the accent behind
+   it is the one thing on the page that changes colour per block and a wash
+   alone would be near-invisible on the paler ones. */
+mark.hit{
+    background:var(--q-accent-soft);
+    color:inherit;
+    border-radius:2px;
+    box-shadow:inset 0 -1px 0 var(--q-accent);
+    padding:0 1px;
+}
+
 .review-cta{
     display:flex;
     align-items:center;
@@ -1128,6 +1189,32 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 .ans-body th,.ans-body td,.stem th,.stem td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top;}
 .ans-body th,.stem th{background:var(--bg);font-weight:600;}
 .ans-body img{border:1px solid var(--border);border-radius:6px;}
+
+/* The lecture to go back to. It closes the explanation rather than opening it,
+   so it is set quiet - the answer is the thing being read, and this is the
+   pointer out of it. */
+.ans-src{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:8px;
+    margin-top:14px;
+    padding-top:11px;
+    border-top:1px dashed var(--border);
+    font-size:.82rem;
+    line-height:1.5;
+}
+
+.ans-src .sl{
+    flex:none;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--q-accent-ink);
+}
+
+.ans-src .sw{color:var(--muted);font-weight:500;}
 
 .callout{
     padding:11px 13px;
