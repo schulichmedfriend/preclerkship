@@ -545,7 +545,7 @@ def fig_html(img):
     src = question_figures.write_asset("fom", img["bytes"], img.get("ext") or "png")
     return (u'<figure><img loading="lazy" src="%s" '
             u'alt="Figure from the Pre-Clerkship Workbook, page %d"></figure>'
-            % (img["ext"], b64, img["page"]))
+            % (src, img["page"]))
 
 
 def build_blocks(week_label):
