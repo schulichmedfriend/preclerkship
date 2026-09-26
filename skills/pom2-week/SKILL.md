@@ -264,6 +264,45 @@ is and emit the marker directly under its `# N` heading:
 the note's own family. Before Stage 5, check that the markers in the vault and the `meds2029`
 entries in `data/questions/<slug>.json` name the same set.
 
+### Every question names the lecture it tests, not just the week
+
+**The week is a given. The lecture is the thing she actually has to go back and read.** A
+question that resolves only to "Week 4 - Gynecology: Contraception, STIs, Pelvic Pain &
+Menopause" has told her nothing she did not already know from the filter she used to get there,
+and a week of PoM 2 is sixteen lectures deep.
+
+So **every question banked in the vault carries its lecture**, and it carries it in a form that
+resolves against the vault rather than in prose:
+
+- The `#### group` heading is **the lecture's own name as the vault spells it**, minus the
+  number. `#### Contraception`, not `#### Contraceptive methods`, because
+  `01 - Lectures/99 - PoM 2/02 - Repro/Week 4/03 - Contraception.md` is the note it has to find.
+- Where the group's name cannot be the lecture's - a CBL, a DSSG, a HippoNotes chapter, a
+  workbook group spanning three lectures - the group carries an explicit
+  **`Tests [[NN - Lecture]]`** line naming every lecture it draws on, the way the workbook notes
+  already do:
+
+  ```
+  #### Pelvic pain, endometriosis & PID
+  *Workbook Q15, Q34-Q38, Q138. Tests [[11 - Clinical Approach to Acute Pelvic Pain]],
+  [[12 - Clinical Approach to Chronic Pelvic Pain]], [[10 - Endometriosis]].*
+  ```
+
+- **The link has to resolve.** A `Tests [[...]]` naming a note that does not exist is worse than
+  no line at all, because it reads as attribution and is not. `tools/review_lectures.py` reports
+  every one it cannot resolve; a run that names any is not finished.
+
+**Name the lecture that teaches the material, not the session that asked the question.** A DSSG
+case on adrenal incidentalomas tests `[[01 - Clinical Presentation and Evaluation of Adrenal
+Gland Disease]]`; "DSSG - Approach to Adrenal & Pituitary Issues" is where it was asked, which is
+already in `lectureMeta` and is not a lecture.
+
+**And the lecture decides the week, not the other way round.** Where a question's material is
+taught in a different week from the one the source filed it under, the lecture link is still the
+lecture that teaches it - do not move the link to fit the heading. The reproduction workbook has
+nine groups filed under the wrong week for exactly this reason, and the portal now renders the
+lecture's week rather than the filing week, so a correct link quietly corrects a wrong heading.
+
 ### Every option has to look like the answer
 
 **The medicine is the only thing allowed to pick the key out of the set.** Anything else that
@@ -499,15 +538,26 @@ a pyenv shim that mangles multi-line `-c`:
 ```
 C:\Users\nsims\.pyenv\pyenv-win\versions\3.9.13\python.exe tools/rosters_from_vault.py
 C:\Users\nsims\.pyenv\pyenv-win\versions\3.9.13\python.exe tools/charts_from_vault.py
+C:\Users\nsims\.pyenv\pyenv-win\versions\3.9.13\python.exe tools/review_lectures.py --derive
 C:\Users\nsims\.pyenv\pyenv-win\versions\3.9.13\python.exe tools/build_pages.py
 C:\Users\nsims\.pyenv\pyenv-win\versions\3.9.13\python.exe tools/build_index.py
 ```
 
+`review_lectures.py` is the one script here that **does write** `data/questions/*.json`, and the
+exception is narrow: it sets each question's `review` field and touches nothing else. Read its
+run line. It prints how many questions resolved to a lecture and by which route, and
+`--report` lists the ones that did not - a new week's questions showing up under `ambiguous`
+means the `#### group` heading or the `Tests [[...]]` line did not resolve, which is a vault fix,
+not a tool fix. Run `--validate` after any change to the matcher.
+
 **This updates the portal, it does not rebuild the repo.** Worth knowing exactly what each script
 touches, because the question bank is the irreplaceable part:
 
-- **`data/questions/*.json` is never written by any of them.** All four only read it. The
-  hand-authored bank cannot be clobbered by a rebuild.
+- **Only `review_lectures.py` writes `data/questions/*.json`, and only its `review` field.**
+  The other four read the bank and never write it, so the hand-authored stems, options, keys and
+  answer callouts cannot be clobbered by a rebuild. `review_lectures.py` rewrites each file
+  wholesale to set that one field, which is why it is worth knowing it is the exception: if it is
+  ever extended, that guarantee is the thing to protect.
 - `data/notes/*.json` is regenerated from the vault, which is the point - the vault is the source
   of truth for notes and charts.
 - The five block pages and `index.html` are **overwritten wholesale**, but `existing()` in

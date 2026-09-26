@@ -45,6 +45,8 @@
      inside them get painted. */
   var MARK_MIN = 3;               // shorter than this, filter but do not paint
   var MARK_BUDGET = 800;          // and never paint more than this in one pass
+  var HITS = [];                  // every <mark> on the page, in reading order
+  var AT_HIT = -1;                // which one the reader is standing on
   var HAY = Object.create(null);  // lecture id -> everything in it, lowercased
   var MARKED = [];                // notes currently carrying highlights
   var QT = null;                  // the keystroke debounce
@@ -702,6 +704,64 @@
     return made;
   }
 
+  /* Filtering tells you WHICH notes hold the word; this walks you to the word
+     itself, which is what Ctrl+F does and what the filter alone did not. The
+     hits are collected in document order after a pass, so Next runs down the
+     page rather than through the notes in roster order.
+
+     The browser's own Ctrl+F is not a substitute: a note the filter has hidden
+     is `hidden`, and find-in-page will not see inside it. */
+  function collectHits() {
+    HITS = [].slice.call(document.querySelectorAll("#note-stream mark.hit"));
+    AT_HIT = -1;
+    paintNav();
+  }
+
+  function paintNav() {
+    var bar = byId("note-nav");
+    if (!bar) return;
+    bar.hidden = !query || !HITS.length;
+    var pos = byId("note-nav-pos");
+    if (pos) {
+      var n = HITS.length + (capped() ? "+" : "");
+      // before the first step there is no position to report, only a total
+      pos.textContent = !HITS.length ? ""
+        : AT_HIT < 0 ? n + (HITS.length === 1 ? " match" : " matches")
+        : (AT_HIT + 1) + " of " + n;
+    }
+  }
+
+  /* The budget stops painting part-way through a very common word, so the
+     count has to say it is a floor rather than a total. */
+  function capped() {
+    return HITS.length >= MARK_BUDGET;
+  }
+
+  function goHit(step) {
+    if (!HITS.length) return;
+    if (AT_HIT >= 0 && HITS[AT_HIT]) HITS[AT_HIT].classList.remove("on");
+    AT_HIT = (AT_HIT + step + HITS.length) % HITS.length;
+    var m = HITS[AT_HIT];
+    m.classList.add("on");
+
+    /* Centred rather than put at the top: a hit is a word inside a paragraph
+       and the sentence around it is the reason you are looking at it. */
+    var box = m.getBoundingClientRect();
+    var mid = box.top + window.pageYOffset - (window.innerHeight / 2) + (box.height / 2);
+    var still = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    try { window.scrollTo({ top: Math.max(0, mid), behavior: still ? "auto" : "smooth" }); }
+    catch (e) { window.scrollTo(0, Math.max(0, mid)); }
+
+    // the rail should follow the reader to the note they have landed in
+    var art = m.closest && m.closest(".note");
+    if (art && art.dataset.id) {
+      PENDING = art.dataset.id;
+      mark(art.dataset.id);
+    }
+    paintNav();
+  }
+
   function setQuery(v) {
     var next = (v || "").replace(/^\s+|\s+$/g, "").toLowerCase();
     if (next === query) return;
@@ -796,6 +856,7 @@
     }
 
     byId("note-empty").hidden = shown > 0;
+    collectHits();
     paintHits(shown);
     paintChips();
   }
@@ -876,6 +937,14 @@
       if (e.key === "Escape" || e.keyCode === 27) {
         box.value = "";
         setQuery("");
+        return;
+      }
+      if (e.key === "Enter" || e.keyCode === 13) {
+        /* Enter would submit if this box were ever wrapped in a form, and the
+           debounce may not have run yet on a fast typist's last keystroke. */
+        e.preventDefault();
+        if (QT) { window.clearTimeout(QT); QT = null; setQuery(box.value); }
+        goHit(e.shiftKey ? -1 : 1);
       }
     });
 
@@ -887,6 +956,22 @@
         box.focus();
       });
     }
+
+    var prev = byId("note-nav-prev"), next = byId("note-nav-next");
+    if (prev) prev.addEventListener("click", function () { goHit(-1); });
+    if (next) next.addEventListener("click", function () { goHit(1); });
+
+    /* F3 and ctrl/cmd-G are the find-again keys every browser already uses,
+       and here they should walk THIS search rather than open the browser's,
+       which cannot see inside a filtered-out note. */
+    document.addEventListener("keydown", function (e) {
+      if (!query || !HITS.length) return;
+      var again = (e.key === "F3" || e.keyCode === 114) ||
+                  ((e.ctrlKey || e.metaKey) && (e.key === "g" || e.key === "G"));
+      if (!again) return;
+      e.preventDefault();
+      goHit(e.shiftKey ? -1 : 1);
+    });
   }
 
   function buildStream() {

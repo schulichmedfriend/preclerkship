@@ -155,6 +155,7 @@ python tools/charts_from_vault.py        # folds written notes on top
 
 python tools/roman_items.py              # item lists read as options -> back in the stem
 python tools/question_figures.py         # any newly-inlined picture -> assets/figures/
+python tools/review_lectures.py --derive # every question -> the lecture it tests
 
 python tools/build_pages.py             # every course's block pages + question bank
 python tools/build_index.py             # every course's landing page
@@ -163,6 +164,27 @@ python tools/build_hub.py               # the hub and its totals
 
 Run the last three after editing any CSS or JS as well, because they stamp each
 asset's content hash into its URL and the stamp goes stale otherwise.
+
+### Which lecture a question came from
+
+`review_lectures.py` is the one script that writes `data/questions/*.json`, and
+it writes exactly one field: `review`, the vault lecture note or notes whose
+material the question tests. That is what the `Review` line under each answer
+reads, and it is why the line can name a lecture rather than restating the week
+the filter already told you.
+
+Four of its five routes are lookups: the workbook notes state which lectures
+each group of questions tests, and the module and new-question notes head each
+group with the lecture's own name. Those cover PoM 2 and nothing else, because
+no other course's inherited bank recorded a lecture at all. The fifth route
+matches the question's own text against the lecture notes, and it is the only
+one that infers anything. It is measured rather than trusted:
+`--validate` scores it against the questions the four lookup routes already
+answered, and it abstains rather than guess. **A question that resolves to
+nothing keeps the week-only line** - a wrong lecture is worse than no lecture,
+because it sends you to the wrong reading with the portal's name on it.
+
+T2C resolves to nothing at all: the vault holds no T2C lectures to point at.
 
 Each course's README covers its own sources and its own quirks:
 [fom/README.md](fom/README.md), [pom1/README.md](pom1/README.md),

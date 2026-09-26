@@ -259,13 +259,13 @@ def term_accent(course):
 # Only until the page exists; after that its own copy is the source of truth,
 # exactly as the block pages work.
 QBANK_SEED = {
-    "fom": (u"Every question in Foundations of Medicine in one bank — all four blocks, weeks 1 to 15. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
+    "fom": (u"Every question in Foundations of Medicine in one bank: all four blocks, weeks 1 to 15. Filter it by block, week, question set, topic, or whether you got it right, then turn whatever is left into a practice test of any length and sit it against the clock.",
              u"The whole Foundations of Medicine question bank, filterable by block, week, question set and status."),
-    "pom2": (u"Every question in Principles of Medicine 2 in one bank — all five blocks, weeks 1 to 20. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
+    "pom2": (u"Every question in Principles of Medicine 2 in one bank: all five blocks, weeks 1 to 20. Filter it by block, week, question set, topic, or whether you got it right, then turn whatever is left into a practice test of any length and sit it against the clock.",
              u"The whole Principles of Medicine 2 question bank, filterable by block, week, question set and status."),
-    "pom1": (u"Every question in Principles of Medicine 1 in one bank \u2014 all five blocks, weeks 1 to 17. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
+    "pom1": (u"Every question in Principles of Medicine 1 in one bank: all five blocks, weeks 1 to 17. Filter it by block, week, question set, topic, or whether you got it right, then turn whatever is left into a practice test of any length and sit it against the clock.",
              u"The whole Principles of Medicine 1 question bank, filterable by block, week, question set and status."),
-    "t2c": (u"Every question in Transition to Clerkship in one bank — all six rotations, weeks 1 to 13. Filter by rotation, week, question set, or whether you got it right, then build a paper any length you like and sit it against the clock.",
+    "t2c": (u"Every question in Transition to Clerkship in one bank: all six rotations, weeks 1 to 13. Filter it by rotation, week, question set, or whether you got it right, then turn whatever is left into a practice test of any length and sit it against the clock.",
              u"The whole Transition to Clerkship question bank, filterable by rotation, week, question set and status."),
 }
 
@@ -437,6 +437,11 @@ PAGE = u"""<!DOCTYPE html>
 <button class="ns-clear" id="note-q-clear" type="button" title="Clear the search" aria-label="Clear the search" hidden>&times;</button>
 </div>
 <p class="railnote hits" id="note-q-count" hidden></p>
+<div class="nsnav" id="note-nav" hidden>
+<button class="ns-step" id="note-nav-prev" type="button" title="Previous match (Shift+Enter)" aria-label="Previous match">&uarr;</button>
+<button class="ns-step" id="note-nav-next" type="button" title="Next match (Enter)" aria-label="Next match">&darr;</button>
+<span class="ns-pos" id="note-nav-pos" aria-live="polite"></span>
+</div>
 </section>
 
 <section>

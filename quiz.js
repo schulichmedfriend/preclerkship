@@ -465,9 +465,40 @@
     return LABEL;
   }
 
+  /* The lectures tools/review_lectures.py resolved this question to, rendered
+     as the place to go rather than as the place it was filed. Where those
+     disagree the LECTURE's week wins: a question filed under week 5 whose
+     material is taught in week 4 should send you to week 4, and several
+     hundred of them do exactly that.
+
+     The week is printed once per run of lectures that share it, so the common
+     case - one lecture, or two from the same week - reads as one location. */
+  function reviewPath(q) {
+    var out = [], last = null;
+    (q.review || []).forEach(function (r) {
+      var name = (r.n ? r.n + " - " : "") + r.t;
+      if (r.w !== last) {
+        out.push("Week " + r.w + " \u00b7 " + name);
+        last = r.w;
+      } else {
+        out[out.length - 1] += ", " + name;
+      }
+    });
+    return out.join("  +  ");
+  }
+
   function whereFrom(q) {
     var parts = [];
     if (TERM) parts.push(BLOCK_NAME[q.block] || q.block);
+
+    var path = reviewPath(q);
+    if (path) {
+      parts.push(path);
+      return parts.join(" \u00b7 ");
+    }
+
+    /* Nothing resolved: the week is all there is, and saying so plainly beats
+       naming a lecture the data does not actually know. */
     parts.push(q.weekLabel ||
       (q.week === null ? "Off-curriculum" : "Week " + q.week));
     var lec = q.lecture;

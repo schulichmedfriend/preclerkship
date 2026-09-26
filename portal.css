@@ -469,6 +469,40 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .railnote.hits{margin-top:8px;font-weight:600;color:var(--q-accent-ink,var(--accent));}
 
+/* Walking the hits. The buttons are small because the keyboard is the real
+   interface here - Enter and Shift+Enter, the keys find-in-page has trained
+   everyone on - and these are the affordance that says so. */
+.nsnav{display:flex;align-items:center;gap:6px;margin-top:8px;}
+
+.ns-step{
+    width:26px;
+    height:24px;
+    padding:0;
+    font:inherit;
+    font-size:.8rem;
+    line-height:1;
+    color:var(--q-accent-ink);
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.ns-step:hover{border-color:var(--q-accent);}
+
+.ns-pos{
+    font-size:.76rem;
+    color:var(--muted);
+    font-variant-numeric:tabular-nums;
+}
+
+/* The hit you are standing on, as distinct from the 800 you are not. */
+mark.hit.on{
+    background:var(--q-accent);
+    color:var(--on-q-accent,#fff);
+    box-shadow:none;
+}
+
 /* A hit inside a note. Underlined as well as tinted, because the accent behind
    it is the one thing on the page that changes colour per block and a wash
    alone would be near-invisible on the paler ones. */
