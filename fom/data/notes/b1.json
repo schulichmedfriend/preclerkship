@@ -57,38 +57,31 @@
        "t": "table",
        "cols": [
         "<strong>Step </strong>",
-        "<strong>Considerations </strong>",
-        ""
+        "<strong>Considerations </strong>"
        ],
        "rows": [
         [
-         "<strong>Is the patient stable? Vitals? </strong>",
-         "Airway, breathing, circulation, blood pressure, heart rate, respiratory rate, temperature, O2 saturation",
-         ""
+         "<strong>Is the patient stable? Vitals?  </strong>",
+         "Airway, breathing, circulation, blood pressure, heart rate, respiratory rate, temperature, O2 saturation"
         ],
         [
          "<strong>Hx </strong>",
-         "Patient identification (PtID), chief complaint/concern (CC), history of presenting illness (HPI) <br>Past medical history (PMHx), past surgical history (PSHx), medications, allergies, family history (FHx), social history (SHx) <br>Review of systems (RoS): general, HEENT, CVS, RS, GI, GU, MSK, skin, neurologic system, psychiatric",
-         ""
+         "Patient identification (PtID), chief complaint/concern (CC), history of presenting illness (HPI)<br>Past medical history (PMHx), past surgical history (PSHx), medications, allergies, family history (FHx), social history (SHx)<br>Review of systems (RoS): general, HEENT, CVS, RS, GI, GU, MSK, skin, neurologic system, psychiatric"
         ],
         [
          "<strong>PEx </strong>",
-         "Focused? General?",
-         ""
+         "Focused? General?"
         ],
         [
          "<strong>Ix </strong>",
-         "Biochemistry – function tests (thyroid, kidney), metabolic tests (sugar, salt), inflammation markers, tumour markers <br>Microbiology – infection work-up, bacteria, viruses, yeast, parasites <br>Hematology – blood cells and elements, clotting parameters <br>Pathology – autopsy, surgical pathology (tissue), cytopathology (cells) <br>Imaging – x-ray, CT, MRI, ultrasound, PET <br><strong>ABCDE</strong>: acquire (prep for sample/specimen/test), be aware (know collection techniques – container, fixative, PtID, order test), <br>communicate (talk to lab, patient, and family), diagnose (interpret report/results), expedite (contact lab/imaging – urgent/not) <br>Ø <br>Ø <br>Ø <br>Ø <br>Ø",
-         "Fine needle aspiration biopsy (cells) – palpable or deep lesion, specific sites <br>Needle core biopsy (tissue) – deeper lesions, specific sites <br>Punch biopsy (skin lesions, tissue) – shallow sample <br>Incisional biopsy (tissue) – for diagnosis <br>Excisional biopsy (tissue) – for diagnosis and/or treatment"
+         "Biochemistry – function tests (thyroid, kidney), metabolic tests (sugar, salt), inflammation markers, tumour markers<br>Microbiology – infection work-up, bacteria, viruses, yeast, parasites<br>Hematology – blood cells and elements, clotting parameters<br>Pathology – autopsy, surgical pathology (tissue), cytopathology (cells)<br>Imaging – x-ray, CT, MRI, ultrasound, PET<br><strong>ABCDE</strong>: acquire (prep for sample/specimen/test), be aware (know collection techniques – container, fixative, PtID, order test),<br>communicate (talk to lab, patient, and family), diagnose (interpret report/results), expedite (contact lab/imaging – urgent/not)<br>Fine needle aspiration biopsy (cells) – palpable or deep lesion, specific sites<br>Ø<br>Needle core biopsy (tissue) – deeper lesions, specific sites<br>Ø<br>Punch biopsy (skin lesions, tissue) – shallow sample<br>Ø<br>Incisional biopsy (tissue) – for diagnosis<br>Ø<br>Excisional biopsy (tissue) – for diagnosis and/or treatment<br>Ø"
         ],
         [
          "<strong>DDx </strong>",
-         "<strong>VITAMIN C&amp;D</strong>: vascular, infection/inflammation, traumatic/toxic, autoimmune/acquired/allergic, metabolic/mental health, <br>iatrogenic, neoplastic, congenital, degenerative",
-         ""
+         "<strong>VITAMIN C&amp;D</strong>: vascular, infection/inflammation, traumatic/toxic, autoimmune/acquired/allergic, metabolic/mental health,<br>iatrogenic, neoplastic, congenital, degenerative"
         ],
         [
          "<strong>Tx, disposition, F/U </strong>",
-         "",
          ""
         ]
        ]
@@ -154,33 +147,21 @@
         ],
         [
          "<strong>Receding pandemics </strong>",
-         "Improved nutrition and public health measures lead to reduction in <br>infectious disease; people living long enough to experience chronic disease",
+         "Improved nutrition and public health measures lead to reduction in<br>infectious disease; people living long enough to experience chronic disease",
          "50",
-         "South Asia, parts of Latin American <br>and Caribbean"
+         "South Asia, parts of Latin American<br>and Caribbean"
         ],
         [
-         "<strong>Degenerative and </strong>",
-         "Due to increased tobacco and alcohol use and subsequently fat and caloric",
+         "<strong>Degenerative and </strong><br><strong>man-made diseases </strong>",
+         "Due to increased tobacco and alcohol use and subsequently fat and caloric<br>intake, deaths due to chronic conditions overtake infectious diseases",
          "60",
-         "Europe, central Asia, Latin America,"
+         "Europe, central Asia, Latin America,<br>Middle East, North Africa, urban India"
         ],
         [
-         "<strong>man-made diseases </strong>",
-         "intake, deaths due to chronic conditions overtake infectious diseases",
-         "",
-         "Middle East, North Africa, urban India"
-        ],
-        [
-         "<strong>Delayed degenerative </strong>",
-         "CVD and cancer are leading causes of death; prevention delays onset and",
+         "<strong>Delayed degenerative </strong><br><strong>diseases </strong>",
+         "CVD and cancer are leading causes of death; prevention delays onset and<br>treatment prolongs survival so that age-adjusted rates decline; increase in<br>aging-related conditions such as Alzheimer’s",
          "70+",
          "High income countries"
-        ],
-        [
-         "<strong>diseases </strong>",
-         "treatment prolongs survival so that age-adjusted rates decline; increase in <br>aging-related conditions such as Alzheimer’s",
-         "",
-         ""
         ]
        ]
       },
@@ -237,36 +218,36 @@
         "<strong>Model </strong>",
         "<strong>Patient Values </strong>",
         "<strong>Physician Obligations </strong>",
-        "<strong>Conception of Patient’s </strong><br><strong>Autonomy </strong>",
-        "<strong>Conception of </strong><br><strong>Physician’s Role </strong>"
+        "<strong>Conception of Patient’s </strong> <strong>Autonomy </strong>",
+        "<strong>Conception of </strong> <strong>Physician’s Role </strong>"
        ],
        "rows": [
         [
          "<strong>Informative </strong>",
-         "Defined, fixed, and known <br>to the patient",
-         "Providing relevant factual information and implementing <br>patient’s selected intervention",
-         "Choice of and control over <br>medical care",
-         "Competent <br>technical expert"
+         "Defined, fixed, and known<br>to the patient",
+         "Providing relevant factual information and implementing<br>patient’s selected intervention",
+         "Choice of and control over<br>medical care",
+         "Competent<br>technical expert"
         ],
         [
          "<strong>Interpretive </strong>",
-         "Inchoate and conflicting, <br>requiring elucidation",
-         "Elucidating and interpreting patient values, informing the <br>patient, and implementing the patient’s selected intervention",
-         "Self-understanding <br>relevant to medical care",
-         "Counselor or <br>advisor"
+         "Inchoate and conflicting,<br>requiring elucidation",
+         "Elucidating and interpreting patient values, informing the<br>patient, and implementing the patient’s selected intervention",
+         "Self-understanding<br>relevant to medical care",
+         "Counselor or<br>advisor"
         ],
         [
          "<strong>Deliberative </strong>",
-         "Open to development and <br>revision through moral <br>discussion",
-         "Articulating and persuading the patient of the most admirable <br>values, informing the patient, and implementing the patient’s <br>selected intervention",
-         "Moral self-development <br>relevant to medical care",
+         "Open to development and<br>revision through moral<br>discussion",
+         "Articulating and persuading the patient of the most admirable<br>values, informing the patient, and implementing the patient’s<br>selected intervention",
+         "Moral self-development<br>relevant to medical care",
          "Friend or teacher"
         ],
         [
          "<strong>Paternalistic </strong>",
-         "Objective and shared by <br>physician and patient",
-         "Promoting the patient’s well-being independent of the patient’s <br>current preferences",
-         "Assenting to objective <br>values",
+         "Objective and shared by<br>physician and patient",
+         "Promoting the patient’s well-being independent of the patient’s<br>current preferences",
+         "Assenting to objective<br>values",
          "Guardian"
         ]
        ]
@@ -447,7 +428,7 @@
       {
        "t": "table",
        "cols": [
-        "<strong>Macromolecule </strong>",
+        "<strong>Macromolecule  </strong>",
         "<strong>Function </strong>"
        ],
        "rows": [
@@ -457,11 +438,11 @@
         ],
         [
          "<strong>Lipids </strong>",
-         "Energy storage (triacylglycerols/fats), components of cell membranes (phospholipids, glycolipids, cholesterol), cell signalling (cholesterol, <br>steroid hormones)"
+         "Energy storage (triacylglycerols/fats), components of cell membranes (phospholipids, glycolipids, cholesterol), cell signalling (cholesterol,<br>steroid hormones)"
         ],
         [
          "<strong>Proteins </strong>",
-         "Structure and mechanics (actin, myosin, troponin), enzymes (trypsin, pepsin, DNA polymerase), hormones (glucagon, insulin, gastrin), <br>signalling molecules (adenylate cyclase, annexin), antibodies (immunoglobulin), fluid balance (albumin, vasopressin), acid-base balance <br>(plasma proteins), channels and pumps (band 3 protein, Na+/K+ ATPase), transport function (albumin, GLUT, rhodopsin)"
+         "Structure and mechanics (actin, myosin, troponin), enzymes (trypsin, pepsin, DNA polymerase), hormones (glucagon, insulin, gastrin),<br>signalling molecules (adenylate cyclase, annexin), antibodies (immunoglobulin), fluid balance (albumin, vasopressin), acid-base balance<br>(plasma proteins), channels and pumps (band 3 protein, Na+/K+ ATPase), transport function (albumin, GLUT, rhodopsin)"
         ],
         [
          "<strong>Nucleic acids </strong>",
@@ -490,34 +471,9 @@
        ],
        "rows": [
         [
-         "Striated",
-         "Striated",
-         "<strong>Not striated </strong>"
-        ],
-        [
-         "<strong>Voluntary </strong>",
-         "Involuntary",
-         "Involuntary"
-        ],
-        [
-         "<strong>Multinucleated</strong> – nuclei on the periphery",
-         "Single nucleus – centrally located",
-         "Single nucleus – centrally located"
-        ],
-        [
-         "Long cylindrical parallel fibers",
-         "Short branching fibers, intercalated disks",
-         "Spindle-shaped"
-        ],
-        [
-         "Attaches to bone",
-         "Exclusively in heart",
-         "Soft tissues, vessels, respiratory/GI tracts"
-        ],
-        [
-         "Repaired by satellite cells",
-         "",
-         "<strong>Visceral</strong> – spontaneous contractions, peristalsis; <br>gap junctions; intestine, uterus <br><strong>Multiunit</strong> – requires nerve stimulation to contract; <br>no gap junctions; iris of the eye"
+         "Striated<br><strong>Voluntary </strong><br><strong>Multinucleated</strong> – nuclei on the periphery<br>Long cylindrical parallel fibers<br>Attaches to bone<br>Repaired by satellite cells",
+         "Striated<br>Involuntary<br>Single nucleus – centrally located<br>Short branching fibers, intercalated disks<br>Exclusively in heart",
+         "<strong>Not striated </strong><br>Involuntary<br>Single nucleus – centrally located<br>Spindle-shaped<br>Soft tissues, vessels, respiratory/GI tracts<br><strong>Visceral</strong> – spontaneous contractions, peristalsis;<br>gap junctions; intestine, uterus<br><strong>Multiunit</strong> – requires nerve stimulation to contract;<br>no gap junctions; iris of the eye"
         ]
        ]
       },
@@ -647,46 +603,81 @@
        ],
        "rows": [
         [
-         "Embryonic",
+         "Embryonic<br>connective tissue",
          "Mesenchyme",
          "",
          "Fibroblasts, adipocytes, osteoblasts, chondroblasts, muscle cells",
          ""
         ],
         [
-         "connective tissue",
+         "Connective tissue<br>proper",
          "Loose connective tissue",
          "",
-         "Underneath epithelia <br>Carries vessels/nerves <br>Reticular layer of dermis, organ",
-         "Fibroblasts, macrophages, leukocytes, mast cells, plasma cells <br>Type I collagen, elastic fibers, type III collagen reticular fibers <br>Glycosaminoglycans, hyaluronan, proteoglycans, glycoproteins <br>Fibroblasts"
+         "Underneath epithelia<br>Carries vessels/nerves",
+         "Fibroblasts, macrophages, leukocytes, mast cells, plasma cells<br>Type I collagen, elastic fibers, type III collagen reticular fibers<br>Glycosaminoglycans, hyaluronan, proteoglycans, glycoproteins"
         ],
         [
-         "Connective tissue",
          "",
+         "Dense<br>connective<br>tissue",
          "Irregular",
-         "capsules",
-         "Type I &amp; III collagen woven into mat, some elastic fibers"
+         "Reticular layer of dermis, organ<br>capsules<br>Resilient/protective",
+         "Fibroblasts<br>Type I &amp; III collagen woven into mat, some elastic fibers<br>Non-fiber similar to loose connective tissue but less abundant"
         ],
         [
-         "proper",
-         "Dense <br>connective <br>tissue <br>Adipose tissue <br>Bone",
-         "Regular <br>Brown <br>White <br>Hyaline",
-         "Resilient/protective <br>Tendons, ligaments, joint capsules <br>High stress resistance <br>Energy storage for newborns <br>Thermoregulation <br>Energy storage for adults <br>Insulation <br>Shape and flexibility <br>Models for bone growth in fetus <br>Smooth surface for joint movement",
-         "Non-fiber similar to loose connective tissue but less abundant <br>Fibroblasts arranged in rows <br>Type I collagen, some elastic fibers <br>Non-fiber in low abundance <br>Multilocular adipocytes <br>Abundant mitochondria <br>Unilocular adipocytes <br>Highly cellular tissue <br>Chondrocytes <br>Type II collagen – isogenous groups <br><strong>Lacks perichondrium – poor regeneration</strong>; osteoarthritis"
+         "",
+         "",
+         "Regular",
+         "Tendons, ligaments, joint capsules<br>High stress resistance",
+         "Fibroblasts arranged in rows<br>Type I collagen, some elastic fibers<br>Non-fiber in low abundance"
         ],
         [
-         "Specialized",
-         "",
-         "",
-         "",
-         "Epiphyseal plates, articular ends, walls of respiratory system"
+         "Specialized<br>connective tissue",
+         "Adipose tissue",
+         "Brown",
+         "Energy storage for newborns<br>Thermoregulation",
+         "Multilocular adipocytes<br>Abundant mitochondria"
         ],
         [
-         "connective tissue",
-         "Cartilage <br>(avascular) <br>Hematopoietic tissue",
-         "Elastic <br>Fibrocartilage",
-         "Shape and elasticity <br>Resistance to compression, <br>cushioning, tensile strength <br>Bone marrow, lymph nodes, spleen",
-         "Chondrocytes <br>Type II collagen, elastin – isogenous groups <br>Epiglottis, larynx, external ear, auditory canal/tube <br>Chondrocytes <br>Type I &amp; II collagen – parallel rows <br>Insertion of tendons, intervertebral disks, menisci, jaw <br>Reticular cells secrete and wrap around type III collagen bundles <br>Type III collagen <br>Non-fiber in low abundance"
+         "",
+         "",
+         "White",
+         "Energy storage for adults<br>Insulation",
+         "Unilocular adipocytes<br>Highly cellular tissue"
+        ],
+        [
+         "",
+         "Bone",
+         "",
+         "",
+         ""
+        ],
+        [
+         "",
+         "Cartilage<br>(avascular)",
+         "Hyaline",
+         "Shape and flexibility<br>Models for bone growth in fetus<br>Smooth surface for joint movement",
+         "Chondrocytes<br>Type II collagen – isogenous groups<br><strong>Lacks perichondrium – poor regeneration</strong>; osteoarthritis<br>Epiphyseal plates, articular ends, walls of respiratory system"
+        ],
+        [
+         "",
+         "",
+         "Elastic",
+         "Shape and elasticity",
+         "Chondrocytes<br>Type II collagen, elastin – isogenous groups<br>Epiglottis, larynx, external ear, auditory canal/tube"
+        ],
+        [
+         "",
+         "",
+         "Fibrocartilage",
+         "Resistance to compression,<br>cushioning, tensile strength",
+         "Chondrocytes<br>Type I &amp; II collagen – parallel rows<br>Insertion of tendons, intervertebral disks, menisci, jaw"
+        ],
+        [
+         "",
+         "Hematopoietic tissue",
+         "",
+         "Bone marrow, lymph nodes, spleen",
+         "Reticular cells secrete and wrap around type III collagen bundles<br>Type III collagen<br>Non-fiber in low abundance"
         ]
        ]
       },
@@ -718,11 +709,7 @@
          "Bundling of immature elastic fibers into mature elastic fibers (crosslinking)"
         ],
         [
-         "Staggered self-assembly into collagen fibril; cross-linking lysines (lysyl",
-         ""
-        ],
-        [
-         "oxidases)",
+         "Staggered self-assembly into collagen fibril; cross-linking lysines (lysyl<br>oxidases)",
          ""
         ]
        ]
@@ -769,43 +756,45 @@
        "cols": [
         "",
         "",
+        "",
         ""
        ],
        "rows": [
         [
-         "Squamous",
-         "Diffusion and filtration <br>Secretes lubricating substances",
-         "Blood/lymphatic vessels <br>Air sacs of the lungs <br>Lining of the heart"
-        ],
-        [
-         "Cuboidal",
-         "Absorption and secretion",
-         "Exocrine glands <br>Surface of ovaries"
-        ],
-        [
          "Single layer",
-         "",
-         "Renal tubules in kidneys"
+         "Squamous Cuboidal Columnar",
+         "Diffusion and filtration<br>Secretes lubricating substances Absorption and secretion Absorption and secretion of<br>mucous and enzymes",
+         "Blood/lymphatic vessels<br>Air sacs of the lungs<br>Lining of the heart Exocrine glands<br>Surface of ovaries<br>Renal tubules in kidneys Ciliated tissues – bronchi, uterine<br>tubes, uterus<br>Digestive tract – intestines, stomach,<br>gastric glands, gallbladder"
         ],
         [
-         "Columnar",
-         "Absorption and secretion of <br>mucous and enzymes",
-         "Ciliated tissues – bronchi, uterine <br>tubes, uterus <br>Digestive tract – intestines, stomach, <br>gastric glands, gallbladder"
-        ],
-        [
+         "Stratified",
          "Squamous",
          "Protects against abrasion",
-         "Skin <br>Lines esophagus, mouth, and vagina"
+         "Skin<br>Lines esophagus, mouth, and vagina"
         ],
         [
+         "",
          "Cuboidal",
          "Protective tissue",
-         "Sweat glands <br>Salivary glands <br>Mammary glands"
+         "Sweat glands<br>Salivary glands<br>Mammary glands"
         ],
         [
+         "",
          "Columnar",
          "Secretion and protection",
-         "Male urethra"
+         "Male urethra<br>Ducts of some glands"
+        ],
+        [
+         "",
+         "Pseudostratified",
+         "Secretes mucus<br>Ciliated tissue moves mucous",
+         "Ciliated tissue lines the trachea and<br>much of the upper respiratory tract"
+        ],
+        [
+         "",
+         "Transitional",
+         "Allows urinary organs to<br>expand and stretch",
+         "Lines bladder, urethra, and ureters"
         ]
        ]
       },
@@ -815,36 +804,6 @@
        "alt": "Figure from the 2021-22 summative notes",
        "w": 84,
        "h": 58
-      },
-      {
-       "t": "table",
-       "cols": [
-        "",
-        "",
-        ""
-       ],
-       "rows": [
-        [
-         "",
-         "",
-         "Ducts of some glands"
-        ],
-        [
-         "Stratified",
-         "",
-         ""
-        ],
-        [
-         "Pseudostratified",
-         "Secretes mucus <br>Ciliated tissue moves mucous",
-         "Ciliated tissue lines the trachea and <br>much of the upper respiratory tract"
-        ],
-        [
-         "Transitional",
-         "Allows urinary organs to <br>expand and stretch",
-         "Lines bladder, urethra, and ureters"
-        ]
-       ]
       },
       {
        "t": "note",
@@ -999,62 +958,90 @@
        "cols": [
         "<strong>System </strong>",
         "<strong>Function </strong>",
+        "",
         "<strong>Major Organs </strong>",
+        "",
         "<strong>Associated Structures </strong>"
        ],
        "rows": [
         [
          "<strong>Cardiovascular </strong>",
-         "Transport nutrients, O2, and hormones to cells <br>Removes wastes",
-         "Heart (pulmonary circulation, systemic <br>circulation)",
-         "Arteries (transport blood away), veins <br>(transport blood toward), capillaries <br>(connect arteries and veins)"
+         "Transport nutrients, O2, and hormones to cells<br>Removes wastes",
+         "Heart (pulmonary circulation, systemic<br>circulation)",
+         "",
+         "Arteries (transport blood away), veins<br>(transport blood toward), capillaries<br>(connect arteries and veins)",
+         ""
         ],
         [
          "<strong>Respiratory </strong>",
-         "Supply the body with O2 and dispose of CO2 <br>Airway moistens and warms air",
+         "Supply the body with O2 and dispose of CO2<br>Airway moistens and warms air",
          "Lungs",
-         "Nasal cavity, paranasal sinuses, pharynx, <br>larynx, trachea, bronchi, alveoli, diaphragm, <br>intercostal muscles"
+         "",
+         "Nasal cavity, paranasal sinuses, pharynx,<br>larynx, trachea, bronchi, alveoli, diaphragm,<br>intercostal muscles",
+         ""
         ],
         [
          "<strong>Lymphatic </strong>",
-         "Picks up fluid leaked from blood vessels and <br>returns it to blood <br>Disposes of debris in the lymphatic system <br>Houses lymphocytes involved in immunity",
-         "Thymus, red bone marrow (produce <br>lymphocytes) <br>Spleen, tonsils, aggregated lymphoid <br>nodules, appendix (store lymphocytes)",
-         "Lymphatic vessels (transport), lymph nodes <br>(cleanse lymph of pathogens), lymphocytes <br>(WBC)"
+         "Picks up fluid leaked from blood vessels and<br>returns it to blood<br>Disposes of debris in the lymphatic system<br>Houses lymphocytes involved in immunity",
+         "Thymus, red bone marrow (produce<br>lymphocytes)<br>Spleen, tonsils, aggregated lymphoid<br>nodules, appendix (store lymphocytes)",
+         "",
+         "Lymphatic vessels (transport), lymph nodes<br>(cleanse lymph of pathogens), lymphocytes<br>(WBC)",
+         ""
         ],
         [
          "<strong>Digestive </strong>",
-         "Breaks down food into absorbable units that <br>enter the blood for distribution to body cells <br>Ingestible food is eliminated as feces",
-         "Oral cavity (mechanical/chemical digestion), <br>pharynx, esophagus, stomach (storage, <br>chyme), small/large intestine (absorption), <br>anus (elimination)",
-         "Teeth, tongue, gallbladder, salivary glands, <br>liver, pancreas"
+         "Breaks down food into absorbable units that<br>enter the blood for distribution to body cells<br>Ingestible food is eliminated as feces",
+         "Oral cavity (mechanical/chemical digestion),<br>pharynx, esophagus, stomach (storage,<br>chyme), small/large intestine (absorption),<br>anus (elimination)",
+         "",
+         "Teeth, tongue, gallbladder, salivary glands,<br>liver, pancreas",
+         ""
         ],
         [
          "<strong>Urinary </strong>",
-         "Eliminates waste <br>Regulates blood volume/pressure, <br>electrolytes/metabolites, blood pH",
-         "Kidneys (filters blood), ureters (transports <br>urine), bladder (stores/expels urine), <br>urethra (drains urine)",
+         "Eliminates waste<br>Regulates blood volume/pressure,<br>electrolytes/metabolites, blood pH",
+         "Kidneys (filters blood), ureters (transports<br>urine), bladder (stores/expels urine),<br>urethra (drains urine)",
+         "",
+         "",
          ""
         ],
         [
          "<strong>Reproductive </strong>",
-         "Produce gametes <br>Perform intercourse <br>Support developing embryo/fetus",
-         "<strong>Female </strong><br>Ovary (produces gametes/hormones), <br>uterine tube (receives/transports egg), <br>uterus (house/nourish fetus), cervix, vagina",
-         "<strong>Male </strong><br>Urethra, prostate (prostatic seminal fluid), <br>seminal vesicles (seminal fluid), testis <br>(produce sperm/hormones), epididymis <br>(sperm storage/maturation), ductus <br>deferens (transports sperm), penis"
+         "Produce gametes<br>Perform intercourse<br>Support developing embryo/fetus",
+         "",
+         "<strong>Female </strong>",
+         "",
+         "<strong>Male </strong>"
+        ],
+        [
+         "",
+         "",
+         "Ovary (produces gametes/hormones),<br>uterine tube (receives/transports egg),<br>uterus (house/nourish fetus), cervix, vagina",
+         "",
+         "Urethra, prostate (prostatic seminal fluid),<br>seminal vesicles (seminal fluid), testis<br>(produce sperm/hormones), epididymis<br>(sperm storage/maturation), ductus<br>deferens (transports sperm), penis",
+         ""
         ],
         [
          "<strong>Endocrine </strong>",
-         "Maintains homeostasis through circulating <br>hormones",
-         "Pituitary gland (acts on non-endocrine <br>glands), pineal gland (circadian rhythms), <br>thyroid (BMR, blood calcium), parathyroid <br>glands (blood calcium), adrenal glands <br>(metabolism, immune system, BP, stress)",
-         "Pancreas (blood sugar), thymus (immune <br>function), gonads (reproductive organs, <br>secondary sex characteristics), <br>hypothalamus (pituitary gland)"
+         "Maintains homeostasis through circulating<br>hormones",
+         "Pituitary gland (acts on non-endocrine<br>glands), pineal gland (circadian rhythms),<br>thyroid (BMR, blood calcium), parathyroid<br>glands (blood calcium), adrenal glands<br>(metabolism, immune system, BP, stress)",
+         "",
+         "Pancreas (blood sugar), thymus (immune<br>function), gonads (reproductive organs,<br>secondary sex characteristics),<br>hypothalamus (pituitary gland)",
+         ""
         ],
         [
          "<strong>Musculoskeletal </strong>",
-         "Support the body <br>Allow motion <br>Protect vital organs",
+         "Support the body<br>Allow motion<br>Protect vital organs",
          "Bones of the skeleton, muscles",
-         "Cartilage (articulation), tendons (muscle-<br>bone), ligaments (bone-bone), joints <br>(movement)"
+         "",
+         "Cartilage (articulation), tendons (muscle-<br>bone), ligaments (bone-bone), joints<br>(movement)",
+         ""
         ],
         [
          "<strong>Nervous </strong>",
          "Sensory input, integration, motor output",
-         "Brain, spinal cord <br>12 cranial nerve pairs, 31 spinal nerve pairs",
+         "Brain, spinal cord<br>12 cranial nerve pairs, 31 spinal nerve pairs",
+         "",
+         "",
          ""
         ]
        ]
@@ -1207,58 +1194,28 @@
        ],
        "rows": [
         [
-         "<strong>Secure </strong>",
-         "Uses the caregiver as a secure base to explore from",
-         "Responds appropriately, promptly,",
-         "Exploratory children who interact"
+         "<strong>Secure </strong><br>60-65%",
+         "Uses the caregiver as a secure base to explore from<br>If separated, protests, but can be comforted by<br>caregiver on return and returns to exploration<br>Definitely prefers caregiver &gt; stranger",
+         "Responds appropriately, promptly,<br>and consistently to child’s needs",
+         "Exploratory children who interact<br>well with children and adults"
         ],
         [
-         "60-65%",
-         "If separated, protests, but can be comforted by <br>caregiver on return and returns to exploration <br>Definitely prefers caregiver &gt; stranger",
-         "and consistently to child’s needs",
-         "well with children and adults"
+         "<strong>Insecure-avoidant</strong><br>20%",
+         "Does not seek to share play activities with parent<br>Shows little/no response on separation/return of<br>caregiver, ignores caregiver/turns away if picked up<br>Caregiver = stranger",
+         "Little/no response to distress in child<br>Discourages crying and encourages<br>independence, sometimes in a<br>rejecting and punishing way",
+         "Children tend to be more hostile<br>with teachers and peers, and can<br>have unprovoked aggression to<br>peers and other discipline problems"
         ],
         [
-         "<strong>Insecure-avoidant</strong>",
-         "Does not seek to share play activities with parent",
-         "Little/no response to distress in child",
-         "Children tend to be more hostile"
+         "<strong>Insecure-ambivalent </strong><br><strong>Insecure-resistant</strong><br>10-15%",
+         "Unable to use the caregiver as a secure base to play,<br>and focuses on staying close to the caregiver<br>Very distressed on separation<br>Angry/reluctant to warm up to caregiver when they<br>return but still want proximity<br>Will NOT be calmed by a stranger",
+         "Inconsistent – sometimes responsive<br>and sometimes preoccupied and<br>unresponsive",
+         "Clingy, fearful children who have<br>difficulties with separation from<br>their parents<br>Highly emotional"
         ],
         [
-         "20%",
-         "Shows little/no response on separation/return of <br>caregiver, ignores caregiver/turns away if picked up <br>Caregiver = stranger",
-         "Discourages crying and encourages <br>independence, sometimes in a <br>rejecting and punishing way",
-         "with teachers and peers, and can <br>have unprovoked aggression to <br>peers and other discipline problems"
-        ],
-        [
-         "<strong>Insecure-ambivalent </strong>",
-         "Unable to use the caregiver as a secure base to play,",
-         "Inconsistent – sometimes responsive",
-         "Clingy, fearful children who have"
-        ],
-        [
-         "<strong>Insecure-resistant</strong>",
-         "and focuses on staying close to the caregiver",
-         "and sometimes preoccupied and",
-         "difficulties with separation from"
-        ],
-        [
-         "10-15%",
-         "Very distressed on separation <br>Angry/reluctant to warm up to caregiver when they <br>return but still want proximity <br>Will NOT be calmed by a stranger",
-         "unresponsive",
-         "their parents <br>Highly emotional"
-        ],
-        [
-         "<strong>Disorganized</strong>",
-         "Lack of coherent attachment strategies shown when",
-         "Frightened/frightening behaviour –",
-         "High rates of hostile, threatening,"
-        ],
-        [
-         "5-10%",
-         "stressed, displayed in contradictory behaviours such as <br>approaching with the back turned or freezing and <br>rocking when caregiver returns from a separation",
-         "intrusiveness, withdrawal, excess <br>negativity, childlike parent, volatile/ <br>inappropriate emotion, maltreatment",
-         "and aggressive behaviour towards <br>peers and teachers"
+         "<strong>Disorganized</strong><br>5-10%",
+         "Lack of coherent attachment strategies shown when<br>stressed, displayed in contradictory behaviours such as<br>approaching with the back turned or freezing and<br>rocking when caregiver returns from a separation",
+         "Frightened/frightening behaviour –<br>intrusiveness, withdrawal, excess<br>negativity, childlike parent, volatile/<br>inappropriate emotion, maltreatment",
+         "High rates of hostile, threatening,<br>and aggressive behaviour towards<br>peers and teachers"
         ]
        ]
       },
@@ -1325,27 +1282,31 @@
        "html": "<ul><li>Pavlov &amp; Thorndike – classical conditioning <strong>Reinforcement</strong>: relationship between a stimulus and response becomes strengthened through repeated association</li><li><strong>Extinction</strong>: relationship between stimulus and response is weakened</li><li><strong>Generalization</strong>: conditioned response becomes linked to a stimulus similar to the initial stimulus</li><li>Skinner – operant conditioning <strong>Positive reinforcement</strong>: addition of a positive event that increases the behaviour</li><li><strong>Negative reinforcement</strong>: ending of a negative event that increases the behaviour</li><li><strong>Punishment</strong>: addition of an event that decreases the behaviour <strong>Response cost</strong>: loss of positive reinforcement that results in decreased behaviour/extinction</li><li>Piaget – cognitive development</li></ul>"
       },
       {
+       "t": "note",
+       "html": "<p><strong>Age and Stage </strong></p>"
+      },
+      {
        "t": "table",
        "cols": [
-        "<strong>Age and Stage </strong>",
+        "",
         "",
         ""
        ],
        "rows": [
         [
          "<strong>Birth-2 years: Sensorimotor </strong>",
-         "Learning occurs through activity, exploration, <br>and manipulating the environment",
-         "Child differentiates self from the world, develops ideas about <br>events, and achieves <strong>object permanence</strong>"
+         "Learning occurs through activity, exploration,<br>and manipulating the environment",
+         "Child differentiates self from the world, develops ideas about<br>events, and achieves <strong>object permanence</strong>"
         ],
         [
          "<strong>2-7 years: Preoperational </strong>",
-         "Capable of symbolic representations of the <br>world",
-         "Child develops <strong>symbolic play</strong>, egocentricity declines, and develops <br>language and drawing as means of representing experience"
+         "Capable of symbolic representations of the<br>world",
+         "Child develops <strong>symbolic play</strong>, egocentricity declines, and develops<br>language and drawing as means of representing experience"
         ],
         [
          "<strong>7-11 years: Concrete operational </strong>",
          "Capable of limited logical thought processes",
-         "Child understands concepts of <strong>conservation</strong>, <strong>reversibility</strong>, multiple <br>viewpoints, classification, and sequences"
+         "Child understands concepts of <strong>conservation</strong>, <strong>reversibility</strong>, multiple<br>viewpoints, classification, and sequences"
         ],
         [
          "<strong>12+ years: Formal operational </strong>",
@@ -1386,90 +1347,39 @@
        "html": "<p><strong>Patterns of Inheritance</strong></p>"
       },
       {
-       "t": "figure",
-       "src": "assets/figures/15df71c1b9f9.png",
-       "alt": "Figure from the 2021-22 summative notes",
-       "w": 113,
-       "h": 84
-      },
-      {
        "t": "table",
        "cols": [
-        "",
-        ""
+        "<strong>Pattern </strong>",
+        "<strong>Affected Individuals/Transmission </strong> <strong>Pedigree  </strong>"
        ],
        "rows": [
         [
-         "<strong>Autosomal </strong>",
-         "People with the condition in each generation"
+         "<strong>Autosomal </strong><br><strong>dominant </strong><br><strong>New dominant </strong>",
+         "People with the condition in each generation<br>Males and females affected in equal proportions<br>All forms of transmission present<br><strong>Dominant negative</strong>: mutant protein is produced and adversely affects the function of the normal<br>protein produced by the other allele, usually by interacting with it<br><strong>Haploinsufficiency</strong>: a single functioning allele of a gene is not sufficient to produce a normal<br>phenotype; other allele may have a null allele (abnormal protein is not functional, reduced<br>mRNA/gene product, allele is completely deleted)<br><strong>Gain of function mutation</strong>: increased activity of the normal gene product<br><strong>Pleiotropy</strong>: a pathogenic variant in one gene can cause multiple effects in different organs<br>Variable expression and penetrance"
         ],
         [
-         "<strong>dominant </strong>",
-         "Males and females affected in equal proportions"
+         "<strong>Autosomal </strong><br><strong>recessive </strong>",
+         "People with the condition are usually in one sibship in one generation<br>Males and females affected in equal proportions<br>Consanguinity increases the number of individuals affected<br><strong>Cis</strong>: one allele may contain more than one variant – individual NOT affected<br><strong>Trans</strong>: two different mutations on different alleles of the same gene – individual affected"
         ],
         [
-         "<strong>New dominant </strong>",
-         "All forms of transmission present <br><strong>Dominant negative</strong>: mutant protein is produced and adversely affects the function of the normal <br>protein produced by the other allele, usually by interacting with it <br><strong>Haploinsufficiency</strong>: a single functioning allele of a gene is not sufficient to produce a normal <br>phenotype; other allele may have a null allele (abnormal protein is not functional, reduced <br>mRNA/gene product, allele is completely deleted) <br><strong>Gain of function mutation</strong>: increased activity of the normal gene product <br><strong>Pleiotropy</strong>: a pathogenic variant in one gene can cause multiple effects in different organs <br>Variable expression and penetrance"
+         "<strong>X-linked </strong><br><strong>inheritance </strong>",
+         "Males affected almost exclusively<br>The gene alteration can be transmitted from female carriers to sons<br>Affected males cannot transmit the condition to their sons<br>Carrier females may be mildly affected or fully affected due to skewed X inactivation<br><strong>X-inactivation</strong>: one of the copies of the X chromosome is inactivated in females<br>Genes in pseudoautosomal regions are NOT inactivated, therefore usually two copies<br><strong>X-autosomal translocation</strong> – if the translocated X is inactivated, there will be partial monosomy for<br>the autosomal segment which will be lethal to the cell"
         ],
         [
-         "<strong>Autosomal </strong>",
-         "People with the condition are usually in one sibship in one generation"
-        ]
-       ]
-      },
-      {
-       "t": "figure",
-       "src": "assets/figures/149c2ccef754.png",
-       "alt": "Figure from the 2021-22 summative notes",
-       "w": 113,
-       "h": 66
-      },
-      {
-       "t": "table",
-       "cols": [
-        "<strong>recessive </strong>",
-        "Males and females affected in equal proportions <br>Consanguinity increases the number of individuals affected <br><strong>Cis</strong>: one allele may contain more than one variant – individual NOT affected <br><strong>Trans</strong>: two different mutations on different alleles of the same gene – individual affected"
-       ],
-       "rows": [
-        [
-         "<strong>X-linked </strong>",
-         "Males affected almost exclusively"
-        ]
-       ]
-      },
-      {
-       "t": "figure",
-       "src": "assets/figures/c42577fe73c8.png",
-       "alt": "Figure from the 2021-22 summative notes",
-       "w": 113,
-       "h": 84
-      },
-      {
-       "t": "table",
-       "cols": [
-        "<strong>inheritance </strong>",
-        "The gene alteration can be transmitted from female carriers to sons <br>Affected males cannot transmit the condition to their sons <br>Carrier females may be mildly affected or fully affected due to skewed X inactivation <br><strong>X-inactivation</strong>: one of the copies of the X chromosome is inactivated in females <br>Genes in pseudoautosomal regions are NOT inactivated, therefore usually two copies <br><strong>X-autosomal translocation</strong> – if the translocated X is inactivated, there will be partial monosomy for <br>the autosomal segment which will be lethal to the cell"
-       ],
-       "rows": [
-        [
-         "<strong>DNA triplet </strong>",
-         "Fragile X syndrome (CGG) – transcriptional silencing, loss of function mutation"
-        ],
-        [
-         "<strong>repeat disorders </strong>",
-         "Friedreich ataxia (GAA) – impaired transcription, loss of frataxin function <br>Huntington disease, cerebellar ataxia (CAG) – gain of function <br>Myotonic dystrophy I (CTG) – gain of function"
+         "<strong>DNA triplet </strong><br><strong>repeat disorders </strong>",
+         "Fragile X syndrome (CGG) – transcriptional silencing, loss of function mutation<br>Friedreich ataxia (GAA) – impaired transcription, loss of frataxin function<br>Huntington disease, cerebellar ataxia (CAG) – gain of function<br>Myotonic dystrophy I (CTG) – gain of function"
         ],
         [
          "<strong>Mosaicism </strong>",
-         "<strong>Gonadal mosaicism</strong>: mutation arisen only in the gonads; may account for recurrences of apparently new dominant mutations; no <br>phenotypic effect, but ~1% risk for recurrence in offspring <br><strong>Somatic mosaicism</strong>: may account for less severe presentation of an autosomal dominant disorder in limited tissues"
+         "<strong>Gonadal mosaicism</strong>: mutation arisen only in the gonads; may account for recurrences of apparently new dominant mutations; no<br>phenotypic effect, but ~1% risk for recurrence in offspring<br><strong>Somatic mosaicism</strong>: may account for less severe presentation of an autosomal dominant disorder in limited tissues"
         ],
         [
          "<strong>Epigenetic </strong>",
-         "<strong>Genomic imprinting</strong>: the differential expression of a gene depending on whether it was inherited from mother or father, maintained by <br>methylation <br><strong>Uniparental disomy</strong>: both chromosomes inherited from the same parent <br>Trisomy rescue, monosomy rescue"
+         "<strong>Genomic imprinting</strong>: the differential expression of a gene depending on whether it was inherited from mother or father, maintained by<br>methylation<br><strong>Uniparental disomy</strong>: both chromosomes inherited from the same parent<br>Trisomy rescue, monosomy rescue"
         ],
         [
          "<strong>Mitochondrial </strong>",
-         "Polyplasmy – multiple copies of mtDNA per cell <br>Heteroplasmy – mixture of normal and mutant mtDNA in a cell <br>Threshold effect, random mitotic segregation of mitochondria, maternal inheritance of mitochondria <br>Many mitochondrial disorders are coded for in the nuclear DNA – autosomal recessive"
+         "Polyplasmy – multiple copies of mtDNA per cell<br>Heteroplasmy – mixture of normal and mutant mtDNA in a cell<br>Threshold effect, random mitotic segregation of mitochondria, maternal inheritance of mitochondria<br>Many mitochondrial disorders are coded for in the nuclear DNA – autosomal recessive"
         ],
         [
          "<strong>Digenic </strong>",
@@ -1480,6 +1390,27 @@
          "More than one factor causes a trait or health problem, including other factors that are NOT genes (lifestyle, nutrition)"
         ]
        ]
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/15df71c1b9f9.png",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 113,
+       "h": 84
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/149c2ccef754.png",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 113,
+       "h": 66
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/c42577fe73c8.png",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 113,
+       "h": 84
       }
      ]
     },
@@ -1539,43 +1470,57 @@
       {
        "t": "table",
        "cols": [
-        "",
-        "",
-        "",
-        "",
+        "<strong>Invasiveness </strong>",
+        "<strong>Test </strong>",
+        "<strong>Gestation </strong>",
+        "<strong>Turnaround </strong>",
         ""
        ],
        "rows": [
         [
-         "<strong>Invasiveness </strong>",
-         "<strong>Test </strong><br>Maternal and family Hx <br>Nuchal translucency <br>(NT) ultrasound",
-         "<strong>Gestation </strong><br>11-13w6d",
-         "<strong>Turnaround </strong><br>1 day",
-         "Age, teratogens, diabetes, cardiac disease, epilepsy, reproductive Hx (recurrent <br>miscarriages, stillbirths), ethnic background, consanguinity, chromosomal/single <br>gene disorders, developmental delay, congenital anomalies <br>Elevated NT &gt; 3.5 mm is associated with increased risk for aneuploidy, congenital <br>heart defect, skeletal dysplasia, and Noonan syndrome <br>Screens for T13, T18, T21, Turner"
+         "<strong>Non-</strong><br><strong>invasive </strong>",
+         "Maternal and family Hx",
+         "",
+         "",
+         "Age, teratogens, diabetes, cardiac disease, epilepsy, reproductive Hx (recurrent<br>miscarriages, stillbirths), ethnic background, consanguinity, chromosomal/single<br>gene disorders, developmental delay, congenital anomalies"
         ],
         [
-         "<strong>Non-</strong>",
-         "Enhanced first trimester",
+         "",
+         "Nuchal translucency<br>(NT) ultrasound",
+         "11-13w6d",
+         "1 day",
+         "Elevated NT &gt; 3.5 mm is associated with increased risk for aneuploidy, congenital<br>heart defect, skeletal dysplasia, and Noonan syndrome<br>Screens for T13, T18, T21, Turner"
+        ],
+        [
+         "",
+         "Enhanced first trimester<br>screen (eFTS)",
          "11-13w6d",
          "5-10 days",
-         "NT + bloodwork (APP-A, HCG, PIGF, AFP)"
+         "NT + bloodwork (APP-A, HCG, PIGF, AFP)<br>Screens for T18, T21 (cut-off of 1:350 risk)"
         ],
         [
-         "<strong>invasive </strong>",
-         "screen (eFTS) <br>Fetal anatomy scan <br>Non-invasive prenatal <br>testing (NIPT)",
-         "18-20 weeks <br>&gt; 9 weeks",
+         "",
+         "Fetal anatomy scan",
+         "18-20 weeks",
+         "",
+         "Screens for congenital malformations – neural tube defects, anterior abdominal<br>wall defects, major congenital heart defects, skeletal dysplasias"
+        ],
+        [
+         "",
+         "Non-invasive prenatal<br>testing (NIPT)",
+         "&gt; 9 weeks",
          "10 days",
-         "Screens for T18, T21 (cut-off of 1:350 risk) <br>Screens for congenital malformations – neural tube defects, anterior abdominal <br>wall defects, major congenital heart defects, skeletal dysplasias <br>Assesses cell-free fetal DNA in maternal serum derived from the placenta <br>Indicated with previous trisomy, maternal age 40+, NT &gt; 3.5, positive eFTS <br>Screens for T13, T18, T21, X, Y"
+         "Assesses cell-free fetal DNA in maternal serum derived from the placenta<br>Indicated with previous trisomy, maternal age 40+, NT &gt; 3.5, positive eFTS<br>Screens for T13, T18, T21, X, Y"
         ],
         [
-         "<strong>Invasive </strong>",
+         "<strong>Invasive </strong><br><strong>(Diagnostic) </strong>",
          "Chorionic villi sampling",
          "11-13 weeks",
          "2-3 weeks",
          "Sample collected from the placenta – 1/100 miscarriage risk"
         ],
         [
-         "<strong>(Diagnostic) </strong>",
+         "",
          "Amniocentesis",
          "15-20 weeks",
          "3-4 weeks",
@@ -1635,86 +1580,100 @@
       {
        "t": "table",
        "cols": [
-        "<strong>Vitamin </strong>",
+        "<strong>Vitamin </strong> (bold = fat-soluble)",
+        "",
         "<strong>Function </strong>",
         "<strong>Deficiency </strong>"
        ],
        "rows": [
         [
-         "(bold = fat-soluble)",
          "",
-         ""
-        ],
-        [
          "<strong>A – β-carotene </strong>",
          "Rhodopsin pigment in retina",
          "Night blindness, hyperkeratosis"
         ],
         [
          "B1 – thiamine",
+         "",
          "Coenzyme in pyruvate and α-ketoacid metabolism",
          "Beriberi"
         ],
         [
          "B2 – riboflavin",
+         "",
          "Coenzyme in mitochondrial oxidative metabolism",
          "Normocytic anemia – low RBC"
         ],
         [
          "B3 – niacin",
+         "",
          "Coenzyme in mitochondrial oxidative metabolism",
          "Pellagra"
         ],
         [
          "B6 – pyridoxine",
+         "",
          "Coenzyme in amino acid synthesis",
          "Normocytic anemia"
         ],
         [
          "B12 – cobalamin",
+         "",
          "Facilitates formation of erythrocytes and neuronal myelin sheath",
          "Pernicious anemia – large RBC"
         ],
         [
          "C – ascorbic acid",
+         "",
          "Coenzyme in hydroxyproline formation, collagen formation",
          "Scurvy"
         ],
         [
-         "<strong>D – cholecalciferol </strong>",
+         "<strong>D – cholecalciferol  </strong>",
+         "",
          "Increased Ca2+ absorption",
          "Rickets (childhood deficiency)"
         ],
         [
+         "",
          "<strong>E – α-tocopherol </strong>",
          "Antioxidant",
          "Peripheral neuropathy"
         ],
         [
-         "<strong>K1 – phylloquinone </strong>",
+         "<strong>K1 – phylloquinone  </strong>",
+         "",
          "Blood clotting – synthesis of factors VII, IX, X, and prothrombin",
          "Hemorrhage"
         ],
         [
          "Folate",
+         "",
          "Purine synthesis",
          "Megaloblastic anemia – large RBC"
         ],
         [
          "Biotin",
+         "",
          "Coenzyme for carboxylation reactions",
          "Neurologic signs"
         ],
         [
          "Pantothenic acid",
+         "",
          "Coenzyme A – metabolism of carbohydrate and fat",
          "Neurologic and GI signs"
-        ],
-        [
-         "<strong>Mineral </strong>",
-         "<strong>Function </strong>",
-         "<strong>Deficiency </strong>"
-        ],
+        ]
+       ]
+      },
+      {
+       "t": "table",
+       "cols": [
+        "<strong>Mineral </strong>",
+        "<strong>Function </strong>",
+        "<strong>Deficiency </strong>"
+       ],
+       "rows": [
         [
          "Iron",
          "Synthesis of hemoglobin, myoglobin, and enzyme iron",
@@ -1782,164 +1741,116 @@
        "t": "table",
        "cols": [
         "<strong>Age </strong>",
-        "<strong>Gross Motor </strong><br>(least predictive of cognition)",
+        "<strong>Gross Motor </strong> (least predictive of cognition)",
         "<strong>Fine Motor </strong>",
-        "",
-        "<strong>Speech and Language</strong> <br>(most predictive of cognition)",
-        "",
-        "<strong>Social and Adaptive </strong>",
-        ""
+        "<strong>Speech and Language</strong> (most predictive of cognition)",
+        "<strong>Social and Adaptive </strong>"
        ],
        "rows": [
         [
          "<strong>Birth </strong>",
          "-",
-         "",
          "-",
          "Cries for needs",
-         "",
-         "",
          "-"
         ],
         [
          "<strong>1-2 </strong>",
-         "Lifts head up while lying on <br>tummy",
-         "",
+         "Lifts head up while lying on<br>tummy",
          "-",
-         "Startles to loud noise <br>Coos – throaty, gurgling sounds <br>Smiles responsively",
-         "",
-         "Looks at nearby human face <br>Focuses gaze <br>Calms when comforted",
-         ""
+         "Startles to loud noise<br>Coos – throaty, gurgling sounds<br>Smiles responsively",
+         "Looks at nearby human face<br>Focuses gaze<br>Calms when comforted"
         ],
         [
          "<strong>3-4 </strong>",
          "Head control in sitting position",
-         "Holds an object briefly when <br>placed in hand – hand regard",
-         "",
+         "Holds an object briefly when<br>placed in hand – hand regard",
          "Laughs/smiles responsively",
-         "",
-         "Follows a moving toy/person <br>Responds to people with excitement <br>Starts to respond to familiar situations <br>(bathing, feeding)",
-         ""
+         "Follows a moving toy/person<br>Responds to people with excitement<br>Starts to respond to familiar situations<br>(bathing, feeding)"
         ],
         [
-         "<strong>4-5 </strong>",
+         "<strong>4-5  </strong>",
          "Rolls over",
-         "Reaches/grasps objects with <br>both hands equally",
-         "",
-         "",
+         "Reaches/grasps objects with<br>both hands equally",
          "-",
-         "",
          "-"
         ],
         [
          "<strong>6 </strong>",
          "Sits without support",
-         "No persistent closed/fisted <br>hands <br>Transfers objects",
-         "",
-         "Makes sounds while you talk to him/her <br>– variety of vowels/pitches <br>Vocalizes pleasure and displeasure",
-         "",
-         "Takes everything to mouth <br>Starts to show stranger anxiety",
-         ""
+         "No persistent closed/fisted<br>hands<br>Transfers objects",
+         "Makes sounds while you talk to him/her<br>– variety of vowels/pitches<br>Vocalizes pleasure and displeasure",
+         "Takes everything to mouth<br>Starts to show stranger anxiety"
         ],
         [
          "<strong>9 </strong>",
-         "Stands with support when helped <br>into standing position",
+         "Stands with support when helped<br>into standing position",
          "Uses both hands equally",
-         "",
-         "Cries/shouts for attention <br>Babbles a series of different sounds <br>(baba, duhduh) <br>Makes sounds/gestures to get <br>attention/help",
-         "",
-         "Responds differently to different people <br>Plays social games (peek-a-boo) <br>Looks for an object seen hidden – object <br>permanence",
-         ""
+         "Cries/shouts for attention<br>Babbles a series of different sounds<br>(baba, duhduh)<br>Makes sounds/gestures to get<br>attention/help",
+         "Responds differently to different people<br>Plays social games (peek-a-boo)<br>Looks for an object seen hidden – object<br>permanence"
         ],
         [
-         "<strong>10 </strong>",
-         "Moves across the floor in upright <br>position (crawl, scoot, creep)",
-         "Pincer grasp – objects/finger <br>foods",
-         "",
+         "<strong>10  </strong>",
+         "Moves across the floor in upright<br>position (crawl, scoot, creep)",
+         "Pincer grasp – objects/finger<br>foods",
          "Responds to name, no, bye-bye",
-         "",
-         "",
          "-"
         ],
         [
          "<strong>12 </strong>",
          "Walks independently",
-         "Releases object on request <br>Holds spoon",
-         "",
-         "Single words – imitates sounds <br>Points/vocalizes conversational jargon",
-         "",
-         "Simple interactional games (ball rolling) <br>Simple cause and effect (switches)",
-         ""
+         "Releases object on request<br>Holds spoon",
+         "Single words – imitates sounds<br>Points/vocalizes conversational jargon<br>Understands single step commands",
+         "Simple interactional games (ball rolling)<br>Simple cause and effect (switches)"
         ],
         [
          "<strong>15 </strong>",
          "",
          "Puts blocks in/out of bucket",
          "",
-         "Understands single step commands",
-         "",
-         "",
          "-"
         ],
         [
          "<strong>18 </strong>",
-         "Walks well, bends to pick up <br>items without falling",
-         "Tower of two blocks <br>Spontaneous scribble",
-         "",
-         "6-20 single words with meaning <br>Points to body parts",
-         "",
-         "Imitates adult activities <br><strong>18-36: temper tantrums, high activity </strong>",
-         ""
+         "Walks well, bends to pick up<br>items without falling",
+         "Tower of two blocks<br>Spontaneous scribble",
+         "6-20 single words with meaning<br>Points to body parts",
+         "Imitates adult activities<br><strong>18-36: temper tantrums, high activity </strong>"
         ],
         [
          "<strong>24 </strong>",
-         "Runs <br>Climbs stairs",
-         "Copies train (blocks) and <br>straight line (drawing) <br>Spoon feeds",
-         "",
-         "50+ single words <br>Puts 2 words together – 50% intelligible",
-         "",
-         "Imaginative play <br>Plays close to an adult",
-         ""
+         "Runs<br>Climbs stairs",
+         "Copies train (blocks) and<br>straight line (drawing)<br>Spoon feeds",
+         "50+ single words<br>Puts 2 words together – 50% intelligible",
+         "Imaginative play<br>Plays close to an adult"
         ],
         [
          "<strong>30 </strong>",
-         "Jumps on two feet <br>Rides push car",
+         "Jumps on two feet<br>Rides push car",
          "Copies circle",
-         "",
-         "",
          "-",
-         "",
          "-"
         ],
         [
          "<strong>36 </strong>",
-         "Stands on one foot briefly <br>Alternates feet up stairs",
-         "Copies bridge (blocks) and <br>cross (drawing)",
-         "",
-         "Talkative – conversational <br>Asks questions – uses pronouns <br>Stutter/stammer common",
-         "",
-         "Puts on a simple garment <br>Toilet training (variable) <br>Parallel play with peers",
-         ""
+         "Stands on one foot briefly<br>Alternates feet up stairs",
+         "Copies bridge (blocks) and<br>cross (drawing)",
+         "Talkative – conversational<br>Asks questions – uses pronouns<br>Stutter/stammer common",
+         "Puts on a simple garment<br>Toilet training (variable)<br>Parallel play with peers"
         ],
         [
          "<strong>48 </strong>",
          "Alternates feet up/down stairs",
          "",
          "",
-         "",
-         "",
-         "Dresses self, cooperative play",
-         ""
+         "Dresses self, cooperative play"
         ],
         [
          "<strong>60 </strong>",
          "Hop on one foot, skips",
          "",
          "",
-         "",
-         "",
-         "Plays games with rules",
-         ""
+         "Plays games with rules"
         ]
        ]
       }
@@ -2063,37 +1974,32 @@
         [
          "Onset",
          "Immediately or within hours of a pathogen’s entry into the body",
-         "Develops over time – infection with a pathogen, following <br>immunization"
+         "Develops over time – infection with a pathogen, following<br>immunization"
         ],
         [
          "Recognition",
-         "General evidence of infection or injury <br>PAMPs – viral/bacterial DNA/RNA, lipid/carbohydrate components <br>Danger signals/DAMPs – parts of cells that are in the wrong place, <br>signals produced by damaged cells and tissues <br><strong>Pattern Recognition Receptors</strong> (<strong>PRRs</strong>) – Toll-Like Receptors, C-Type <br>Lectin Receptors, NOD-Like Receptors, RIG-I family receptors <br>Initiates non-specific measures – inflammation",
-         "Very specific targets <br>Mutations in the antigen can reduce adaptive recognition <br>Antigen is often a unique version of a protein <br><strong>Antigen-Specific receptors</strong> – T-cell Receptors (TCR), B-cell receptors <br>(BCR) <br>Clonal selection"
+         "General evidence of infection or injury<br>PAMPs – viral/bacterial DNA/RNA, lipid/carbohydrate components<br>Danger signals/DAMPs – parts of cells that are in the wrong place,<br>signals produced by damaged cells and tissues<br><strong>Pattern Recognition Receptors</strong> (<strong>PRRs</strong>) – Toll-Like Receptors, C-Type<br>Lectin Receptors, NOD-Like Receptors, RIG-I family receptors<br>Initiates non-specific measures – inflammation",
+         "Very specific targets<br>Mutations in the antigen can reduce adaptive recognition<br>Antigen is often a unique version of a protein<br><strong>Antigen-Specific receptors</strong> – T-cell Receptors (TCR), B-cell receptors<br>(BCR)<br>Clonal selection"
         ],
         [
-         "Vaccine",
-         "Alum",
-         "Isolated or purified protein"
-        ],
-        [
-         "Adjuvant",
-         "PAMPs",
-         "Killed/attenuated virus/bacteria"
+         "Vaccine<br>Adjuvant",
+         "Alum<br>PAMPs",
+         "Isolated or purified protein<br>Killed/attenuated virus/bacteria"
         ],
         [
          "Phagocytosis",
          "Macrophages and neutrophils recognize targets through PRRs",
-         "Macrophages and neutrophils recognize targets bound by antibodies <br>through Fc receptors – opsonization"
+         "Macrophages and neutrophils recognize targets bound by antibodies<br>through Fc receptors – opsonization"
         ],
         [
          "Cytotoxicity",
-         "NK cells – perforin/granzyme, FasL <br>Recognizes evidence of cell stress",
-         "CD8 T-cells (cytotoxic or killer T-cells) – perforin/granzyme, FasL <br>Recognizes specific antigen presented on MHC Class I <br>NK cells – antibody dependent cell cytotoxicity"
+         "NK cells – perforin/granzyme, FasL<br>Recognizes evidence of cell stress",
+         "CD8 T-cells (cytotoxic or killer T-cells) – perforin/granzyme, FasL<br>Recognizes specific antigen presented on MHC Class I<br>NK cells – antibody dependent cell cytotoxicity"
         ],
         [
          "Inflammation",
-         "Tissue resident cells produce cytokines and other pro-inflammatory <br>agents to activate local vasculature and recruit immune cells <br>PAMPs, danger signals/DAMPs",
-         "CD4 T-cells produce cytokines and other pro-inflammatory agents to <br>maintain inflammation and drive tissue remodelling <br>Complement activation, NK activation"
+         "Tissue resident cells produce cytokines and other pro-inflammatory<br>agents to activate local vasculature and recruit immune cells<br>PAMPs, danger signals/DAMPs",
+         "CD4 T-cells produce cytokines and other pro-inflammatory agents to<br>maintain inflammation and drive tissue remodelling<br>Complement activation, NK activation"
         ]
        ]
       },
@@ -2126,8 +2032,8 @@
         ],
         [
          "Pathway",
-         "Endogenous pathway of Ag acquisition – presents peptides generated <br>from cytosolic proteins; usually self-proteins, but also intracellular <br>pathogens",
-         "Exogenous pathway of Ag acquisition – presents peptides generated <br>from external proteins; usually self-proteins, but also extracellular <br>pathogens or anything taken up by phagocytosis"
+         "Endogenous pathway of Ag acquisition – presents peptides generated<br>from cytosolic proteins; usually self-proteins, but also intracellular<br>pathogens",
+         "Exogenous pathway of Ag acquisition – presents peptides generated<br>from external proteins; usually self-proteins, but also extracellular<br>pathogens or anything taken up by phagocytosis"
         ],
         [
          "Expression",
@@ -2252,23 +2158,13 @@
        ],
        "rows": [
         [
-         "Seek to reform the fundamental social and",
-         "Seek to reduce exposure to hazards by improving",
-         "Seek to increase equitable access, at an individual"
-        ],
-        [
-         "economic structures that distribute wealth, power,",
-         "material working and living conditions, or to reduce",
-         "or family level, to health and social services"
-        ],
-        [
-         "opportunities, and decision-making",
-         "risk by promoting healthy behaviours",
-         ""
+         "Seek to reform the fundamental social and<br>economic structures that distribute wealth, power,<br>opportunities, and decision-making",
+         "Seek to reduce exposure to hazards by improving<br>material working and living conditions, or to reduce<br>risk by promoting healthy behaviours",
+         "Seek to increase equitable access, at an individual<br>or family level, to health and social services"
         ],
         [
          "Macro policy level – national, transnational",
-         "Micro policy level – regional, local, community, <br>organizational",
+         "Micro policy level – regional, local, community,<br>organizational",
          "Service level"
         ],
         [
@@ -2325,103 +2221,23 @@
        "html": "<ul><li><strong>Attention Deficit Hyperactivity Disorder</strong> (<strong>ADHD</strong>): a neurodevelopmental disorder defined by a persistent pattern of inattention and/or hyperactivity-impulsivity that interferes with functioning or development</li><li>Causes: highly heritable, gene-environment interaction, neurochemical/structural/functional brain abnormalities</li><li>Tx: psychoeducation, parent training/behavioural management, school accommodation, stimulants, non-stimulants</li></ul>"
       },
       {
+       "t": "note",
+       "html": "<p><strong>Diagnostic Criteria</strong> – thorough Hx (parent interview, child interview, consider multiple settings), rating scales (SNAP-IV), psychological tests</p>"
+      },
+      {
+       "t": "note",
+       "html": "<p>A.<br>6+ inattentive symptoms and/or 6+ hyperactive-impulsive symptoms that have persisted for at least 6 months, inconsistent with developmental level, with<br>direct negative impact on social and academic/occupational activities<br>B.<br>Several symptoms were present prior to age 12 years<br>C.<br>Several symptoms are present in two or more settings – home, school, work, with friends/relatives, other activities<br>D.<br>There is clear evidence that the symptoms interfere with, or reduce the quality of, social, academic, or occupational functioning<br>E.<br>The symptoms do not occur exclusively during the course of schizophrenia or another psychotic disorder and are not better explained by another mental<br>disorder – mood disorder, anxiety disorder, dissociative disorder, personality disorder, substance intoxication, withdrawal</p>"
+      },
+      {
        "t": "table",
        "cols": [
-        "<strong>Diagnostic Criteria</strong> – thorough Hx (parent interview, child interview, consider multiple settings), rating scales (SNAP-IV), psychological tests",
-        "",
-        "",
-        ""
+        "<strong>Symptoms of Inattention </strong>",
+        "<strong>Symptoms of Hyperactivity-Impulsivity </strong>"
        ],
        "rows": [
         [
-         "A.",
-         "6+ inattentive symptoms and/or 6+ hyperactive-impulsive symptoms that have persisted for at least 6 months, inconsistent with developmental level, with <br>direct negative impact on social and academic/occupational activities",
-         "",
-         ""
-        ],
-        [
-         "B.",
-         "Several symptoms were present prior to age 12 years",
-         "",
-         ""
-        ],
-        [
-         "C.",
-         "Several symptoms are present in two or more settings – home, school, work, with friends/relatives, other activities",
-         "",
-         ""
-        ],
-        [
-         "D.",
-         "There is clear evidence that the symptoms interfere with, or reduce the quality of, social, academic, or occupational functioning",
-         "",
-         ""
-        ],
-        [
-         "E.",
-         "The symptoms do not occur exclusively during the course of schizophrenia or another psychotic disorder and are not better explained by another mental <br>disorder – mood disorder, anxiety disorder, dissociative disorder, personality disorder, substance intoxication, withdrawal",
-         "",
-         ""
-        ],
-        [
-         "<strong>Symptoms of Inattention </strong>",
-         "",
-         "<strong>Symptoms of Hyperactivity-Impulsivity </strong>",
-         ""
-        ],
-        [
-         "a)",
-         "Often fails to give close attention to details or makes careless mistakes in <br>schoolwork, at work, or during other activities",
-         "a)",
-         "Often fidgets with or taps hands or feet or squirms in seat"
-        ],
-        [
-         "b)",
-         "Often has difficulty sustaining attention in tasks or play activities",
-         "b)",
-         "Often leaves seat in situations when remaining seated is expected"
-        ],
-        [
-         "c)",
-         "Often does not seem to listen when spoken to directly",
-         "c)",
-         "Often runs about or climbs in situations where it is inappropriate"
-        ],
-        [
-         "d)",
-         "Often does not follow through on instructions and fails to finish <br>schoolwork, chores, or duties in the workplace",
-         "d)",
-         "Often unable to play or engage in leisure activities quietly"
-        ],
-        [
-         "e)",
-         "Often has difficulty organizing tasks and activities",
-         "e)",
-         "Often “on the go,” acting as if “driven by a motor”"
-        ],
-        [
-         "f)",
-         "Often avoids, dislikes, or is reluctant to engage in tasks that require <br>sustained mental effort",
-         "f)",
-         "Often talks excessively"
-        ],
-        [
-         "g)",
-         "Often loses things necessary for tasks or activities",
-         "g)",
-         "Often blurts out an answer before a question has been completed"
-        ],
-        [
-         "h)",
-         "Often easily distracted by extraneous stimuli",
-         "h)",
-         "Often has difficulty waiting his or her turn"
-        ],
-        [
-         "i)",
-         "Often forgetful in daily activities",
-         "i)",
-         "Often interrupts or intrudes on others"
+         "a)<br>Often fails to give close attention to details or makes careless mistakes in<br>schoolwork, at work, or during other activities<br>b)<br>Often has difficulty sustaining attention in tasks or play activities<br>c)<br>Often does not seem to listen when spoken to directly<br>d)<br>Often does not follow through on instructions and fails to finish<br>schoolwork, chores, or duties in the workplace<br>e)<br>Often has difficulty organizing tasks and activities<br>f)<br>Often avoids, dislikes, or is reluctant to engage in tasks that require<br>sustained mental effort<br>g)<br>Often loses things necessary for tasks or activities<br>h)<br>Often easily distracted by extraneous stimuli<br>i)<br>Often forgetful in daily activities",
+         "a)<br>Often fidgets with or taps hands or feet or squirms in seat<br>b)<br>Often leaves seat in situations when remaining seated is expected<br>c)<br>Often runs about or climbs in situations where it is inappropriate<br>d)<br>Often unable to play or engage in leisure activities quietly<br>e)<br>Often “on the go,” acting as if “driven by a motor”<br>f)<br>Often talks excessively<br>g)<br>Often blurts out an answer before a question has been completed<br>h)<br>Often has difficulty waiting his or her turn<br>i)<br>Often interrupts or intrudes on others"
         ]
        ]
       }
@@ -2455,39 +2271,76 @@
       {
        "t": "table",
        "cols": [
+        "<strong>Biological </strong>",
         "",
-        "",
-        "",
-        "",
-        ""
+        "<strong>Females </strong>",
+        "<strong>Males </strong>"
        ],
        "rows": [
         [
          "",
          "Physical growth",
-         "<strong>Females </strong><br>Growth spurt at 10.5 years, peak velocity at 12 years <br>Increase fat, gain muscle, increase hip size",
-         "",
-         "<strong>Males </strong><br>Growth spurt at 12.5 years, peak velocity at 14 years <br>Lose fat, gain muscle more, increase shoulder size"
+         "Growth spurt at 10.5 years, peak velocity at 12 years<br>Increase fat, gain muscle, increase hip size",
+         "Growth spurt at 12.5 years, peak velocity at 14 years<br>Lose fat, gain muscle more, increase shoulder size"
         ],
         [
-         "<strong>Biological </strong>",
-         "Sexual characteristics <br>(Tanner stages) <br>Neurodevelopment <br>Freud <br>(psychosexual stages)",
-         "Onset of breast development at 8-13 years <br>Puberty = breast development, pubic hair, menarche <br>Executive function – prefrontal cortex matures later compared to limbic regions <br>Emotion regulation and reward seeking <br>Id = instincts; ego = reality; superego = morality <br>1. <br>2. <br>3. <br>4. <br>5.",
-         "<strong>Oral</strong> (0-1 years): children like to put things in their mouth and derive pleasure from sucking/tasting <br><strong>Anal</strong> (2-3 years): children begin potty training <br><strong>Phallic</strong> (3-6 years): boys are more attached to their mother; girls are more attached to their father <br><strong>Latency</strong> (6 years-puberty): children spend more time and interact mostly with same-sex peers <br><strong>Genital</strong> (beyond puberty): individuals are attracted to opposite sex partners",
-         "Onset of testicular enlargement at 9-14 years <br>Puberty = testicular size, penile growth, pubic hair"
+         "",
+         "Sexual characteristics<br>(Tanner stages)",
+         "Onset of breast development at 8-13 years<br>Puberty = breast development, pubic hair, menarche",
+         "Onset of testicular enlargement at 9-14 years<br>Puberty = testicular size, penile growth, pubic hair"
+        ],
+        [
+         "",
+         "Neurodevelopment",
+         "Executive function – prefrontal cortex matures later compared to limbic regions<br>Emotion regulation and reward seeking",
+         ""
         ],
         [
          "<strong>Psychological </strong>",
-         "Piaget (cognitive development) – see Theories of Development <br>Erikson (psychosocial theory) – see Theories of Development <br>Identity formation <br>Mental health <br>Peer relationships <br>Culture",
-         "Psychosexual development – crushes vs. experiment with sexual roles vs. intimacy and long-term relationships <br>Sexuality, gender identity, gender expression, physical/emotional attraction <br>Risk factors – heritability, early attachment patterns, noticeable differences in physical/pubertal development, <br>substance abuse (CAGE questionnaire, CRAFFT interview), self-harm/suicidality, trauma/ACEs <br>Close friendships with same-sex peers vs. strong peer group vs. individual meaningful friendships <br><strong>Acculturation</strong>: adaptation that occurs as a result of intercultural contact <br><strong>Assimilation</strong>: accepts receiving culture, rejects heritage culture <br><strong>Separation</strong>: rejects receiving culture, maintains heritage culture",
+         "Freud<br>(psychosexual stages)",
+         "Id = instincts; ego = reality; superego = morality<br>1.<br><strong>Oral</strong> (0-1 years): children like to put things in their mouth and derive pleasure from sucking/tasting<br>2.<br><strong>Anal</strong> (2-3 years): children begin potty training<br>3.<br><strong>Phallic</strong> (3-6 years): boys are more attached to their mother; girls are more attached to their father<br>4.<br><strong>Latency</strong> (6 years-puberty): children spend more time and interact mostly with same-sex peers<br>5.<br><strong>Genital</strong> (beyond puberty): individuals are attracted to opposite sex partners",
+         ""
+        ],
+        [
+         "",
+         "Piaget (cognitive development) – see Theories of Development",
          "",
          ""
         ],
         [
-         "<strong>Social </strong>",
-         "Racism and <br>discrimination",
-         "<strong>Integration</strong>: accepts receiving culture, retains heritage culture <br><strong>Marginalization</strong>: rejects receiving culture and heritage culture <br><strong>Reactive ethnicity</strong>: discrimination by another culture can lead to ethnic minorities remaining separated and holding <br>even more tightly to their heritage culture",
          "",
+         "Erikson (psychosocial theory) – see Theories of Development",
+         "",
+         ""
+        ],
+        [
+         "",
+         "Identity formation",
+         "Psychosexual development – crushes vs. experiment with sexual roles vs. intimacy and long-term relationships<br>Sexuality, gender identity, gender expression, physical/emotional attraction",
+         ""
+        ],
+        [
+         "",
+         "Mental health",
+         "Risk factors – heritability, early attachment patterns, noticeable differences in physical/pubertal development,<br>substance abuse (CAGE questionnaire, CRAFFT interview), self-harm/suicidality, trauma/ACEs",
+         ""
+        ],
+        [
+         "<strong>Social </strong>",
+         "Peer relationships",
+         "Close friendships with same-sex peers vs. strong peer group vs. individual meaningful friendships",
+         ""
+        ],
+        [
+         "",
+         "Culture",
+         "<strong>Acculturation</strong>: adaptation that occurs as a result of intercultural contact<br><strong>Assimilation</strong>: accepts receiving culture, rejects heritage culture<br><strong>Separation</strong>: rejects receiving culture, maintains heritage culture<br><strong>Integration</strong>: accepts receiving culture, retains heritage culture<br><strong>Marginalization</strong>: rejects receiving culture and heritage culture",
+         ""
+        ],
+        [
+         "",
+         "Racism and<br>discrimination",
+         "<strong>Reactive ethnicity</strong>: discrimination by another culture can lead to ethnic minorities remaining separated and holding<br>even more tightly to their heritage culture",
          ""
         ]
        ]
@@ -2516,7 +2369,7 @@
      "name": "The Child with a (Dis)Ability",
      "hasNote": true,
      "title": "The Child with a (Dis)Ability",
-     "framing": "<p>From a <strong>2021-22 Foundations of Medicine summative note set</strong>, week 4. Gathers 2 of its sections, in the order they were written.</p>",
+     "framing": "<p>From a <strong>2021-22 Foundations of Medicine summative note set</strong>, week 4. Gathers 3 of its sections, in the order they were written.</p>",
      "keypoints": null,
      "blocks": [
       {
@@ -2534,6 +2387,183 @@
       {
        "t": "list",
        "html": "<ul><li>Introduce self</li><li>Sit down if parents are agreeable</li><li>Warning phrase</li><li>Get to the point quickly</li><li>Allow parents time to absorb the information</li><li>Be comfortable with silence/remain present</li></ul>"
+      },
+      {
+       "t": "note",
+       "html": "<p><strong>Notes</strong></p>"
+      },
+      {
+       "t": "table",
+       "cols": [
+        "<strong>Condition/Disorder </strong>",
+        "<strong>Symptoms </strong>",
+        "<strong>Cause </strong>"
+       ],
+       "rows": [
+        [
+         "<strong>Infantile Encephalopathy </strong>",
+         "Seizures",
+         "Metabolic disorders or gene mutations"
+        ],
+        [
+         "<strong>Thiamine Metabolism </strong><br><strong>Dysfunction Syndrome 2 </strong>",
+         "Episodic encephalopathy – confusion, seizures, external<br>ophthalmoplegia, dysphagia, coma",
+         "Autosomal recessive metabolic disorder<br>Treatment: thiamine and biotin supplementation"
+        ],
+        [
+         "<strong>Scleroderma </strong>",
+         "Hardening/tightening of skin and connective tissue",
+         "Autoimmune – excess collagen"
+        ],
+        [
+         "<strong>Ehlers-Danlos Syndrome </strong>",
+         "Hypermobility of joints, hyperelasticity of skin",
+         "Mis- and poorly aligned collagen fibrils<br>Defect in lysyl hydroxylase/procollagen peptidase"
+        ],
+        [
+         "<strong>Marfan Syndrome </strong>",
+         "Loss of elastic fiber organization, cardiovascular/skeletal<br>pathologies, binding transforming growth factor beta",
+         "Fibrillin1 gene mutation"
+        ],
+        [
+         "<strong>Achondroplasia </strong>",
+         "Short stature",
+         "Autosomal dominant, FGFR3 gain of function mutation –<br>excessive inhibition of cartilage growth, abnormal<br>endochondral ossification"
+        ],
+        [
+         "<strong>Charcot Marie Tooth </strong><br><strong>Disease </strong>",
+         "Progressive muscle weakness and atrophy",
+         "Connexin 32 mutation"
+        ],
+        [
+         "<strong>Myasthenia Gravis </strong>",
+         "Ocular myasthenia, ptosis, diplopia, difficulty swallowing, shortness<br>of breath, dysarthria, muscle weakness",
+         "Neuromuscular transmission fails at low levels of Ach<br>quantal release or rundown; do repetitive nerve stimulation"
+        ],
+        [
+         "<strong>Lambert-Eaton </strong><br><strong>Myasthenic Syndrome </strong>",
+         "Muscle weakness",
+         "Autoimmune – attack against V.G. Ca2+ channels at NMJ"
+        ],
+        [
+         "<strong>Osteogenesis Imperfecta </strong>",
+         "Bone fractures, blue/grey sclera, hearing loss, dentinogenesis<br>imperfecta",
+         "Autosomal dominant – type I collagen"
+        ],
+        [
+         "<strong>Cystic Fibrosis </strong>",
+         "Salty skin, persistent coughing, frequent lung infections, wheezing,<br>shortness of breath, poor growth/weight gain, male infertility",
+         "Autosomal recessive – CFTR gene mutation (∆F508);<br>impaired Cl- transport"
+        ],
+        [
+         "<strong>Duchenne Muscular </strong><br><strong>Dystrophy (DMD) </strong>",
+         "Progressive muscle degeneration and weakness<br>Genetic lethal",
+         "X-linked – frameshift mutation"
+        ],
+        [
+         "<strong>Becker Muscular </strong><br><strong>Dystrophy (BMD) </strong>",
+         "Progressive muscle degeneration and weakness<br>NOT genetic lethal",
+         "X-linked – in-frame mutation"
+        ],
+        [
+         "<strong>Prader-Willi Syndrome </strong>",
+         "Hypotonia, hypogonadism, hypomentia, obesity",
+         "15q11-q13 <strong>paternal</strong> chromosomal deletion; two maternal"
+        ],
+        [
+         "<strong>Angelman Syndrome </strong>",
+         "Small head, seizures, happy demeanor, stiff-legged gait with arms<br>up, absent speech, severe developmental delay",
+         "15q11-q13 <strong>maternal</strong> chromosomal deletion; two paternal"
+        ],
+        [
+         "<strong>Urea Cycle Disorder (UCD) </strong>",
+         "Unusual odor, nausea/vomiting, hypotonia/weakness/lethargy,<br>avoidance of certain foods, severe response to illness/fasting",
+         "Metabolic disorder – elevated blood ammonia levels"
+        ],
+        [
+         "<strong>Neurofibromatosis Type 1 </strong>",
+         "Neurofibromas, lisch nodules, café-au-lait macules, optic glioma,<br>axillary freckling, pseudoarthritis",
+         "NF1 mutation"
+        ],
+        [
+         "<strong>Phenylketonuria </strong>",
+         "Learning disability, musty odor, eczema, fair skin/blue eyes,<br>microcephaly, hyperactivity, seizures",
+         "PAH gene mutation<br>Started newborn screening<br>Treatment: eliminate phenylalanine from diet"
+        ],
+        [
+         "<strong>Turner Syndrome </strong>",
+         "Puffy hands and feet at birth, webbed neck, coarctation of aorta,<br>short stature, primary amenorrhea and infertility, normal<br>intelligence, visual-perceptual difficulties",
+         "45,X<br>45,X/46, XX mosaic; 45,X/46,XY mosaic<br>Isochromosome Xq"
+        ],
+        [
+         "<strong>Patau Syndrome (T13) </strong>",
+         "Midline defects, cleft palate, polydactyly, developmental delay",
+         "47, XX, +13"
+        ],
+        [
+         "<strong>Edward Syndrome (T18) </strong>",
+         "Cardiac defects, delicate facial features, small size, overlapping<br>fingers, “rocker bottom” feet, developmental delay",
+         "47, XX, +18"
+        ],
+        [
+         "<strong>Down’s Syndrome (T21) </strong>",
+         "Flattened face, small head, short neck, protruding tongue, upward<br>slanting eye lids, small ears, poor muscle tone, small hands/feet,<br>excessive flexibility, Brushfield's spots, short height",
+         "47, XX, +21"
+        ],
+        [
+         "<strong>Klinefelter Syndrome </strong>",
+         "Tall stature, gynecomastia, small testes, learning disability,<br>infertility, normal appearance",
+         "47, XXY"
+        ],
+        [
+         "<strong>DiGeorge Syndrome </strong>",
+         "Cleft palate, congenital heart defect, hypocalcemia,<br>immunodeficiency",
+         "22q11.2 microdeletion"
+        ],
+        [
+         "<strong>Potocki-Lupski Syndrome </strong>",
+         "Global developmental delay, dysmorphic features, congenital heart<br>defect",
+         "17p11.2 duplication"
+        ],
+        [
+         "<strong>Marasmus </strong>",
+         "“Skin and bones” appearance",
+         "Inadequate total intake of calories"
+        ],
+        [
+         "<strong>Kwashiorkor </strong>",
+         "Swelling due to low plasma protein",
+         "Inadequate intake of protein"
+        ]
+       ]
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/5a0c7f7a1672.jpg",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 250,
+       "h": 249
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/9217961616e3.jpg",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 224,
+       "h": 401
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/d8004751a83d.jpg",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 254,
+       "h": 215
+      },
+      {
+       "t": "figure",
+       "src": "assets/figures/eea1deeba229.jpg",
+       "alt": "Figure from the 2021-22 summative notes",
+       "w": 320,
+       "h": 173
       }
      ]
     },
@@ -2585,38 +2615,73 @@
        "cols": [
         "",
         "",
-        "",
-        "",
-        ""
+        "<strong>Advantages </strong>",
+        "<strong>Disadvantages </strong>",
+        "<strong>Examples </strong>"
        ],
        "rows": [
         [
-         "",
+         "<strong>Live </strong><br><strong>attenuated </strong>",
          "Viral",
-         "<strong>Advantages </strong><br>Immune response is similar to natural <br>infection <br>Longer lasting and broader immunity",
-         "<strong>Disadvantages </strong><br>May result in vaccine-strain disease <br>Circulating antibody may interfere with live <br>vaccine responses",
-         "<strong>Examples </strong><br>Measles <br>Oral polio vaccine (OPV) <br>Rota"
+         "Immune response is similar to natural<br>infection<br>Longer lasting and broader immunity<br>Produce immunity in most recipients<br>when injected",
+         "May result in vaccine-strain disease<br>Circulating antibody may interfere with live<br>vaccine responses<br>Unstable – requires careful storage and<br>handling<br><strong>Contraindications: immunocompromised, </strong><br><strong>pregnant women, neonates </strong>",
+         "Measles<br>Oral polio vaccine (OPV)<br>Rota<br>Varicella<br>Yellow fever"
         ],
         [
-         "<strong>Live </strong>",
          "",
-         "Produce immunity in most recipients",
-         "Unstable – requires careful storage and",
-         "Varicella"
-        ],
-        [
-         "<strong>attenuated </strong>",
-         "Bacterial <br>Inactivated <br>whole cell <br>Inactivated <br>bacterial <br>toxin",
-         "when injected <br>Safe – cannot replicate or cause the <br>disease they are intended to prevent <br>More stable – minimal interference with <br>circulating antibody and less impact of a <br>break in cold chain inactivating vaccine",
-         "handling <br><strong>Contraindications: immunocompromised, </strong><br><strong>pregnant women, neonates </strong><br>Immune response is not as strong/effective <br>as live vaccines – may require adjuvants to <br>enhance immune response; usually involves <br>a primary series of vaccines that prime the <br>immune system <br>Immune response is mostly humoral <br>Immune responses not as sustained –",
-         "Yellow fever <br>Bacillus Calmette-Guérin vaccine (BCG) <br>Oral typhoid <br>Viral: Inactivated Polio Vaccine (IPV), <br>Hepatitis A <br>Bacterial: Pertussis, Cholera <br>Tetanus toxoid <br>Diphtheria <br>Protein-based viral: Hepatitis B, HPV,"
+         "Bacterial",
+         "",
+         "",
+         "Bacillus Calmette-Guérin vaccine (BCG)<br>Oral typhoid"
         ],
         [
          "<strong>Non-live </strong>",
-         "Subunit/ <br>purified",
+         "Inactivated<br>whole cell",
+         "Safe – cannot replicate or cause the<br>disease they are intended to prevent<br>More stable – minimal interference with<br>circulating antibody and less impact of a<br>break in cold chain inactivating vaccine",
+         "Immune response is not as strong/effective<br>as live vaccines – may require adjuvants to<br>enhance immune response; usually involves<br>a primary series of vaccines that prime the<br>immune system<br>Immune response is mostly humoral<br>Immune responses not as sustained –<br>antibody titre diminishes over time; require<br>booster doses over time to increase<br>antibody levels",
+         "Viral: Inactivated Polio Vaccine (IPV),<br>Hepatitis A"
+        ],
+        [
          "",
-         "antibody titre diminishes over time; require <br>booster doses over time to increase <br>antibody levels",
-         "Shingrix recombinant protein vaccine <br>Protein-based bacterial: AcelPertussis, <br>Typhoid inject <br>Polysaccharide: Pneumococcal 23 <br>Conjugate: Haemophilus influenzae type <br>B (Hib), Pneumococcal, MCV-4, <br>Meningococcal C"
+         "",
+         "",
+         "",
+         "Bacterial: Pertussis, Cholera"
+        ],
+        [
+         "",
+         "Inactivated<br>bacterial<br>toxin",
+         "",
+         "",
+         "Tetanus toxoid<br>Diphtheria"
+        ],
+        [
+         "",
+         "Subunit/<br>purified",
+         "",
+         "",
+         "Protein-based viral: Hepatitis B, HPV,<br>Shingrix recombinant protein vaccine"
+        ],
+        [
+         "",
+         "",
+         "",
+         "",
+         "Protein-based bacterial: AcelPertussis,<br>Typhoid inject"
+        ],
+        [
+         "",
+         "",
+         "",
+         "",
+         "Polysaccharide: Pneumococcal 23"
+        ],
+        [
+         "",
+         "",
+         "",
+         "",
+         "Conjugate: Haemophilus influenzae type<br>B (Hib), Pneumococcal, MCV-4,<br>Meningococcal C"
         ]
        ]
       },
@@ -2632,10 +2697,15 @@
        "t": "table",
        "cols": [
         "",
-        "<strong>Pre-Exposure Prophylaxis (PrEP) </strong><br>Preventive strategies in vulnerable persons BEFORE an anticipated <br>high-risk activity/event that could lead to substantial exposure",
-        "<strong>Post-Exposure Prophylaxis (PEP)</strong> <br>Preventative strategies in vulnerable persons AFTER high-risk <br>activity/event BUT before the onset of disease"
+        "",
+        ""
        ],
        "rows": [
+        [
+         "",
+         "<strong>Pre-Exposure Prophylaxis (PrEP) </strong> Preventive strategies in vulnerable persons BEFORE an anticipatedhigh-risk activity/event that could lead to substantial exposure",
+         "<strong>Post-Exposure Prophylaxis (PEP)</strong> Preventative strategies in vulnerable persons AFTER high-riskactivity/event BUT before the onset of disease"
+        ],
         [
          "<strong>HIV </strong>",
          "Chemoprophylaxis: anti-HIV drugs (Truvada) taken daily",
@@ -2643,28 +2713,23 @@
         ],
         [
          "<strong>Measles </strong>",
-         "IG: N/A <br>Vaccine ONLY, 2 weeks: unvaccinated, immunocompetent, infants &gt; 6 <br>months, previously vaccinated immunocompetent non-pregnant hosts <br>without lab evidence of immunity",
-         "IG, within 4-6 days: immunocompromised, pregnant women, infants <br>&lt; 6 months <br>Vaccine, within 72h: immunocompetent, &gt; 6 months"
+         "IG: N/A<br>Vaccine ONLY, 2 weeks: unvaccinated, immunocompetent, infants &gt; 6<br>months, previously vaccinated immunocompetent non-pregnant hosts<br>without lab evidence of immunity",
+         "IG, within 4-6 days: immunocompromised, pregnant women, infants<br>&lt; 6 months<br>Vaccine, within 72h: immunocompetent, &gt; 6 months"
         ],
         [
-         "<strong>Varicella </strong>",
-         "IG: N/A",
-         "IG, within 96 hours: immunocompromised, pregnant women,"
+         "<strong>Varicella </strong><br><strong>(Chickenpox) </strong>",
+         "IG: N/A<br>Vaccine ONLY, 4-6 weeks: unvaccinated, immunocompetent, &gt; 1 year,<br>previously vaccinated immunocompetent non-pregnant hosts without<br>lab evidence of immunity",
+         "IG, within 96 hours: immunocompromised, pregnant women,<br>neonates of mothers without immunity<br>Vaccine, within 3-5d: immunocompetent, &gt; 1 year"
         ],
         [
-         "<strong>(Chickenpox) </strong>",
-         "Vaccine ONLY, 4-6 weeks: unvaccinated, immunocompetent, &gt; 1 year, <br>previously vaccinated immunocompetent non-pregnant hosts without <br>lab evidence of immunity",
-         "neonates of mothers without immunity <br>Vaccine, within 3-5d: immunocompetent, &gt; 1 year"
-        ],
-        [
-         "<strong>Hepatitis A </strong>",
-         "IG, 2 weeks: immunocompromised, infants &lt; 6 months, chronic liver <br>disease or &gt; 40 years, travelling to endemic countries <br>Vaccine: &gt; 6 months travelling to endemic countries in &gt; 2-4 weeks",
-         "IG, within 2 weeks: immunocompromised, infants &lt; 6 months, chronic <br>liver disease or &gt; 40 years <br>Vaccine, within 2 weeks: immunocompetent, 6 months-40 years"
+         "<strong>Hepatitis A  </strong>",
+         "IG, 2 weeks: immunocompromised, infants &lt; 6 months, chronic liver<br>disease or &gt; 40 years, travelling to endemic countries<br>Vaccine: &gt; 6 months travelling to endemic countries in &gt; 2-4 weeks",
+         "IG, within 2 weeks: immunocompromised, infants &lt; 6 months, chronic<br>liver disease or &gt; 40 years<br>Vaccine, within 2 weeks: immunocompetent, 6 months-40 years"
         ],
         [
          "<strong>Rabies </strong>",
-         "IG: N/A <br>Vaccine, 30 days: travelling to countries with high prevalence of rabid <br>animals, work with wildlife, spelunkers/hunters",
-         "IG, ASAP: unvaccinated with high-risk exposure <br>Vaccine, ASAP: post-high-risk bite/scratch/exposure to bat, <br>unvaccinated get 4 dose primary series (5 dose if immunosuppressed), <br>previously vaccinated get 2 booster doses"
+         "IG: N/A<br>Vaccine, 30 days: travelling to countries with high prevalence of rabid<br>animals, work with wildlife, spelunkers/hunters",
+         "IG, ASAP: unvaccinated with high-risk exposure<br>Vaccine, ASAP: post-high-risk bite/scratch/exposure to bat,<br>unvaccinated get 4 dose primary series (5 dose if immunosuppressed),<br>previously vaccinated get 2 booster doses"
         ]
        ]
       }

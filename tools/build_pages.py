@@ -147,7 +147,11 @@ def block_counts(course, slug):
     nt = json.load(io.open(os.path.join(d, "data", "notes", "%s.json" % slug),
                            encoding="utf-8"))
     lects = [l for w in nt["weeks"] for l in w["lectures"]]
-    return len(qs), len([l for l in lects if l.get("hasNote")]), len(lects)
+    # A lecture whose material is written up under a neighbouring lecture
+    # counts as written: the note exists and the page says where. Counting it
+    # as a gap would disagree with the coverage the page itself paints.
+    written = [l for l in lects if l.get("hasNote") or l.get("coveredBy")]
+    return len(qs), len(written), len(lects)
 
 
 ANKI_EMPTY = u"""<div class="tab-empty">

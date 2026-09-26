@@ -17,10 +17,17 @@ The typography carries the structure and nothing else has to be guessed:
     10pt at the left margin       a section heading, or a bullet, or a number
     8pt                           table text, in columns
 
-Tables have no ruling lines, so PyMuPDF's own table finder mis-assigns their
-cells. Their columns are laid out on consistent x anchors though, so the cells
-are recovered by clustering x within each table region and merging any row that
-has no first column into the row above it, which is what a wrapped cell is.
+Tables ARE ruled, which this file originally had wrong. They are read by
+tools/tables.py, which works off the ruling lines; the x-anchor clustering
+below stays for the few the finder cannot see, where the cells are recovered
+by clustering x within each table region and merging any row that has no first
+column into the row above it, which is what a wrapped cell is.
+
+Reading the rules rather than the type is what split the ADHD page back into
+the two tables it actually is, and stopped the bold sentence above them -
+"Diagnostic Criteria - thorough Hx ..." - being promoted to the heading of a
+column, where at 143 characters it set that column thousands of pixels wide
+and pushed the criteria off the side of the page.
 
 Sections are filed against the lecture list already in the vault, because a note
 is worth more sitting under the lecture it belongs to than in a list of its own.
@@ -37,6 +44,11 @@ import re
 import sys
 
 import pymupdf
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import coverage                                                  # noqa: E402
+import tables                                                    # noqa: E402
 
 SUMMATIVE_PDF = os.environ.get("FOM_SUMMATIVE_PDF", u"")
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -82,8 +94,28 @@ def tidy(s):
 
 
 def lines_of(page):
-    """Every text line with its y, x, size and html, plus image blocks."""
+    """Every text line with its y, x, size and html, plus images and tables.
+
+    A ruled table is read by tools/tables.py and the text inside it suppressed.
+    That is what splits the ADHD page back into the two tables it is - the A-E
+    criteria, and inattention against hyperactivity side by side - which the
+    x-anchor clustering below had merged into one, with the bold sentence above
+    them promoted to its heading.
+
+    The clustering stays for the tables this document draws without ruling
+    lines, which the finder cannot see at all.
+    """
     out = []
+    tabs = tables.tables_on(page)
+    rects = [bb for bb, _t, _b in tabs]
+    for bb, title, block in tabs:
+        out.append({"t": "tbl", "y": bb[1], "x": bb[0],
+                    "title": title, "block": block})
+
+    def ruled(bbox):
+        cx, cy = (bbox[0] + bbox[2]) / 2.0, (bbox[1] + bbox[3]) / 2.0
+        return any(r[0] <= cx <= r[2] and r[1] <= cy <= r[3] for r in rects)
+
     for b in page.get_text("dict")["blocks"]:
         if b["type"] == 1:
             if b.get("image") and (b["bbox"][2] - b["bbox"][0]) > 70 \
@@ -97,6 +129,8 @@ def lines_of(page):
             txt = u"".join(s["text"] for s in l["spans"])
             if not txt.strip():
                 continue
+            if ruled(l["bbox"]):
+                continue                   # a cell, already carried by the table
             out.append({"t": "txt", "y": l["bbox"][1], "x": l["bbox"][0],
                         "size": max(s["size"] for s in l["spans"]),
                         "text": txt.strip(), "html": runs_html(l["spans"]),
@@ -239,10 +273,23 @@ def parse():
             group = sorted(byy[y], key=lambda i: i["x"])
             imgs = [g for g in group if g["t"] == "img"]
             txts = [g for g in group if g["t"] == "txt"]
+            tbls = [g for g in group if g["t"] == "tbl"]
             for im in imgs:
                 flush_list(); flush_table()
                 if section is not None:
                     section["blocks"].append(save_figure(im))
+            for tb in tbls:
+                flush_list(); flush_table()
+                if week is None:
+                    continue
+                if section is None:
+                    section = open_section(u"Notes")
+                # her chart title is the table's own top row, and it is the
+                # sentence that used to end up as a heading of the grid
+                if tb["title"]:
+                    section["blocks"].append(
+                        {"t": "note", "html": u"<p>%s</p>" % tidy(tb["title"])})
+                section["blocks"].append(tb["block"])
             if not txts:
                 continue
 
@@ -466,6 +513,8 @@ def main():
     weeks = parse()
     roster = os.path.join(ROOT, "fom", "data", "notes")
     out, report = file_sections(weeks, roster)
+    for doc in out.values():
+        coverage.mark_covered(doc)
     for slug, doc in out.items():
         io.open(os.path.join(roster, "%s.json" % slug), "w",
                 encoding="utf-8", newline="\n").write(

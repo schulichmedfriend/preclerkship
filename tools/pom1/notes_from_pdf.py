@@ -57,6 +57,9 @@ import pymupdf                                                   # noqa: E402
 from PIL import Image                                            # noqa: E402
 
 import question_figures                                          # noqa: E402
+import coverage                                                  # noqa: E402
+import diagrams                                                  # noqa: E402
+import tables                                                    # noqa: E402
 
 NOTES_DIR = os.environ.get(
     "POM1_NOTES_DIR", os.path.join(ROOT, "pom1", "Nicole_s Notes"))
@@ -76,10 +79,18 @@ AUTHOR_RE = re.compile(u"nicole", re.I)
 # "o" as a sub-bullet still needs one, or every word starting with o is a list.
 BULLET_RE = re.compile(u"^[\\u2022\\u25cf\\u25aa\\u25e6\\u00b7]\\s*|^o\\s+|^[-\\u2013]\\s+")
 WEEK_RE = re.compile(u"^Week\\s+(\\d+)\\s*[:\\u2013-]?\\s*(.*)$")
+# A marker set in its own line box, with its text in the next one: the sub-bullet
+# "o", and the a) b) c) of a lettered list. Left alone each renders as a
+# paragraph of its own and its text as another, which is the "o" on a line by
+# itself all through the cardiology notes. A lettered marker is kept and put
+# back in front of its text; a plain dot is spent on making the line a bullet.
+MARKER_RE = re.compile(u"^(?:[\\u2022\\u25cf\\u25aa\\u25e6\\u00b7]|o|[-\\u2013]"
+                       u"|[a-zA-Z][.)]|\\d{1,2}[.)])$")
 COL_SPLIT = 255.0        # x that divides the two columns on a two-column page
 X_MARGIN = 46.0          # a section heading starts here
 HEAD_MAX = 72            # and is no longer than this
 MIN_FIG = 70             # a picture smaller than this each way is a bullet glyph
+LABEL_MAX = 5            # shorter than this at the left margin is Na+, not a heading
 
 # Sections these notes print that no lecture in the vault is named for. Written
 # out rather than guessed at: the left side is the heading as the document
@@ -168,12 +179,69 @@ def shrink(raw, ext):
 # ------------------------------------------------------------- reading a page
 
 def page_lines(page, pno):
-    """Every line and picture on one page, read down one column then the next."""
+    """Every line, picture and table on one page, in the order they are read.
+
+    A table is lifted out first and the text inside it suppressed, or every
+    cell would also arrive as a loose line - which is what the notes tab showed
+    before: a chart read down its columns, one cell per paragraph.
+    """
+    tabs = tables.tables_on(page)
+    rects = [bb for bb, _title, _block in tabs]
+
+    # Artwork the document draws rather than embeds. Without this its labels
+    # arrive as loose paragraphs and the picture is lost entirely - the
+    # "Chemical Gradients / Net Electrical Gradient / + / Ca2+" run at the top
+    # of the cardiac action potential note was one diagram read label by label.
+    draws = diagrams.diagrams_on(page, rects)
+    drects = [tuple(r) for r, _png in draws]
+
+    # COL_SPLIT was measured on a portrait page. Twenty of these pages are
+    # landscape charts, where it would cut the one full-width table in half, and
+    # a table spanning the split says the page is not in two columns there
+    # either. Both are read straight down instead.
+    width = page.rect.width
+    split = COL_SPLIT * width / 612.0
+    single = (width > page.rect.height
+              or any((r[2] - r[0]) >= 0.7 * width for r in rects))
+
+    def col_of(x0):
+        return 0 if single or x0 < split else 1
+
+    def inside(boxes, x0, y0, x1, y1):
+        cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+        return any(r[0] <= cx <= r[2] and r[1] <= cy <= r[3] for r in boxes)
+
+    def in_diagram(text, x0, y0, x1, y1):
+        """True when this line is one of a diagram's labels.
+
+        A cluster is grown until the leader lines join what they point at, and
+        that reach can take in the section heading printed just above or below
+        the artwork - which cost six sections their heading, and the lectures
+        under them their note. A heading is set at the left margin and is a
+        word rather than a symbol, so it is kept and allowed to appear twice:
+        once as the heading, once inside the picture. A label - Na+, K+, Ca2+,
+        the axis numbers - is either indented or too short to be a heading.
+        """
+        if not inside(drects, x0, y0, x1, y1):
+            return False
+        return x0 >= X_MARGIN or len(text.strip()) < LABEL_MAX
+
+    def in_table(x0, y0, x1, y1):
+        return inside(rects, x0, y0, x1, y1)
+
     items = []
+    for bb, title, block in tabs:
+        items.append({"t": "tbl", "col": col_of(bb[0]), "y": bb[1],
+                      "title": title, "block": block, "page": pno})
+    for r, png in draws:
+        items.append({"t": "img", "col": col_of(r.x0), "y": r.y0,
+                      "bytes": png, "ext": "png", "page": pno})
     for b in page.get_text("dict")["blocks"]:
         x0, y0, x1, y1 = b["bbox"]
-        col = 0 if x0 < COL_SPLIT else 1
+        col = col_of(x0)
         if b["type"] == 1:
+            if inside(drects, x0, y0, x1, y1):
+                continue               # already inside a rasterised diagram
             if (x1 - x0) >= MIN_FIG and (y1 - y0) >= MIN_FIG and b.get("image"):
                 items.append({"t": "img", "col": col, "y": y0, "bytes": b["image"],
                               "ext": b.get("ext") or "png", "page": pno})
@@ -182,6 +250,10 @@ def page_lines(page, pno):
             spans = [s for s in line["spans"] if s["text"].strip()]
             if not spans:
                 continue
+            if in_table(*line["bbox"]):
+                continue                   # a cell, already carried by the table
+            if in_diagram(u"".join(sp["text"] for sp in spans), *line["bbox"]):
+                continue                   # a label, already inside the picture
             text = u"".join(s["text"] for s in spans).strip()
             fonts = u" ".join(s["font"] for s in spans)
             items.append({
@@ -324,6 +396,25 @@ def read_pdf(path, has_toc, lects=None):
         if pno in starts:
             cur = open_section(starts[pno])
         for it in page_lines(page, pno):
+            if it["t"] == "tbl":
+                # Her chart title is the table's own top row, so it is the
+                # heading that files the section - tried against the lecture
+                # list exactly as a loose heading would be.
+                title = tables.strip_tags(it["title"]).strip()
+                if title and not has_toc:
+                    name = re.sub(u"\\s+", u" ", title)
+                    _lec, score = best_lecture(MAP.get(name, name), lects or [])
+                    if score >= 0.5:
+                        cur = open_section(name)
+                        title = u""
+                if cur is None:
+                    continue
+                flush(buf, cur[1])
+                if title:
+                    cur[1].append({"t": "list",
+                                   "html": u"<h5>%s</h5>" % esc(title)})
+                cur[1].append(it["block"])
+                continue
             if it["t"] == "img":
                 if cur is None:
                     continue
@@ -350,12 +441,18 @@ def read_pdf(path, has_toc, lects=None):
                 # an empty list item with its text loose underneath
                 pending_bullet[0] = True
                 continue
+            if MARKER_RE.match(text.strip()):
+                m = text.strip()
+                pending_bullet[0] = m if m[0].isalnum() else True
+                continue
             if not body:
                 continue
             if it["bullet"] or pending_bullet[0]:
+                mark = pending_bullet[0]
                 pending_bullet[0] = False
                 if cur is not None:
-                    buf.append(("li", body))
+                    buf.append(("li", u"%s %s" % (esc(mark), body)
+                                if isinstance(mark, str) else body))
                 continue
             head = is_heading(it, body, size)
             if head and not has_toc:
@@ -382,6 +479,19 @@ def main():
     for slug in ("cardio", "resp", "ent", "gi", "gu"):
         p = os.path.join(ROOT, "pom1", "data", "notes", "%s.json" % slug)
         rosters[slug] = json.load(io.open(p, encoding="utf-8"))
+
+    # The roster on disk is last run's output, not a bare roster, so the notes
+    # are cleared before they are refilled. Without this a second run appends a
+    # whole second copy of every block - 850 figures where the documents hold
+    # 425 - and the duplication is invisible until you scroll a note.
+    for roster in rosters.values():
+        for w in roster["weeks"]:
+            for lec in w["lectures"]:
+                lec["hasNote"] = False
+                lec.pop("blocks", None)
+                lec.pop("title", None)
+                lec.pop("covers", None)
+                lec.pop("coveredBy", None)
 
     unmatched = []
     for pdf, slug, weeks, has_toc in SOURCES:
@@ -411,6 +521,9 @@ def main():
             lec["blocks"].extend(blocks)
             filed += 1
         print("%-52s %-7s %3d sections filed" % (pdf[:52], slug, filed))
+
+    for roster in rosters.values():
+        coverage.mark_covered(roster)
 
     for slug, roster in rosters.items():
         p = os.path.join(ROOT, "pom1", "data", "notes", "%s.json" % slug)

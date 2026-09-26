@@ -218,7 +218,11 @@ def counts(course):
             lects = [x for wk in json.load(io.open(np, encoding="utf-8"))["weeks"]
                      for x in wk["lectures"]]
             l += len(lects)
-            w += len([x for x in lects if x.get("hasNote")])
+            # A lecture whose material is written up under a neighbouring lecture
+    # counts as written: the note exists and the page says where. Counting it
+    # as a gap would disagree with the coverage the page itself paints.
+            w += len([x for x in lects
+                      if x.get("hasNote") or x.get("coveredBy")])
     return q, w, l
 
 

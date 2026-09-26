@@ -1659,6 +1659,13 @@ mark.hit{
     white-space:nowrap;
 }
 
+/* A heading long enough to be prose has to wrap, or it sets the column's width
+   on its own: one 143-character cell in FoM's ADHD note made the first column
+   a few thousand pixels wide, and since the first column is sticky it then sat
+   over the whole table while the real content scrolled away off the right.
+   notes.js marks any header past a short measure. */
+.ct th.wide{white-space:normal;min-width:16em;}
+
 .ct td strong{font-weight:600;color:var(--text);}
 .ct td u{text-decoration:none;font-weight:600;color:var(--q-accent-ink);}
 
@@ -1969,6 +1976,45 @@ mark.hit{
 .note.is-gap .note-head{margin-bottom:0;}
 .note.is-gap h4{font-size:1rem;font-weight:500;color:var(--muted);}
 .note.is-gap .gapnote{margin-left:auto;font-size:.78rem;color:var(--muted);flex-shrink:0;}
+
+/* a lecture whose material is written up under a neighbouring lecture
+
+   Not a gap: the note exists, it is just filed one heading further down,
+   because the upper-year notes chart two or three lectures on one page. A
+   dashed box saying "no note yet" sent you looking for something already
+   there, so this points at it instead. */
+.note.is-covered{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:14px 20px;
+    background:none;
+    border-style:dotted;
+}
+
+.note.is-covered .note-head{margin-bottom:0;}
+.note.is-covered h4{font-size:1rem;font-weight:500;color:var(--muted);}
+
+.note.is-covered .covernote{
+    margin-left:auto;
+    font-size:.78rem;
+    color:var(--muted);
+    flex-shrink:0;
+}
+
+.coverlink{
+    font:inherit;
+    color:var(--q-accent-ink);
+    background:none;
+    border:0;
+    border-bottom:1px solid currentColor;
+    padding:0;
+    cursor:pointer;
+}
+
+.coverlink:hover{color:var(--text);}
+
+.lecrow.is-covered{opacity:.75;}
 
 /* where you are in the stream
 
@@ -2652,7 +2698,7 @@ select.ps:disabled{cursor:default;opacity:1;}
     .q-masthead{margin-bottom:20px;padding-bottom:12px;}
     .note{border:none;padding:0;margin:0;break-after:page;page-break-after:always;}
     .note:last-child{break-after:auto;page-break-after:auto;}
-    .note.is-gap{display:none !important;}
+    .note.is-gap,.note.is-covered{display:none !important;}
     .ct-wrap{overflow:visible;}
     .ct{font-size:8.5pt;}
     .pathway{border:none;background:none;padding:0;}

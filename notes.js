@@ -43,6 +43,7 @@
      something, and even then it stops at a budget. Filtering is never capped -
      the stream and the index always tell the truth, whether or not the words
      inside them get painted. */
+  var HEAD_WRAP = 24;             // a table heading longer than this wraps
   var MARK_MIN = 3;               // shorter than this, filter but do not paint
   var MARK_BUDGET = 800;          // and never paint more than this in one pass
   var HITS = [];                  // every <mark> on the page, in reading order
@@ -119,7 +120,8 @@
   function printWeek(weekbar) {
     var nodes = [weekbar], n = weekbar.nextElementSibling;
     while (n && !n.classList.contains("weekbar")) {
-      if (n.classList.contains("note") && !n.classList.contains("is-gap")) nodes.push(n);
+      if (n.classList.contains("note") && !n.classList.contains("is-gap")
+          && !n.classList.contains("is-covered")) nodes.push(n);
       n = n.nextElementSibling;
     }
     printScope(nodes);
@@ -127,7 +129,8 @@
 
   function printAll() {
     var nodes = [].slice.call(
-      document.querySelectorAll("#note-stream .weekbar, #note-stream .note:not(.is-gap)"));
+      document.querySelectorAll(
+        "#note-stream .weekbar, #note-stream .note:not(.is-gap):not(.is-covered)"));
     printScope(nodes);
   }
 
@@ -149,7 +152,16 @@
     var t = el("table", "ct");
     if (spec.cols && spec.cols.length) {
       var thead = el("thead"), tr = el("tr");
-      spec.cols.forEach(function (c) { tr.appendChild(html("th", null, c)); });
+      /* Headings are set on one line, which is right for "Mechanism of Action"
+         and wrong for anything the extractor mistook for one: a sentence in a
+         th sets the column's width by itself, and the first column is sticky,
+         so it then covers the table while the content scrolls off to the
+         right. Past a short measure the heading wraps instead. */
+      spec.cols.forEach(function (c) {
+        var th = html("th", null, c);
+        if ((th.textContent || "").trim().length > HEAD_WRAP) th.className = "wide";
+        tr.appendChild(th);
+      });
       thead.appendChild(tr);
       t.appendChild(thead);
     }
@@ -248,6 +260,43 @@
     return html("div", "cnote", b.html);
   }
 
+  /* ---------- one note may carry several lectures ---------- */
+
+  /* A lecture is "covered" when the material is written up, but under a
+     neighbouring lecture's heading - the upper-year notes chart "Esophagus
+     Pathologies" or "Small Bowel Obstruction" across two or three of the
+     course's lectures at once. Counting those as gaps understated the
+     coverage and, worse, sent you looking for a note that is already there. */
+
+  function written(lec) {
+    return lec.hasNote === true || !!lec.coveredBy;
+  }
+
+  function coveredTitle(lec) {
+    var names = [lec.name];
+    (lec.covers || []).forEach(function (c) { names.push(c.name); });
+    return names.join(" + ");
+  }
+
+  function buildCovered(lec) {
+    var art = el("article", "note is-covered");
+    art.id = "n-" + lec.key;
+    art.dataset.id = lec.key;
+    var head = el("div", "note-head");
+    head.appendChild(el("span", "note-num", lec.num));
+    head.appendChild(el("h4", null, lec.name));
+    art.appendChild(head);
+
+    var p = el("p", "covernote");
+    p.appendChild(document.createTextNode("Written up with "));
+    var a = el("button", "coverlink", lec.coveredBy.num + " · " + lec.coveredBy.name);
+    a.type = "button";
+    a.addEventListener("click", function () { goTo(lec.coveredBy.key); });
+    p.appendChild(a);
+    art.appendChild(p);
+    return art;
+  }
+
   function buildNote(lec) {
     var art = el("article", "note");
     art.id = "n-" + lec.key;
@@ -255,7 +304,10 @@
 
     var head = el("div", "note-head");
     head.appendChild(el("span", "note-num", lec.num));
-    head.appendChild(el("h4", null, lec.name));
+    /* These notes are not written one per lecture: one chart carries two or
+       three of them. The note is titled with every lecture it covers, rather
+       than being filed under one and leaving the rest reading as unwritten. */
+    head.appendChild(el("h4", null, coveredTitle(lec)));
     head.appendChild(el("span", "spacer"));
     head.appendChild(pdfButton("PDF", "Save this note as a PDF",
       function () { printNote(art); }));
@@ -515,7 +567,8 @@
       frag.appendChild(g);
 
       (w.lectures || []).forEach(function (lec) {
-        var row = el("button", "lecrow" + (lec.hasNote === true ? "" : " is-gap"));
+        var row = el("button", "lecrow"
+          + (lec.hasNote === true ? "" : lec.coveredBy ? " is-covered" : " is-gap"));
         row.type = "button";
         row.dataset.id = lec.key;
         row.dataset.k = k;
@@ -871,8 +924,7 @@
 
   function counts() {
     var all = lectures();
-    var written = all.filter(function (l) { return l.hasNote === true; }).length;
-    return { all: all.length, written: written };
+    return { all: all.length, written: all.filter(written).length };
   }
 
   function paintChips() {
@@ -884,7 +936,7 @@
   function paintCoverage() {
     var c = counts();
     var weeksWith = WEEKS.filter(function (w) {
-      return (w.lectures || []).some(function (l) { return l.hasNote === true; });
+      return (w.lectures || []).some(written);
     }).length;
 
     byId("cv-notes").textContent = c.written;
@@ -991,14 +1043,15 @@
     WEEKS.forEach(function (w) {
       var wb = el("div", "weekbar");
       wb.appendChild(el("h3", null, w.label || ("Week " + w.n)));
-      if ((w.lectures || []).some(function (l) { return l.hasNote === true; })) {
+      if ((w.lectures || []).some(written)) {
         wb.appendChild(pdfButton("Save week as PDF",
           "Save every note in this week as one PDF",
           function () { printWeek(wb); }));
       }
       frag.appendChild(wb);
       (w.lectures || []).forEach(function (lec) {
-        frag.appendChild(lec.hasNote === true ? buildNote(lec) : buildGap(lec));
+        frag.appendChild(lec.hasNote === true ? buildNote(lec)
+                         : lec.coveredBy ? buildCovered(lec) : buildGap(lec));
       });
     });
 

@@ -60,7 +60,11 @@ def cards(course):
         nt = json.load(io.open(os.path.join(course["slug"], "data", "notes",
                                             "%s.json" % slug), encoding="utf-8"))
         lects = [l for w in nt["weeks"] for l in w["lectures"]]
-        written = len([l for l in lects if l.get("hasNote")])
+        # A lecture whose material is written up under a neighbouring lecture
+    # counts as written: the note exists and the page says where. Counting it
+    # as a gap would disagree with the coverage the page itself paints.
+        written = len([l for l in lects
+                       if l.get("hasNote") or l.get("coveredBy")])
         out.append(
             u'<a class="block-card" href="%s.html" style="--hue:%s">\n'
             u'<p class="bmeta">Block %d &middot; %s %s</p>\n'

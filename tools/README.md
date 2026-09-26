@@ -18,6 +18,25 @@ some JSON rather than a fork of the engine. Two repair passes are shared too:
 `roman_items.py`, which puts a roman-numeral item list back in the stem it was
 parsed out of. Both run after the extractors and both are idempotent.
 
+Three more shared modules serve the two PDF extractors, because FoM's and
+PoM 1's notes are the same kind of document and were getting the same things
+wrong in two places:
+
+| Module | What it does |
+|---|---|
+| [`tables.py`](tables.py) | reads a **ruled** table off a page, keeping the bold, and repairs what the finder gets wrong: a wrapped heading folded back, a phantom column merged away, a chart title lifted off the top row, and one ruled box split into the tables actually stacked inside it |
+| [`diagrams.py`](diagrams.py) | rasterises artwork the PDF *draws* rather than embeds, so a labelled figure arrives as a figure instead of its labels arriving as loose paragraphs. A cluster has to be made of curve and line segments to qualify - a dashed box round a callout is rectangles only, and its text is already being read as text |
+| [`coverage.py`](coverage.py) | titles a note with every lecture it covers, so a chart that runs two lectures together names both instead of leaving one showing as a gap |
+
+**Why the tables are read off the ruling lines.** Both extractors used to infer
+a table from its typography and both got it wrong: PoM 1 had no table
+recovery at all and emitted every cell as its own paragraph, and FoM's x-anchor
+clustering merged the two tables on the ADHD page into one and promoted the
+bold sentence above them to a column heading - which, at 143 characters against
+a `white-space: nowrap` rule, set that column thousands of pixels wide and
+pushed the criteria off the side of the page. These documents do rule their
+tables, so the rules are what to read.
+
 ---
 
 Four scripts, run from the repo root, in this order. Python 3, no dependencies.
