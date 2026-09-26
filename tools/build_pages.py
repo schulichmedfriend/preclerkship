@@ -60,6 +60,36 @@ SEED = {
                     u"absent, overreacting, or turned on its owner.",
                     u"Practice questions for weeks 13 to 15 of Foundations of Medicine.",
                     u"--q-accent:#3d4f8f;--q-accent-soft:#e5e8f5;--q-accent-ink:#333f75;"),
+    ("pom1", "cardio"): (u"Weeks 1 to 5: the heart as an electrical system and as a pump, "
+                         u"then the valves and the sounds they make, the coronary arteries "
+                         u"and what happens when one closes, failure and hypertension, and "
+                         u"the rhythms.",
+                         u"Practice questions for the cardiology weeks of Principles of "
+                         u"Medicine 1.",
+                         u"--q-accent:#9c2b2b;--q-accent-soft:#f7dedb;--q-accent-ink:#802222;"),
+    ("pom1", "resp"): (u"Weeks 6 to 8: how air gets in and out and how gas crosses, what "
+                       u"obstructs and what stiffens, then the infections, the nodules and "
+                       u"the pleura.",
+                       u"Practice questions for the respirology weeks of Principles of "
+                       u"Medicine 1.",
+                       u"--q-accent:#2f6b8f;--q-accent-soft:#e2ecf4;--q-accent-ink:#265673;"),
+    ("pom1", "ent"): (u"Week 9, one week on its own: the anatomy of the neck, the masses "
+                      u"found in it at every age, and the infections that fill it.",
+                      u"Practice questions for the ear, nose and throat week of Principles "
+                      u"of Medicine 1.",
+                      u"--q-accent:#7a4a9c;--q-accent-soft:#eee3f6;--q-accent-ink:#623c7e;"),
+    ("pom1", "gi"): (u"Weeks 10 to 13: the gut from mouth to anus - motility and acid, then "
+                     u"absorption and the inflamed bowel, then the liver, biliary tree and "
+                     u"pancreas, ending on the acute abdomen.",
+                     u"Practice questions for the gastroenterology weeks of Principles of "
+                     u"Medicine 1.",
+                     u"--q-accent:#2f6b4f;--q-accent-soft:#e2efe9;--q-accent-ink:#275844;"),
+    ("pom1", "gu"): (u"Weeks 14 to 17: the nephron and the electrolytes it sets, then "
+                     u"failing kidneys acute and chronic, then the urinary tract - "
+                     u"infection, obstruction, cancer and stones.",
+                     u"Practice questions for the nephrology and urology weeks of "
+                     u"Principles of Medicine 1.",
+                     u"--q-accent:#8a5320;--q-accent-soft:#f6e8d8;--q-accent-ink:#70431a;"),
     ("t2c", "peds"): (u"Weeks 1 and 2: prescribing for a child, the acute asthma "
                       u"exacerbation, and the developmental surveillance that runs "
                       u"under every well-child visit.",
@@ -233,6 +263,8 @@ QBANK_SEED = {
              u"The whole Foundations of Medicine question bank, filterable by block, week, question set and status."),
     "pom2": (u"Every question in Principles of Medicine 2 in one bank — all five blocks, weeks 1 to 20. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
              u"The whole Principles of Medicine 2 question bank, filterable by block, week, question set and status."),
+    "pom1": (u"Every question in Principles of Medicine 1 in one bank \u2014 all five blocks, weeks 1 to 17. Filter by block, week, question set, topic, or whether you got it right, then build a paper any length you like out of what is left and sit it against the clock.",
+             u"The whole Principles of Medicine 1 question bank, filterable by block, week, question set and status."),
     "t2c": (u"Every question in Transition to Clerkship in one bank — all six rotations, weeks 1 to 13. Filter by rotation, week, question set, or whether you got it right, then build a paper any length you like and sit it against the clock.",
              u"The whole Transition to Clerkship question bank, filterable by rotation, week, question set and status."),
 }

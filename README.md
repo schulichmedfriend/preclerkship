@@ -33,15 +33,17 @@ Questions, corrections and contributions: <schulichmedfriends@gmail.com>.
 | Course | Year | State |
 | --- | --- | --- |
 | [Foundations of Medicine](fom/) | 1 | 4 blocks, weeks 1–15, 1,979 questions |
-| [Principles of Medicine 1](pom1/) | 1 | not built yet |
+| [Principles of Medicine 1](pom1/) | 1 | 5 blocks, weeks 1–17, 2,109 questions |
 | [Principles of Medicine 2](pom2/) | 2 | 5 blocks, weeks 1–20, 1,487 questions |
 | [Transition to Clerkship](t2c/) | 2 | 6 blocks, weeks 1–13, 214 questions |
 
-The one still empty keeps a card on the hub, greyed and unlinked. That is
-deliberate, and it is the same habit the rest of the portal keeps: a lecture with
-no note still renders on the notes tab, a question set with nothing in it still
-renders in the filter bar. Showing the shape of the whole thing, gaps included,
-is more useful than showing only the parts that happen to be done.
+A course with nothing behind it keeps a card on the hub, greyed and unlinked,
+and that is deliberate: it is the same habit the rest of the portal keeps. A
+lecture with no note still renders on the notes tab, a question set with nothing
+in it still renders in the filter bar, and PoM 1's ENT and Nephrology blocks
+carry a full page of placeholders because no one has handed in notes for them.
+Showing the shape of the whole thing, gaps included, is more useful than showing
+only the parts that happen to be done.
 
 ## How a week gets built
 
@@ -77,10 +79,12 @@ notes.js           the notes tab, including the PDF printing  ) course
 quiz.js            the question runner and the progress store )
 
 fom/               one course: its pages, its data, its README
+pom1/              the same
 pom2/              the same
-pom1/              a placeholder, a landing page and nothing behind it
+t2c/               the same
 
 tools/portal.py       the course roster: blocks, families, accents, store keys
+tools/roman_items.py  a repair pass: item lists read as options, put back in the stem
 tools/build_pages.py  every course's block pages AND its question bank
 tools/build_index.py  every course's landing page
 tools/build_hub.py    the front door
@@ -88,6 +92,7 @@ tools/build_anki.py   a block's deck out of Anki, plus the manifest its tab read
 tools/question_figures.py  question pictures out of the JSON and into assets/figures/
 tools/                PoM 2's extractors (an Obsidian vault in)
 tools/fom/            FoM's extractors (the question-bank PDFs in)
+tools/pom1/           PoM 1's extractors (the bank PDFs, the workbook, the study notes)
 ```
 
 ### What makes a course a course
@@ -134,12 +139,16 @@ repo, so they run anywhere; each course's extractors read sources outside it and
 take their paths from the environment.
 
 ```bash
-python tools/fom/parse_qbank.py         # the question-bank PDFs -> fom/data/questions/
-python tools/fom/rosters_from_vault.py  # the vault              -> fom/data/notes/
-python tools/rosters_from_vault.py      # the vault              -> pom2/data/notes/
-python tools/charts_from_vault.py       # folds written notes on top
+python tools/fom/parse_qbank.py          # the question-bank PDFs -> fom/data/questions/
+python tools/fom/rosters_from_vault.py   # the vault              -> fom/data/notes/
+python tools/pom1/parse_qbank.py         # the bank PDFs + workbook -> pom1/data/questions/
+python tools/pom1/rosters_from_vault.py  # the vault              -> pom1/data/notes/
+python tools/pom1/notes_from_pdf.py      # the study notes        -> pom1/data/notes/
+python tools/rosters_from_vault.py       # the vault              -> pom2/data/notes/
+python tools/charts_from_vault.py        # folds written notes on top
 
-python tools/question_figures.py        # any newly-inlined picture -> assets/figures/
+python tools/roman_items.py              # item lists read as options -> back in the stem
+python tools/question_figures.py         # any newly-inlined picture -> assets/figures/
 
 python tools/build_pages.py             # every course's block pages + question bank
 python tools/build_index.py             # every course's landing page
@@ -150,7 +159,8 @@ Run the last three after editing any CSS or JS as well, because they stamp each
 asset's content hash into its URL and the stamp goes stale otherwise.
 
 Each course's README covers its own sources and its own quirks:
-[fom/README.md](fom/README.md), [pom2/README.md](pom2/README.md).
+[fom/README.md](fom/README.md), [pom1/README.md](pom1/README.md),
+[pom2/README.md](pom2/README.md).
 
 ## Progress stays on the device
 

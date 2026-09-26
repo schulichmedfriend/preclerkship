@@ -1,0 +1,53 @@
+{
+ "block": "ent",
+ "weeks": [
+  {
+   "n": 9,
+   "label": "Week 9 - Head & Neck Anatomy, Masses & Infections",
+   "lectures": [
+    {
+     "id": "ent-w9-01",
+     "num": "01",
+     "name": "Anatomy of the Neck",
+     "hasNote": false
+    },
+    {
+     "id": "ent-w9-02",
+     "num": "02",
+     "name": "Integrative Upper Respiratory Tract and GI Tract Anatomy",
+     "hasNote": false
+    },
+    {
+     "id": "ent-w9-03",
+     "num": "03",
+     "name": "Thyroid Masses",
+     "hasNote": false
+    },
+    {
+     "id": "ent-w9-04",
+     "num": "04",
+     "name": "Adult Head & Neck Masses",
+     "hasNote": false
+    },
+    {
+     "id": "ent-w9-05",
+     "num": "05",
+     "name": "Infections of the Head and Neck",
+     "hasNote": false
+    },
+    {
+     "id": "ent-w9-06",
+     "num": "06",
+     "name": "Pediatric Neck Masses",
+     "hasNote": false
+    },
+    {
+     "id": "ent-w9-07",
+     "num": "07",
+     "name": "Pediatric Airway Pathology",
+     "hasNote": false
+    }
+   ]
+  }
+ ]
+}

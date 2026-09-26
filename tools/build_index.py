@@ -87,13 +87,16 @@ def cards(course):
         written = len([l for l in lects if l.get("hasNote")])
         out.append(
             u'<a class="block-card" href="%s.html" style="--hue:%s">\n'
-            u'<p class="bmeta">Block %d &middot; Weeks %s</p>\n'
+            u'<p class="bmeta">Block %d &middot; %s %s</p>\n'
             u'<h2>%s</h2>\n<p>%s</p>\n'
             u'<span class="tally">\n'
             u'<span><b>%d</b> of %d lecture notes</span>\n'
             u'<span><b>%d</b> questions in the bank</span>\n'
             u'</span>\n'
-            u'</a>' % (slug, hue, n, weeks, name, blurb, written, len(lects), len(qs)))
+            u'</a>' % (slug, hue, n,
+                      # a block that is one week long says "Week", not "Weeks"
+                      u"Weeks" if re.search(u"[-\u2013]", weeks) else u"Week",
+                      weeks, name, blurb, written, len(lects), len(qs)))
     return "\n".join(out)
 
 

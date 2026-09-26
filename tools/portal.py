@@ -77,8 +77,39 @@ COURSES = [
         "blurb": u"The second half of first year, system by system.",
         "accent": u"#6b5a2f",
         "store": "nsq.pom1.v1.",
-        "blocks": [],
-        "families": [],
+        "blocks": [
+            ("cardio", 1, u"Cardiology",             u"1\u20135"),
+            ("resp",   2, u"Respirology",            u"6\u20138"),
+            ("ent",    3, u"Ear, Nose & Throat",     u"9"),
+            ("gi",     4, u"Gastroenterology",       u"10\u201313"),
+            ("gu",     5, u"Nephrology & Urology",   u"14\u201317"),
+        ],
+        "families": [
+            {"key": "module", "name": u"Module questions",
+             "blurb": u"The knowledge checks inside the week's Elentra asynchronous "
+                      u"learning modules, transcribed into the Meds 2025 block banks."},
+            {"key": "weekly", "name": u"Weekly quizzes",
+             "blurb": u"The week's quiz as it was sat, kept whole as its own set so a "
+                      u"week can be drilled the way it was written."},
+            {"key": "meds2024", "name": u"Meds 2024 bank",
+             "blurb": u"The student-written bank the Class of 2024 Academic Directors "
+                      u"built in May 2021, re-filed week by week by the Meds 2025 "
+                      u"volunteers. About half the cardiology questions and a handful of "
+                      u"the respirology ones were reviewed by faculty; the rest were not, "
+                      u"and the bank says so on its own second page."},
+            {"key": "new", "name": u"New questions",
+             "blurb": u"Written fresh by the Meds 2025 volunteers through the spring of "
+                      u"2022 to fill the gaps. Not verified by faculty, so treat a "
+                      u"disagreement as a question worth chasing rather than a correction "
+                      u"to accept."},
+            {"key": "workbook", "name": u"Pre-Clerkship Workbook",
+             "blurb": u"The 2023 edition of the workbook handed down through the Schulich "
+                      u"classes of 2015 to 2025: its Cardiology, Respiration & Airways, "
+                      u"Ear Nose & Throat, Gastroenterology and Genitourinary chapters. "
+                      u"The workbook files by organ system rather than by week, so the "
+                      u"block is its own and the week here is inferred; where nothing in "
+                      u"a question placed it, it says so on its face."},
+        ],
     },
     {
         "slug": "pom2",

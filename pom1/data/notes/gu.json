@@ -1,0 +1,227 @@
+{
+ "block": "gu",
+ "weeks": [
+  {
+   "n": 14,
+   "label": "Week 14 - Renal Anatomy, Filtration, Sodium, Water & Acid-Base",
+   "lectures": [
+    {
+     "id": "gu-w14-01",
+     "num": "01",
+     "name": "Anatomy of the Kidneys, Ureters, & Adrenal Glands",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-02",
+     "num": "02",
+     "name": "Development of the Urinary Tract",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-03",
+     "num": "03",
+     "name": "Functional Anatomy of the Kidney",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-04",
+     "num": "04",
+     "name": "GFR Physiology",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-05",
+     "num": "05",
+     "name": "Anatomy of the Retroperitoneum",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-06",
+     "num": "06",
+     "name": "Reabsorption and Secretion",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-07",
+     "num": "07",
+     "name": "Sodium Handling by the Kidney",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-08",
+     "num": "08",
+     "name": "Edema and Volume Status",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-09",
+     "num": "09",
+     "name": "Water Handling by the Kidney",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-10",
+     "num": "10",
+     "name": "Hyponatremia and Hypernatremia",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-11",
+     "num": "11",
+     "name": "Acid Base Disturbances",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-12",
+     "num": "12",
+     "name": "Potassium Handling by the Kidney",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w14-13",
+     "num": "13",
+     "name": "IV Fluids",
+     "hasNote": false
+    }
+   ]
+  },
+  {
+   "n": 15,
+   "label": "Week 15 - Renal Function, AKI & Chronic Kidney Disease",
+   "lectures": [
+    {
+     "id": "gu-w15-01",
+     "num": "01",
+     "name": "Anatomy of the Pelvis",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-02",
+     "num": "02",
+     "name": "Measurement of Renal Function",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-03",
+     "num": "03",
+     "name": "Hematuria and Proteinuria",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-04",
+     "num": "04",
+     "name": "Acute Kidney Injury",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-05",
+     "num": "05",
+     "name": "Chronic Kidney Disease",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-06",
+     "num": "06",
+     "name": "Diabetic Nephropathy",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-07",
+     "num": "07",
+     "name": "Kidney Transplantation",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w15-08",
+     "num": "08",
+     "name": "Diuretics",
+     "hasNote": false
+    }
+   ]
+  },
+  {
+   "n": 16,
+   "label": "Week 16 - Urinary Infection, Obstruction & Urologic Malignancy",
+   "lectures": [
+    {
+     "id": "gu-w16-01",
+     "num": "01",
+     "name": "Urinary Tract Infections",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-02",
+     "num": "02",
+     "name": "Urinary Tract Obstruction",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-03",
+     "num": "03",
+     "name": "Benign Prostatic Hyperplasia",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-04",
+     "num": "04",
+     "name": "Prostate Cancer",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-05",
+     "num": "05",
+     "name": "Approach to Scrotal Pain and Masses",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-06",
+     "num": "06",
+     "name": "Approach to Renal Masses",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-07",
+     "num": "07",
+     "name": "Urothelial Cancer",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-08",
+     "num": "08",
+     "name": "Special Issues in Pediatric Nephrology",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w16-09",
+     "num": "09",
+     "name": "Special Issues in Pediatric Urology",
+     "hasNote": false
+    }
+   ]
+  },
+  {
+   "n": 17,
+   "label": "Week 17 - Incontinence, Stones & Renal Replacement",
+   "lectures": [
+    {
+     "id": "gu-w17-01",
+     "num": "01",
+     "name": "Incontinence & Voiding Dysfunction",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w17-02",
+     "num": "02",
+     "name": "Nephrolithiasis",
+     "hasNote": false
+    },
+    {
+     "id": "gu-w17-03",
+     "num": "03",
+     "name": "Renal Replacement Therapies",
+     "hasNote": false
+    }
+   ]
+  }
+ ]
+}

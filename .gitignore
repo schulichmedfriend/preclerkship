@@ -10,3 +10,12 @@ build/
 # rather than something that runs anywhere as-is.
 skills/*
 !skills/pom2-week/
+
+# The upstream source documents each course is built FROM, dropped in the
+# course's own folder for convenience. The portal's output is the JSON under
+# data/ and the figures under assets/; these are the inputs, they are large,
+# and they are not ours to redistribute wholesale.
+pom1/Question Bank*/
+pom1/Nicole_s Notes/
+pom1/*.pdf
+*:Zone.Identifier
