@@ -1202,30 +1202,40 @@
     }
 
     if (!TEST.submitted) {
+      /* Typed, not chosen from a list, for the same reason the block length is:
+         the list offered eight lengths and the paper you are actually sitting
+         is 100 minutes or 25. Empty means no limit, which is the default and
+         has to stay reachable by clearing the field. */
       var tf = el("div", "tb-time");
       var tlab = document.createElement("label");
       tlab.setAttribute("for", "tb-limit");
       tlab.textContent = "Time";
-      var sel = document.createElement("select");
-      sel.id = "tb-limit";
-      [[0, "No limit"], [15, "15 min"], [30, "30 min"], [45, "45 min"],
-       [60, "60 min"], [90, "90 min"], [120, "2 hours"], [180, "3 hours"]
-      ].forEach(function (o) {
-        var opt = document.createElement("option");
-        opt.value = String(o[0]);
-        opt.textContent = o[1];
-        sel.appendChild(opt);
-      });
-      sel.value = String(TEST.limit);
-      sel.addEventListener("change", function () {
-        TEST.limit = parseInt(sel.value, 10) || 0;
+      var tin = document.createElement("input");
+      tin.type = "number";
+      tin.id = "tb-limit";
+      tin.min = "1";
+      tin.step = "1";
+      tin.placeholder = "No limit";
+      tin.value = TEST.limit ? String(TEST.limit) : "";
+      tin.addEventListener("input", function () {
+        var v = parseInt(tin.value, 10);
+        TEST.limit = (isNaN(v) || v < 1) ? 0 : v;
         /* the clock restarts from now rather than back-dating itself onto a
            block you are already part-way through */
         TEST.deadline = TEST.limit ? Date.now() + TEST.limit * 60000 : null;
         paintTest();
+        /* repainting the bar rebuilds this field, so the caret has to be put
+           back or it jumps out on every keystroke */
+        var back = byId("tb-limit");
+        if (back) {
+          back.focus();
+          try { back.setSelectionRange(back.value.length, back.value.length); }
+          catch (e) { /* number inputs refuse this in some browsers */ }
+        }
       });
       tf.appendChild(tlab);
-      tf.appendChild(sel);
+      tf.appendChild(tin);
+      tf.appendChild(el("span", "tb-unit", "min"));
       bar.appendChild(tf);
     }
 

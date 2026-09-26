@@ -1000,6 +1000,13 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 .stem p:last-child{margin-bottom:0;}
 .stem strong{font-weight:600;}
 
+/* A matching question's items are cited by roman numeral in its own options
+   ("A. i, ii, iv"), so they have to be numbered the way they are cited. The
+   default arabic numbering left the options pointing at nothing. */
+.stem ol.match-items{list-style:lower-roman;margin:8px 0 10px 0;padding-left:26px;}
+.stem ol.match-items li{margin-bottom:3px;}
+.stem ol.match-items li:last-child{margin-bottom:0;}
+
 .opts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:7px;}
 
 .opt{
@@ -1479,6 +1486,20 @@ body[data-tab="questions"] .q-masthead .lead{display:none;}
 
 .clist ul{margin:0 0 0 20px;}
 .clist li{margin-bottom:6px;}
+.clist p{margin-bottom:6px;}
+.clist ul+p,.clist p+ul{margin-top:6px;}
+
+/* A note lifted from a study document keeps that document's own sub-heads, so
+   the block needs a heading level inside it. Small and set in the accent, so a
+   sub-head reads as a turn in the argument rather than as a second title. */
+.clist h5{
+    font-family:var(--serif);
+    font-size:.94rem;
+    font-weight:600;
+    color:var(--q-accent-ink);
+    margin:14px 0 6px 0;
+}
+.clist h5:first-child{margin-top:0;}
 
 .tlead strong,.cnote strong,.clist strong{font-weight:600;}
 
@@ -2282,17 +2303,24 @@ select.ps:disabled{cursor:default;opacity:1;}
 .tb-time{display:flex;align-items:center;gap:8px;margin-left:auto;}
 .tb-time label{font-size:.83rem;font-weight:600;white-space:nowrap;}
 
-.tb-time select{
+.tb-time input{
+    width:92px;
     padding:6px 9px;
     font:inherit;
-    font-size:.86rem;
+    font-size:.87rem;
     font-weight:600;
     color:var(--q-warn);
     background:var(--card-bg);
     border:1px solid var(--q-warn);
     border-radius:5px;
-    cursor:pointer;
+    font-variant-numeric:tabular-nums;
 }
+
+/* The placeholder carries the default - an empty field is "no limit" - so it
+   has to read as a value rather than as a hint fading into the border. */
+.tb-time input::placeholder{color:var(--q-warn);opacity:.72;font-weight:500;}
+
+.tb-unit{font-size:.83rem;font-weight:600;opacity:.85;margin-left:-3px;}
 
 /* Tabular figures, or the whole bar shifts sideways once a second. */
 .tb-clock{

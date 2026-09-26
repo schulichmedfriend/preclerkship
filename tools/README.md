@@ -1,5 +1,25 @@
 # Rebuilding the portal
 
+**This page is PoM 2's.** The portal now carries four courses, and each keeps
+its own extractors beside its own sources:
+
+| Course | Extractors | Reads |
+|---|---|---|
+| PoM 2 | `tools/*.py` (this page) | an Obsidian vault of lecture notes |
+| FoM | `tools/fom/` | the block question-bank PDFs and the workbook |
+| PoM 1 | `tools/pom1/` | the block bank PDFs, the workbook, and upper-year study notes |
+| T2C | none | its questions arrived as JSON |
+
+The three *builders* below - `build_pages.py`, `build_index.py`,
+`build_hub.py` - are shared: each runs over every course in
+[`portal.py`](portal.py)'s roster, so a course is a dictionary, a directory and
+some JSON rather than a fork of the engine. Two repair passes are shared too:
+`question_figures.py`, which moves an inlined picture out into a file, and
+`roman_items.py`, which puts a roman-numeral item list back in the stem it was
+parsed out of. Both run after the extractors and both are idempotent.
+
+---
+
 Four scripts, run from the repo root, in this order. Python 3, no dependencies.
 
 ```bash
