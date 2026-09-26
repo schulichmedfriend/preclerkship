@@ -234,7 +234,7 @@ A collaborative initiative by the Schulich <strong>Open-Source Medicine</strong>
 </p>
 
 <p>
-<strong>Leads.</strong> Ashish Saragadam, Negar Goodarzynejad, Jessica Wang,
+<strong>Contributors.</strong> Ashish Saragadam, Negar Goodarzynejad, Jessica Wang,
 Tamjeed Nawaz, Yasmine Madan.
 </p>
 
